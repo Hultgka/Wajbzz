@@ -1,12 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Wajbzz - Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body, html { height:100%; background:#000; color:#3ec1e0; font-family:'Orbitron',sans-serif; }
+nav { background:#0f0f0f; display:flex; justify-content:center; padding:1rem 0; position:sticky; top:0; z-index:10; }
+nav a { color:#3ec1e0; text-decoration:none; margin:0 1.5rem; font-size:1.1rem; transition:color .3s; display:flex; align-items:center; gap:.3rem; }
+nav a:hover { color:#00ffff; }
+.social-buttons { position:fixed; bottom:1rem; left:1rem; display:flex; gap:.5rem; z-index:10000; }
+.social-buttons a { background:#111; border:2px solid #3ec1e0; color:#3ec1e0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:6px; transition:all .3s; }
+.social-buttons a:hover { background:#00ffff; color:#000; border-color:#00ffff; }
+.lang-buttons { position:fixed; top:1rem; right:1rem; display:flex; gap:.5rem; z-index:10000; }
+.lang-buttons button { background:none; border:2px solid #3ec1e0; color:#3ec1e0; font-family:'Orbitron',sans-serif; cursor:pointer; padding:.3rem .8rem; font-size:.9rem; border-radius:4px; transition:background .3s,color .3s; }
+.lang-buttons button.active, .lang-buttons button:hover { background:#00ffff; color:#000; border-color:#00ffff; }
+main { max-width:1100px; margin:3rem auto 5rem; padding:0 1rem; }
+h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 8px #00ffff; }
+.featured-section {
+  background: linear-gradient(90deg, #232949 70%, #3ec1e0 100%);
+  border-radius: 12px;
+  margin-bottom: 2.2em;
+  box-shadow: 0 2px 18px #00ffff33;
+  display: flex;
+  align-items: center;
+  padding: 1.6em;
+  gap: 2em;
+}
+.featured-thumb {
+  width: 148px;
+  height: 84px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #00ffff99, 0 0 3px #000;
+  cursor: pointer;
+  outline: none;
+  border: 2px solid transparent;
+  object-fit: cover;
+  transition: border-color 0.15s;
+}
+.featured-thumb:focus, .featured-thumb:hover {
+  border-color: #00ffff;
+}
+.featured-info {
+  flex: 1;
+}
+.featured-info h2 {
+  margin: 0 0 0.3em 0;
+  color: #00ffff;
+  font-size: 1.35rem;
+}
+.featured-info p {
+  margin: 0;
+  color: #e1eaff;
+}
+.filters {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-bottom: 1.5em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#search-bar {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 2px solid #3ec1e0;
+  background: #111;
+  color: #3ec1e0;
+  font-size: 1em;
+  min-width: 180px;
+  font-family: 'Orbitron',sans-serif;
+  outline: none;
+  transition: border-color 0.3s;
+}
+#search-bar:focus {
+  border-color: #00ffff;
+}
+#genre-filter {
+  padding: 0.4em 0.8em;
+  border-radius: 4px;
+  border: 2px solid #3ec1e0;
+  background: #111;
+  color: #3ec1e0;
+  font-size: 1em;
+  font-family:'Orbitron',sans-serif;
+}
+#alphabet-filter {
+  display: flex;
+  gap: 0.2em;
+  flex-wrap: wrap;
+}
+#alphabet-filter button {
+  background: #232949;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.2em 0.5em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family:'Orbitron',sans-serif;
+}
+#alphabet-filter button.active,
+#alphabet-filter button:focus {
+  background: #00ffff;
+  color: #232949;
+  font-weight: bold;
+  outline: none;
+}
+.section-header {
+  color: #3ec1e0;
+  font-size: 1.25rem;
+  margin-top: 1.7em;
+  margin-bottom: 0.7em;
+  letter-spacing: 1px;
+  text-shadow:0 0 6px #00ffffaa;
+}
+#tracks-container, #videos-container {
+  display: flex;
+  gap: 1.7em;
+  flex-wrap: wrap;
+  min-height: 60px;
+  align-items: stretch;
+  justify-content: center;
+}
+.track-item {
+  background: #181c2f;
+  border-radius: 10px;
+  padding: 1.1em 1.3em 1em 1.3em;
+  box-shadow: 0 2px 8px #00ffff22;
+  margin-bottom: 1.3em;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 300px;
+}
+.track-info {
+  margin-bottom: 0.4em;
+}
+.track-title {
+  font-weight: bold;
+  font-size: 1.05rem;
+  margin-bottom: 0.18em;
+  color: #00ffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.track-artist {
+  margin: 0;
+  color: #e1eaff;
+  font-size: 0.95rem;
+}
+.track-genre {
+  display: inline-block;
+  background: #232949;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 0.5em;
+  font-size: 0.8em;
+  margin-left: 0.6em;
+  font-weight: 400;
+}
+.track-audio {
+  width: 100%;
+  margin-top: 0.5em;
+}
+#videos-container {
+  gap: 1.5em;
+  margin-bottom: 2em;
+}
+.video-thumb {
+  width: 160px;
+  height: 90px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #00ffff99, 0 0 3px #000;
+  cursor: pointer;
+  outline: none;
+  border: 2px solid transparent;
+  object-fit: cover;
+  transition: border-color 0.15s;
+}
+.video-thumb:focus, .video-thumb:hover {
+  border-color: #00ffff;
+}
+#video-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,20,30,0.93);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.18s;
+}
+#video-modal.active { display: flex; }
+#video-modal .close-btn {
+  position: absolute;
+  top: 3vw;
+  right: 4vw;
+  background: #222b4b;
+  color: #fff;
+  border: none;
+  font-size: 2.2rem;
+  border-radius: 7px;
+  padding: 0.1em 0.32em;
+  cursor: pointer;
+  z-index: 1001;
+  transition: background 0.16s;
+}
+#video-modal .close-btn:hover, #video-modal .close-btn:focus {
+  background: #00ffff;
+  color: #222b4b;
+}
+#admin-settings-trigger {
+  position: fixed;
+  right: 22px;
+  bottom: 80px;
+  text-align: right;
+  padding: 1rem;
+  z-index: 110;
+  cursor:pointer;
+}
+.footer-bottom-right {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 10px 18px;
+  color: #3ec1e0;
+  font-size: .9rem;
+  background: #0f0f0f;
+  border-top-left-radius: 10px;
+  z-index: 100;
+  border-top: 1px solid #222;
+  border-left: 1px solid #222;
+  text-align: right;
+  box-shadow: 0 0 10px #00ffff22;
+}
+#admin-modal-overlay {
+  display: none;
+  position: fixed;
+  top:0;left:0;width:100vw;height:100vh;
+  background:rgba(0,0,0,0.9);
+  z-index:100000;
+  justify-content:center;
+  align-items:center;
+}
+#admin-modal-inner {
+  background:#111;
+  border:2px solid #00ffff;
+  padding:2rem;
+  border-radius:10px;
+  max-width:900px;
+  width:95%;
+  text-align:left;
+  box-shadow:0 0 20px #00ffffaa;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+}
+.admin-form label {
+  display: block;
+  margin: 0.2em 0 0.1em 0;
+  font-size: 0.98em;
+  color: #00ffff;
+}
+.admin-form input, .admin-form select {
+  width: 100%;
+  padding: 0.32em 0.6em;
+  margin-bottom: 0.5em;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background: #232949;
+  color: #fff;
+  font-size: 1em;
+}
+.admin-btn {
+  background: #3ec1e0;
+  color: #232949;
+  border: none;
+  border-radius: 5px;
+  padding: 0.4em 1.1em;
+  font-weight: bold;
+  margin-right: 0.6em;
+  cursor: pointer;
+  margin-top: 0.5em;
+  font-size: 1em;
+  transition: background 0.17s;
+}
+.admin-btn.delete {
+  background: #d53e3e;
+  color: #fff;
+}
+.admin-btn.featured {
+  background: #ffd700;
+  color: #232949;
+  margin-right: 0.4em;
+}
+.admin-btn.featured.selected {
+  box-shadow: 0 0 6px #ffd700;
+  font-weight: bold;
+}
+.admin-btn:hover, .admin-btn:focus {
+  background: #00ffff;
+  color: #232949;
+}
+.admin-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.2em;
+}
+.admin-list-table th, .admin-list-table td {
+  padding: 0.5em 0.7em;
+  border-bottom: 1px solid #3ec1e0;
+  font-size: 0.98em;
+  text-align: left;
+}
+.admin-list-table th {
+  color: #00ffff;
+  background: #232949;
+}
+.admin-list-table td img {
+  vertical-align: middle;
+  max-width: 70px;
+}
+.admin-modal-pw-wrap {
+  margin-bottom: 1.5em;
+}
+.admin-err-msg {
+  color: #ff6b6b;
+  font-size: 0.97em;
+  margin-top: 0.3em;
+  min-height: 1.2em;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin: 1em 0;
+}
+.pagination button {
+  background: #232949;
+  color: #00ffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+  font-family:'Orbitron',sans-serif;
+  font-size: 1em;
+}
+.pagination button[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+@media (max-width: 800px) {
+  main { max-width: 100%; }
+  .featured-section { flex-direction: column; gap: 1em; padding: 1em; text-align: center; }
+  .featured-info { width: 100%; }
+  .track-item, .video-thumb { width: 95vw; min-width: 0; }
+  #videos-container { justify-content: center; }
+  #admin-modal-inner { max-width:98vw;padding:1em;}
+}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" data-key="start"><i class="fas fa-home"></i><span>Start</span></a>
+<a href="reviews.html" data-key="reviews"><i class="fas fa-star"></i><span>Reviews</span></a>
+<a href="interviews.html" data-key="interviews"><i class="fas fa-microphone"></i><span>Interviews</span></a>
+<a href="music.html" data-key="music"><i class="fas fa-music"></i><span>Music</span></a>
+<a href="events.html" data-key="events"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
+<a href="team.html" data-key="team"><i class="fas fa-users"></i><span>Team</span></a>
+<a href="contact.html" data-key="contact"><i class="fas fa-envelope"></i><span>Contact</span></a>
+</nav>
+<main>
+<div class="featured-section" id="featured-section">
+  <!-- Filled by JS -->
+</div>
+<div class="filters">
+  <input type="text" id="search-bar" placeholder="Search..." autocomplete="off" />
+  <label for="genre-filter" style="margin-right:0.2em;" data-key="filter-genre-label">Filter by genre:</label>
+  <select id="genre-filter"></select>
+  <div id="alphabet-filter"></div>
+</div>
+<h3 class="section-header" data-key="tracks">Tracks</h3>
+<div id="tracks-container"></div>
+<div id="tracks-pagination" class="pagination"></div>
+<h3 class="section-header" data-key="videos">Videos</h3>
+<div id="videos-container"></div>
+<div id="videos-pagination" class="pagination"></div>
+</main>
+<div class="social-buttons">
+<a href="https://www.facebook.com/wajbzz" target="_blank"><i class="fab fa-facebook-f"></i></a>
+<a href="https://www.instagram.com/wajbzz/" target="_blank"><i class="fab fa-instagram"></i></a>
+<a href="https://www.youtube.com/@wajbzz" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+<div class="lang-buttons">
+<button id="btn-en" class="active">EN</button>
+<button id="btn-pl">PL</button>
+</div>
+<div id="admin-settings-trigger" tabindex="0" aria-label="Admin Panel">
+<i class="fas fa-cog" style="color:#3ec1e0;font-size:1.5rem;" title="Admin Panel"></i>
+</div>
+<div class="footer-bottom-right">
+  © 2025 Wajbzz
+</div>
+<div id="video-modal"></div>
+<div id="admin-modal-overlay">
+  <div id="admin-modal-inner"><!-- Content injected by JS --></div>
+</div>
 <script>
-// --- Data, translations, and initial config ---
-const standardGenreKeys = [
+// ---------- TRANSLATION ----------
+const translations = {
+  en: {
+    start: "Start",
+    reviews: "Reviews",
+    interviews: "Interviews",
+    music: "Music",
+    events: "Events",
+    team: "Team",
+    contact: "Contact",
+    "featured-artist": "Featured Artist",
+    "featured-artist-desc": "Electronic synthwave music producer.",
+    "filter-genre-label": "Filter by genre:",
+    tracks: "Tracks",
+    videos: "Videos",
+    "Music": "Music",
+    "Tracks": "Tracks",
+    "Videos": "Videos",
+    "Featured Artist": "Featured Artist",
+    "Electronic synthwave music producer.": "Electronic synthwave music producer.",
+    "Filter by genre:": "Filter by genre:",
+    "Search...": "Search...",
+    "All genres": "All genres",
+    "No results found.": "No results found.",
+    "Featured": "Featured",
+    "add-genre": "Add Genre",
+    "new-genre-placeholder": "New genre name...",
+    "add-genre-btn": "Add"
+  },
+  pl: {
+    start: "Start",
+    reviews: "Recenzje",
+    interviews: "Wywiady",
+    music: "Muzyka",
+    events: "Wydarzenia",
+    team: "Zespół",
+    contact: "Kontakt",
+    "featured-artist": "Wyróżniony artysta",
+    "featured-artist-desc": "Producent elektronicznej muzyki synthwave.",
+    "filter-genre-label": "Filtruj według gatunku:",
+    tracks: "Utwory",
+    videos: "Wideo",
+    "Music": "Muzyka",
+    "Tracks": "Utwory",
+    "Videos": "Wideo",
+    "Featured Artist": "Wyróżniony artysta",
+    "Electronic synthwave music producer.": "Producent elektronicznej muzyki synthwave.",
+    "Filter by genre:": "Filtruj według gatunku:",
+    "Search...": "Szukaj...",
+    "All genres": "Wszystkie gatunki",
+    "No results found.": "Brak wyników.",
+    "Featured": "Wyróżniony",
+    "add-genre": "Dodaj gatunek",
+    "new-genre-placeholder": "Nazwa nowego gatunku...",
+    "add-genre-btn": "Dodaj"
+  }
+};
+let currentLang = 'en';
+function translatePage() {
+  document.querySelectorAll("[data-key]").forEach(el => {
+    const key = el.getAttribute("data-key");
+    if (translations[currentLang] && translations[currentLang][key]) {
+      el.textContent = translations[currentLang][key];
+    }
+  });
+  document.getElementById('search-bar').placeholder = translations[currentLang]["Search..."];
+  document.getElementById('genre-filter').previousElementSibling.textContent = translations[currentLang]["Filter by genre:"];
+  populateGenreFilter();
+  renderFeaturedSection();
+  displayTracks();
+  displayVideos();
+}
+document.getElementById('btn-en').addEventListener('click', function() {
+  currentLang = 'en';
+  this.classList.add("active");
+  document.getElementById('btn-pl').classList.remove("active");
+  translatePage();
+});
+document.getElementById('btn-pl').addEventListener('click', function() {
+  currentLang = 'pl';
+  this.classList.add("active");
+  document.getElementById('btn-en').classList.remove("active");
+  translatePage();
+});
+// --------- GENRE AND DEMO TRACKS ---------
+const standardGenreKeysDefault = [
   "Synthwave", "Retrowave", "Chillwave", "Pop", "Rock", "Hip-Hop", "Jazz", "Classical",
   "Ambient", "Electronic", "Indie", "Funk", "Soul", "Disco", "Trance", "EDM",
   "House", "Dubstep", "Lo-fi", "Reggae", "Country", "Metal"
 ];
+let userGenres = JSON.parse(localStorage.getItem("userGenres")||"[]");
+function allGenreKeys() {
+  return [...new Set([...standardGenreKeysDefault, ...userGenres])];
+}
+function addUserGenre(newGenre) {
+  if (!userGenres.includes(newGenre)) {
+    userGenres.push(newGenre);
+    localStorage.setItem("userGenres", JSON.stringify(userGenres));
+  }
+}
 const genreTranslations = {
-  en: Object.fromEntries(standardGenreKeys.map(g => [g, g])),
+  en: Object.fromEntries(standardGenreKeysDefault.map(g => [g, g])),
   pl: {
     "Synthwave": "Synthwave",
     "Retrowave": "Retrowave",
@@ -32,79 +541,50 @@ const genreTranslations = {
     "Metal": "Metal"
   }
 };
-const tracksData = [
+// DEMO: more tracks for pagination
+const tracksDataDefault = [
   { title: "Afterglow", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_01_-_Afterglow.mp3" },
   { title: "Future City", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_02_-_Future_City.mp3" },
-  { title: "Neon Nights", artist: "Wajbzz", genre: "Retrowave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_03_-_Neon_Nights.mp3" }
-  // ... You can add more tracks as needed ...
+  { title: "Neon Nights", artist: "Wajbzz", genre: "Retrowave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_03_-_Neon_Nights.mp3" },
+  { title: "Chill Cruise", artist: "Wajbzz", genre: "Chillwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_04_-_Chill_Cruise.mp3" },
+  { title: "Night Drive", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_05_-_Night_Drive.mp3" },
+  { title: "Laser Lights", artist: "Wajbzz", genre: "Electronic", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_06_-_Laser_Lights.mp3" },
+  { title: "Retro Funk", artist: "Wajbzz", genre: "Funk", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_07_-_Retro_Funk.mp3" },
+  { title: "Morning Sun", artist: "Wajbzz", genre: "Pop", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_08_-_Morning_Sun.mp3" },
+  { title: "Dreamscape", artist: "Wajbzz", genre: "Ambient", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_09_-_Dreamscape.mp3" },
+  { title: "City Lights", artist: "Wajbzz", genre: "Retrowave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_10_-_City_Lights.mp3" },
+  { title: "Cyber Groove", artist: "Wajbzz", genre: "Electronic", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_11_-_Cyber_Groove.mp3" },
+  { title: "Ocean Drive", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_12_-_Ocean_Drive.mp3" }
 ];
-const videosData = [
+const videosDataDefault = [
   { title: "Afterglow", genre: "Synthwave", thumbnail: "https://i.ytimg.com/vi/PEErX2p-lmw/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/PEErX2p-lmw" },
   { title: "Future City", genre: "Synthwave", thumbnail: "https://i.ytimg.com/vi/Rs1b97v7Ols/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/Rs1b97v7Ols" },
   { title: "Neon Nights", genre: "Retrowave", thumbnail: "https://i.ytimg.com/vi/jR2xbNWm3Kg/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/jR2xbNWm3Kg" }
-  // ... You can add more videos as needed ...
 ];
-const translations = {
-  en: {
-    pageTitle: "Wajbzz Music",
-    tracksHeader: "Tracks",
-    videosHeader: "Videos",
-    featuredHeader: "Featured Artist",
-    featuredDesc: "Electronic synthwave music producer.",
-    navStart: "Start",
-    navReviews: "Reviews",
-    navInterviews: "Interviews",
-    navMusic: "Music",
-    navEvents: "Event",
-    navTeam: "Team",
-    navContact: "Contact",
-    filterByGenre: "Filter by genre:"
-  },
-  pl: {
-    pageTitle: "Muzyka Wajbzz",
-    tracksHeader: "Utwory",
-    videosHeader: "Wideo",
-    featuredHeader: "Wyróżniony artysta",
-    featuredDesc: "Producent elektronicznej muzyki synthwave.",
-    navStart: "Start",
-    navReviews: "Recenzje",
-    navInterviews: "Wywiady",
-    navMusic: "Muzyka",
-    navEvents: "Wydarzenia",
-    navTeam: "Zespół",
-    navContact: "Kontakt",
-    filterByGenre: "Filtruj według gatunku:"
-  }
-};
-let currentLang = 'en';
-// --- Elements ---
-const langEnBtn = document.getElementById('lang-en');
-const langPlBtn = document.getElementById('lang-pl');
-const searchBar = document.getElementById('search-bar');
-const alphabetFilter = document.getElementById('alphabet-filter');
-const tracksContainer = document.getElementById('tracks-container');
-const videosContainer = document.getElementById('videos-container');
-const featuredVideoThumb = document.querySelector('.featured-video-thumb');
-const videoModal = document.getElementById('video-modal');
-const genreFilter = document.getElementById('genre-filter');
+let tracksData = JSON.parse(localStorage.getItem('tracksData')) || tracksDataDefault.slice();
+let videosData = JSON.parse(localStorage.getItem('videosData')) || videosDataDefault.slice();
+let featured = JSON.parse(localStorage.getItem('featuredItem')) || {type: "video", index: 0};
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-// --- Filtering and Display ---
+const TRACKS_PER_PAGE = 10;
+const VIDEOS_PER_PAGE = 10;
+let tracksPage = 1;
+let videosPage = 1;
 function getAllGenreKeys() {
-  const all = [...standardGenreKeys];
-  (window.tracksData || tracksData).forEach(t => {
+  const all = [...allGenreKeys()];
+  tracksData.forEach(t => {
     if (t.genre && !all.some(std => std.toLowerCase() === t.genre.trim().toLowerCase())) all.push(t.genre.trim());
   });
-  (window.videosData || videosData).forEach(v => {
+  videosData.forEach(v => {
     if (v.genre && !all.some(std => std.toLowerCase() === v.genre.trim().toLowerCase())) all.push(v.genre.trim());
   });
-  return all;
+  return [...new Set(all)];
 }
 function getGenreLabel(key, lang) {
   return genreTranslations[lang]?.[key] || key;
 }
 function populateGenreFilter() {
-  genreFilter.innerHTML = '<option value="">' + (currentLang === 'pl' ? "Wszystkie gatunki" : "All genres") + '</option>';
+  const genreFilter = document.getElementById('genre-filter');
+  genreFilter.innerHTML = '<option value="">' + (translations[currentLang]["All genres"]||"All genres") + '</option>';
   getAllGenreKeys().sort((a, b) => getGenreLabel(a, currentLang).localeCompare(getGenreLabel(b, currentLang))).forEach(genreKey => {
     const opt = document.createElement('option');
     opt.value = genreKey;
@@ -113,6 +593,7 @@ function populateGenreFilter() {
   });
 }
 function initAlphabetFilter() {
+  const alphabetFilter = document.getElementById('alphabet-filter');
   alphabetFilter.innerHTML = '';
   alphabet.forEach(letter => {
     const btn = document.createElement('button');
@@ -121,11 +602,15 @@ function initAlphabetFilter() {
     btn.addEventListener('click', () => {
       if (btn.classList.contains('active')) {
         btn.classList.remove('active');
+        tracksPage = 1;
+        videosPage = 1;
         displayTracks();
         displayVideos();
       } else {
         [...alphabetFilter.children].forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        tracksPage = 1;
+        videosPage = 1;
         displayTracks(letter);
         displayVideos(letter);
       }
@@ -133,11 +618,47 @@ function initAlphabetFilter() {
     alphabetFilter.appendChild(btn);
   });
 }
+function renderFeaturedSection() {
+  const container = document.getElementById("featured-section");
+  container.innerHTML = "";
+  if (featured.type === "track" && tracksData[featured.index]) {
+    const t = tracksData[featured.index];
+    container.innerHTML = `
+      <img src="https://img.icons8.com/color/96/000000/music.png" alt="Music" class="featured-thumb" tabindex="0" role="button" aria-label="Play featured track">
+      <div class="featured-info">
+        <h2>${t.title} <span style="font-weight:normal;color:#ffd700;font-size:1.1em;">⭐ ${translations[currentLang]['Featured']}</span></h2>
+        <p>${t.artist || ""} ${t.genre ? `<span class="track-genre">${getGenreLabel(t.genre,currentLang)}</span>` : ""}</p>
+        <audio controls style="width:90%;margin-top:1em;" src="${t.audioSrc}"></audio>
+      </div>
+    `;
+  } else if (featured.type === "video" && videosData[featured.index]) {
+    const v = videosData[featured.index];
+    container.innerHTML = `
+      <img src="${v.thumbnail}" alt="Featured video thumbnail" class="featured-thumb" tabindex="0" role="button" aria-label="Play featured video">
+      <div class="featured-info">
+        <h2>${v.title} <span style="font-weight:normal;color:#ffd700;font-size:1.1em;">⭐ ${translations[currentLang]['Featured']}</span></h2>
+        <p>${v.genre ? `<span class="track-genre">${getGenreLabel(v.genre,currentLang)}</span>` : ""}</p>
+      </div>
+    `;
+    container.querySelector('.featured-thumb').addEventListener('click', () => openVideoModal(v.videoSrc));
+    container.querySelector('.featured-thumb').addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openVideoModal(v.videoSrc);
+      }
+    });
+  } else {
+    container.innerHTML = `<div class="featured-info"><h2>${translations[currentLang]['Featured']}</h2></div>`;
+  }
+}
 function displayTracks(filterLetter = null) {
+  const searchBar = document.getElementById('search-bar');
+  const genreFilter = document.getElementById('genre-filter');
+  const tracksContainer = document.getElementById('tracks-container');
+  const tracksPagination = document.getElementById('tracks-pagination');
   const searchTerm = searchBar.value.trim().toLowerCase();
   const selectedGenre = (genreFilter?.value || '').toLowerCase();
-  tracksContainer.innerHTML = '';
-  let filteredTracks = (window.tracksData || tracksData).filter(track => {
+  let filteredTracks = tracksData.filter(track => {
     const titleLower = track.title.toLowerCase();
     const artistLower = track.artist.toLowerCase();
     const genreLower = (track.genre || '').toLowerCase();
@@ -154,46 +675,72 @@ function displayTracks(filterLetter = null) {
     }
     return matchesSearch && matchesLetter && matchesGenre;
   });
-  if (filteredTracks.length === 0) {
+  const totalPages = Math.max(1, Math.ceil(filteredTracks.length / TRACKS_PER_PAGE));
+  tracksPage = Math.min(tracksPage, totalPages);
+  const startIdx = (tracksPage-1) * TRACKS_PER_PAGE;
+  const pageTracks = filteredTracks.slice(startIdx, startIdx+TRACKS_PER_PAGE);
+
+  tracksContainer.innerHTML = "";
+  if (pageTracks.length === 0) {
     const noResults = document.createElement('p');
-    noResults.textContent = currentLang === 'pl' ? 'Brak wyników.' : 'No results found.';
+    noResults.textContent = translations[currentLang]["No results found."];
     tracksContainer.appendChild(noResults);
-    return;
+  } else {
+    pageTracks.forEach((track, globalIdx) => {
+      const idx = tracksData.findIndex(t =>
+        t.title === track.title && t.artist === track.artist && t.audioSrc === track.audioSrc
+      );
+      const div = document.createElement('div');
+      div.className = 'track-item';
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'track-info';
+      const titleP = document.createElement('p');
+      titleP.className = 'track-title';
+      titleP.textContent = track.title;
+      if (track.genre) {
+        const genreSpan = document.createElement('span');
+        genreSpan.className = "track-genre";
+        genreSpan.textContent = getGenreLabel(track.genre, currentLang);
+        titleP.appendChild(genreSpan);
+      }
+      const artistP = document.createElement('p');
+      artistP.className = 'track-artist';
+      artistP.textContent = track.artist;
+      infoDiv.appendChild(titleP);
+      infoDiv.appendChild(artistP);
+      const audio = document.createElement('audio');
+      audio.controls = true;
+      audio.src = track.audioSrc;
+      audio.className = 'track-audio';
+      audio.setAttribute('preload', 'none');
+      div.appendChild(infoDiv);
+      div.appendChild(audio);
+      tracksContainer.appendChild(div);
+    });
   }
-  filteredTracks.forEach(track => {
-    const div = document.createElement('div');
-    div.className = 'track-item';
-    const infoDiv = document.createElement('div');
-    infoDiv.className = 'track-info';
-    const titleP = document.createElement('p');
-    titleP.className = 'track-title';
-    titleP.textContent = track.title;
-    if (track.genre) {
-      const genreSpan = document.createElement('span');
-      genreSpan.className = "track-genre";
-      genreSpan.textContent = getGenreLabel(track.genre, currentLang);
-      titleP.appendChild(genreSpan);
-    }
-    const artistP = document.createElement('p');
-    artistP.className = 'track-artist';
-    artistP.textContent = track.artist;
-    infoDiv.appendChild(titleP);
-    infoDiv.appendChild(artistP);
-    const audio = document.createElement('audio');
-    audio.controls = true;
-    audio.src = track.audioSrc;
-    audio.className = 'track-audio';
-    audio.setAttribute('preload', 'none');
-    div.appendChild(infoDiv);
-    div.appendChild(audio);
-    tracksContainer.appendChild(div);
-  });
+  tracksPagination.innerHTML = "";
+  if (totalPages > 1) {
+    const prev = document.createElement("button");
+    prev.textContent = "Previous";
+    prev.disabled = tracksPage === 1;
+    prev.onclick = () => { tracksPage--; displayTracks(filterLetter); };
+    const next = document.createElement("button");
+    next.textContent = "Next";
+    next.disabled = tracksPage === totalPages;
+    next.onclick = () => { tracksPage++; displayTracks(filterLetter); };
+    tracksPagination.append(prev);
+    tracksPagination.append(document.createTextNode(` Page ${tracksPage} / ${totalPages} `));
+    tracksPagination.append(next);
+  }
 }
 function displayVideos(filterLetter = null) {
-  videosContainer.innerHTML = '';
+  const searchBar = document.getElementById('search-bar');
+  const genreFilter = document.getElementById('genre-filter');
+  const videosContainer = document.getElementById('videos-container');
+  const videosPagination = document.getElementById('videos-pagination');
   const searchTerm = searchBar.value.trim().toLowerCase();
   const selectedGenre = (genreFilter?.value || '').toLowerCase();
-  let filteredVideos = (window.videosData || videosData).filter(video => {
+  let filteredVideos = videosData.filter(video => {
     const titleLower = (video.title || '').toLowerCase();
     const genreLower = (video.genre || '').toLowerCase();
     const matchesGenre = !selectedGenre || genreLower === selectedGenre;
@@ -207,55 +754,79 @@ function displayVideos(filterLetter = null) {
     }
     return matchesGenre && matchesSearch && matchesLetter;
   });
-  if (filteredVideos.length === 0) {
+  const totalPages = Math.max(1, Math.ceil(filteredVideos.length / VIDEOS_PER_PAGE));
+  videosPage = Math.min(videosPage, totalPages);
+  const startIdx = (videosPage-1) * VIDEOS_PER_PAGE;
+  const pageVideos = filteredVideos.slice(startIdx, startIdx+VIDEOS_PER_PAGE);
+
+  videosContainer.innerHTML = "";
+  if (pageVideos.length === 0) {
     const noResults = document.createElement('p');
-    noResults.textContent = currentLang === 'pl' ? 'Brak wyników.' : 'No results found.';
+    noResults.textContent = translations[currentLang]["No results found."];
     videosContainer.appendChild(noResults);
-    return;
-  }
-  filteredVideos.forEach((video, idx) => {
-    const div = document.createElement('div');
-    div.style.display = 'flex';
-    div.style.flexDirection = 'column';
-    div.style.alignItems = 'center';
-    div.style.width = '160px';
-    const img = document.createElement('img');
-    img.src = video.thumbnail;
-    img.alt = video.title || `Video thumbnail ${idx + 1}`;
-    img.className = 'video-thumb';
-    img.tabIndex = 0;
-    img.setAttribute('role', 'button');
-    img.setAttribute('aria-label', `Play video ${video.title || (idx + 1)}`);
-    img.addEventListener('click', () => openVideoModal(video.videoSrc));
-    img.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openVideoModal(video.videoSrc);
+  } else {
+    pageVideos.forEach((video, globalIdx) => {
+      const idx = videosData.findIndex(v =>
+        v.title === video.title && v.videoSrc === video.videoSrc
+      );
+      const div = document.createElement('div');
+      div.style.display = 'flex';
+      div.style.flexDirection = 'column';
+      div.style.alignItems = 'center';
+      div.style.width = '160px';
+      const img = document.createElement('img');
+      img.src = video.thumbnail;
+      img.alt = video.title || `Video thumbnail ${globalIdx + 1}`;
+      img.className = 'video-thumb';
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', `Play video ${video.title || (globalIdx + 1)}`);
+      img.addEventListener('click', () => openVideoModal(video.videoSrc));
+      img.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openVideoModal(video.videoSrc);
+        }
+      });
+      div.appendChild(img);
+      if (video.title) {
+        const caption = document.createElement('div');
+        caption.textContent = video.title;
+        caption.style.color = '#3ec1e0';
+        caption.style.fontSize = '0.98rem';
+        caption.style.textAlign = 'center';
+        caption.style.marginTop = '0.2em';
+        caption.style.textShadow = '0 0 3px #000';
+        div.appendChild(caption);
       }
+      if (video.genre) {
+        const genreLabel = document.createElement('div');
+        genreLabel.textContent = getGenreLabel(video.genre, currentLang);
+        genreLabel.style.color = '#00ffff';
+        genreLabel.style.fontSize = '0.85rem';
+        genreLabel.style.marginTop = '0.12em';
+        div.appendChild(genreLabel);
+      }
+      videosContainer.appendChild(div);
     });
-    div.appendChild(img);
-    if (video.title) {
-      const caption = document.createElement('div');
-      caption.textContent = video.title;
-      caption.style.color = '#3ec1e0';
-      caption.style.fontSize = '0.98rem';
-      caption.style.textAlign = 'center';
-      caption.style.marginTop = '0.2em';
-      caption.style.textShadow = '0 0 3px #000';
-      div.appendChild(caption);
-    }
-    if (video.genre) {
-      const genreLabel = document.createElement('div');
-      genreLabel.textContent = getGenreLabel(video.genre, currentLang);
-      genreLabel.style.color = '#00ffff';
-      genreLabel.style.fontSize = '0.85rem';
-      genreLabel.style.marginTop = '0.12em';
-      div.appendChild(genreLabel);
-    }
-    videosContainer.appendChild(div);
-  });
+  }
+  videosPagination.innerHTML = "";
+  if (totalPages > 1) {
+    const prev = document.createElement("button");
+    prev.textContent = "Previous";
+    prev.disabled = videosPage === 1;
+    prev.onclick = () => { videosPage--; displayVideos(filterLetter); };
+    const next = document.createElement("button");
+    next.textContent = "Next";
+    next.disabled = videosPage === totalPages;
+    next.onclick = () => { videosPage++; displayVideos(filterLetter); };
+    videosPagination.append(prev);
+    videosPagination.append(document.createTextNode(` Page ${videosPage} / ${totalPages} `));
+    videosPagination.append(next);
+  }
 }
 function openVideoModal(videoSrc) {
+  const videoModal = document.getElementById('video-modal');
   videoModal.innerHTML = `
     <button class="close-btn" aria-label="Close video modal">&times;</button>
     <iframe 
@@ -274,159 +845,142 @@ function openVideoModal(videoSrc) {
   document.body.style.overflow = 'hidden';
 }
 function closeVideoModal() {
+  const videoModal = document.getElementById('video-modal');
   videoModal.classList.remove('active');
-  videoModal.innerHTML = `
-    <button class="close-btn" aria-label="Close video modal">&times;</button>
-    <video controls style="max-width: 90vw; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 30px #00ffffcc; background: #000;"></video>
-  `;
+  videoModal.innerHTML = '';
   document.body.style.overflow = '';
-  searchBar.focus();
+  document.getElementById('search-bar').focus();
 }
-featuredVideoThumb.addEventListener('click', () => openVideoModal("https://www.youtube.com/embed/PEErX2p-lmw"));
-featuredVideoThumb.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    openVideoModal("https://www.youtube.com/embed/PEErX2p-lmw");
-  }
-});
 document.addEventListener('keydown', e => {
-  if (e.key === "Escape" && videoModal.classList.contains('active')) {
+  if (e.key === "Escape" && document.getElementById('video-modal').classList.contains('active')) {
     closeVideoModal();
   }
 });
-function translatePage(lang) {
-  currentLang = lang;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    const text = translations[lang][key];
-    if (text) {
-      if (el.tagName === 'A') {
-        const span = el.querySelector('span');
-        if (span) {
-          span.textContent = text;
-        } else {
-          el.textContent = text;
-        }
-      } else {
-        el.textContent = text;
-      }
-    }
-  });
-  langEnBtn.setAttribute('aria-pressed', lang === 'en');
-  langPlBtn.setAttribute('aria-pressed', lang === 'pl');
-  populateGenreFilter();
-  displayTracks();
-  displayVideos();
-}
-searchBar.addEventListener('input', () => {
-  [...alphabetFilter.children].forEach(b => b.classList.remove('active'));
+document.getElementById('search-bar').addEventListener('input', () => {
+  [...document.getElementById('alphabet-filter').children].forEach(b => b.classList.remove('active'));
+  tracksPage = 1; videosPage = 1;
   displayTracks();
   displayVideos();
 });
-langEnBtn.addEventListener('click', () => translatePage('en'));
-langPlBtn.addEventListener('click', () => translatePage('pl'));
-genreFilter.addEventListener('change', function() {
+document.getElementById('genre-filter').addEventListener('change', function() {
+  tracksPage = 1; videosPage = 1;
   displayTracks();
   displayVideos();
 });
-populateGenreFilter();
 initAlphabetFilter();
+populateGenreFilter();
+renderFeaturedSection();
 displayTracks();
 displayVideos();
-translatePage(currentLang);
-
-// --- Admin Panel Section (with genre dropdown and default YouTube thumbnail) ---
-const adminPanelPassword = "wajbzz123";
-const adminModalBg = document.getElementById('admin-modal-bg');
-const adminModal = document.getElementById('admin-modal');
-const settingsBtn = document.getElementById('settings-btn');
-
-settingsBtn.addEventListener('click', openAdminModal);
-
-function openAdminModal() {
-  if (!window.adminAuthorized) {
+// -------- ADMIN PANEL ---------
+const adminTrigger = document.getElementById("admin-settings-trigger");
+const adminOverlay = document.getElementById("admin-modal-overlay");
+const adminInner = document.getElementById("admin-modal-inner");
+let adminLoggedIn = false;
+adminTrigger.onclick = function (e) {
+  e.stopPropagation();
+  showAdminLogin();
+  adminOverlay.style.display = "flex";
+};
+adminTrigger.onkeydown = function(e) {
+  if(e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
     showAdminLogin();
-  } else {
-    showAdminPanel();
+    adminOverlay.style.display = "flex";
   }
-  adminModalBg.classList.add('active');
-}
-function closeAdminModal() {
-  adminModalBg.classList.remove('active');
-}
-adminModalBg.addEventListener('click', function(e) {
-  if (e.target === adminModalBg) closeAdminModal();
+};
+adminOverlay.addEventListener("click", (e) => {
+  if (e.target === adminOverlay) {
+    adminOverlay.style.display = "none";
+    adminLoggedIn = false;
+  }
 });
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' && adminModalBg.classList.contains('active')) closeAdminModal();
+  if (e.key === 'Escape' && adminOverlay.style.display === 'flex') {
+    adminOverlay.style.display = 'none';
+    adminLoggedIn = false;
+  }
 });
 function showAdminLogin() {
-  adminModal.innerHTML = `
-    <div class="admin-modal-pw-wrap">
-      <h2>Admin Login</h2>
-      <input type="password" id="admin-pw-input" placeholder="Enter password..." autocomplete="current-password"/>
-      <div class="admin-err-msg" id="admin-pw-msg"></div>
-      <button class="admin-btn" id="admin-pw-submit">Login</button>
+  adminInner.innerHTML = `
+    <div style="text-align:center;">
+      <h2 style="color:#3ec1e0;margin-bottom:1rem;">Admin Login</h2>
+      <input id="admin-password" placeholder="Enter password" style="width:100%;padding:.5rem;margin-bottom:1rem;border:2px solid #3ec1e0;border-radius:6px;background:#000;color:#3ec1e0;" type="password"/>
+      <br/>
+      <button id="admin-login-btn" style="padding:.5rem 1rem;background:#00ffff;color:#000;border:none;border-radius:6px;cursor:pointer;">Login</button>
+      <p id="admin-error" style="color:red;margin-top:1rem;display:none;">Incorrect password</p>
     </div>
-    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
   `;
-  document.getElementById("admin-pw-submit").onclick = function() {
-    const val = document.getElementById("admin-pw-input").value;
-    if (val === adminPanelPassword) {
-      window.adminAuthorized = true;
+  document.getElementById("admin-login-btn").onclick = function() {
+    const entered = document.getElementById("admin-password").value;
+    if (entered === "wajbzz123") {
+      adminLoggedIn = true;
       showAdminPanel();
     } else {
-      document.getElementById("admin-pw-msg").textContent = "Wrong password!";
+      document.getElementById("admin-error").style.display = "block";
     }
   };
-  document.getElementById("admin-pw-input").onkeydown = function(e) {
-    if (e.key === "Enter") document.getElementById("admin-pw-submit").click();
-  }
-}
-function getAdminTracks() {
-  return JSON.parse(localStorage.getItem('tracksData')) || tracksData.slice();
-}
-function getAdminVideos() {
-  return JSON.parse(localStorage.getItem('videosData')) || videosData.slice();
-}
-function setAdminTracks(tracks) {
-  localStorage.setItem('tracksData', JSON.stringify(tracks));
-}
-function setAdminVideos(videos) {
-  localStorage.setItem('videosData', JSON.stringify(videos));
+  document.getElementById("admin-password").onkeydown = function(e) {
+    if (e.key === "Enter") document.getElementById("admin-login-btn").click();
+  };
 }
 function showAdminPanel() {
-  const tracks = getAdminTracks();
-  const videos = getAdminVideos();
-  adminModal.innerHTML = `
-    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
-    <h2>Admin Panel</h2>
-    <div id="admin-tabs">
-      <button id="tab-tracks" class="active">Tracks</button>
+  adminInner.innerHTML = `
+    <div style="text-align:right;">
+      <button onclick="document.getElementById('admin-modal-overlay').style.display='none';adminLoggedIn=false" style="padding:.5rem 1rem;background:#3ec1e0;color:#000;border:none;border-radius:6px;cursor:pointer;">Close</button>
+    </div>
+    <h2 style="color:#3ec1e0;margin-bottom:1rem;">Admin Panel</h2>
+    <div>
+      <form id="add-genre-form" style="margin-bottom:1.2em;display:flex;align-items:center;gap:.5em;">
+        <input id="admin-new-genre" type="text" placeholder="${translations[currentLang]['new-genre-placeholder']}" style="padding:.4em .8em;border-radius:5px;border:1.5px solid #3ec1e0;background:#222;color:#fff;font-family:'Orbitron',sans-serif;"/>
+        <button id="admin-add-genre-btn" class="admin-btn" type="submit">${translations[currentLang]['add-genre-btn']}</button>
+        <span style="color:#00ffff;margin-left:.5em;font-size:.98em;" id="admin-genre-msg"></span>
+      </form>
+    </div>
+    <div id="admin-tabs" style="margin-bottom:1em;">
+      <button id="tab-tracks" class="active" style="margin-right:1em;">Tracks</button>
       <button id="tab-videos">Videos</button>
     </div>
     <div id="admin-section-tracks" class="admin-section active"></div>
-    <div id="admin-section-videos" class="admin-section"></div>
+    <div id="admin-section-videos" class="admin-section" style="display:none"></div>
   `;
+  document.getElementById("add-genre-form").onsubmit = function(e) {
+    e.preventDefault();
+    const val = document.getElementById("admin-new-genre").value.trim();
+    if (!val) return;
+    if (allGenreKeys().map(g=>g.toLowerCase()).includes(val.toLowerCase())) {
+      document.getElementById("admin-genre-msg").textContent = "Already exists!";
+      setTimeout(()=>{document.getElementById("admin-genre-msg").textContent="";}, 1800);
+      return;
+    }
+    addUserGenre(val);
+    document.getElementById("admin-genre-msg").textContent = "Added!";
+    document.getElementById("admin-new-genre").value = "";
+    setTimeout(()=>{document.getElementById("admin-genre-msg").textContent="";}, 1500);
+    renderAdminTracks(tracksData);
+    renderAdminVideos(videosData);
+    populateGenreFilter();
+  };
   document.getElementById('tab-tracks').onclick = () => {
     document.getElementById('tab-tracks').classList.add('active');
     document.getElementById('tab-videos').classList.remove('active');
-    document.getElementById('admin-section-tracks').classList.add('active');
-    document.getElementById('admin-section-videos').classList.remove('active');
+    document.getElementById('admin-section-tracks').style.display = "";
+    document.getElementById('admin-section-videos').style.display = "none";
   };
   document.getElementById('tab-videos').onclick = () => {
     document.getElementById('tab-videos').classList.add('active');
     document.getElementById('tab-tracks').classList.remove('active');
-    document.getElementById('admin-section-videos').classList.add('active');
-    document.getElementById('admin-section-tracks').classList.remove('active');
+    document.getElementById('admin-section-videos').style.display = "";
+    document.getElementById('admin-section-tracks').style.display = "none";
   };
-  renderAdminTracks(tracks);
-  renderAdminVideos(videos);
+  renderAdminTracks(tracksData);
+  renderAdminVideos(videosData);
 }
 function renderGenreDropdown(selectId, selected) {
+  let all = getAllGenreKeys();
   return `<select id="${selectId}" required style="width:100%;margin-bottom:.5em;">
     <option value="">Select...</option>
-    ${standardGenreKeys.map(g => `<option value="${g}"${selected === g ? ' selected' : ''}>${g}</option>`).join('')}
+    ${all.map(g => `<option value="${g}"${selected === g ? ' selected' : ''}>${g}</option>`).join('')}
   </select>`;
 }
 function renderAdminTracks(tracks) {
@@ -450,6 +1004,7 @@ function renderAdminTracks(tracks) {
     <table class="admin-list-table" style="margin-top:1.4em;">
       <thead>
         <tr>
+          <th></th>
           <th>#</th><th>Title</th><th>Artist</th><th>Genre</th><th>Audio</th><th>Actions</th>
         </tr>
       </thead>
@@ -459,6 +1014,9 @@ function renderAdminTracks(tracks) {
   const tbody = sec.querySelector("#admin-tracks-tbody");
   tbody.innerHTML = tracks.map((t, i) => `
     <tr>
+      <td>
+        <button class="admin-btn featured${(featured.type==="track" && featured.index==i)?" selected":""}" onclick="window.makeFeaturedTrack(${i});return false;" title="Make Featured Track">⭐</button>
+      </td>
       <td>${i+1}</td>
       <td>${escapeHTML(t.title)}</td>
       <td>${escapeHTML(t.artist)}</td>
@@ -478,19 +1036,21 @@ function renderAdminTracks(tracks) {
     const g = form['adm-track-genre'].value;
     const audio = form['adm-track-audio'].value.trim();
     const idx = form['adm-track-edit-idx'].value;
-    let tracks = getAdminTracks();
+    let tracks = tracksData;
     if (idx === "" || idx === null) {
       tracks.push({ title: t, artist: a, genre: g, audioSrc: audio });
     } else {
       tracks[idx] = { title: t, artist: a, genre: g, audioSrc: audio };
     }
-    setAdminTracks(tracks);
+    localStorage.setItem('tracksData', JSON.stringify(tracks));
+    tracksData = tracks;
     renderAdminTracks(tracks);
-    window.tracksData = tracks;
+    populateGenreFilter();
+    renderFeaturedSection();
     displayTracks();
   };
   sec.querySelector("#adm-track-cancel").onclick = () => {
-    renderAdminTracks(getAdminTracks());
+    renderAdminTracks(tracksData);
   };
   window.editTrack = function(idx) {
     const t = tracks[idx];
@@ -504,12 +1064,25 @@ function renderAdminTracks(tracks) {
   }
   window.deleteTrack = function(idx) {
     if (!confirm("Delete this track?")) return;
-    let tracks = getAdminTracks();
+    let tracks = tracksData;
     tracks.splice(idx,1);
-    setAdminTracks(tracks);
+    localStorage.setItem('tracksData', JSON.stringify(tracks));
+    tracksData = tracks;
+    if (featured.type==="track" && featured.index==idx) {
+      featured = {type:"video", index:0};
+      localStorage.setItem("featuredItem", JSON.stringify(featured));
+    }
     renderAdminTracks(tracks);
-    window.tracksData = tracks;
+    populateGenreFilter();
+    renderFeaturedSection();
     displayTracks();
+  }
+  window.makeFeaturedTrack = function(idx) {
+    featured = {type: "track", index: idx};
+    localStorage.setItem("featuredItem", JSON.stringify(featured));
+    renderAdminTracks(tracksData);
+    renderAdminVideos(videosData);
+    renderFeaturedSection();
   }
 }
 function renderAdminVideos(videos) {
@@ -533,6 +1106,7 @@ function renderAdminVideos(videos) {
     <table class="admin-list-table" style="margin-top:1.4em;">
       <thead>
         <tr>
+          <th></th>
           <th>#</th><th>Title</th><th>Genre</th><th>Thumbnail</th><th>Video Link</th><th>Actions</th>
         </tr>
       </thead>
@@ -542,6 +1116,9 @@ function renderAdminVideos(videos) {
   const tbody = sec.querySelector("#admin-videos-tbody");
   tbody.innerHTML = videos.map((v, i) => `
     <tr>
+      <td>
+        <button class="admin-btn featured${(featured.type==="video" && featured.index==i)?" selected":""}" onclick="window.makeFeaturedVideo(${i});return false;" title="Make Featured Video">⭐</button>
+      </td>
       <td>${i+1}</td>
       <td>${escapeHTML(v.title)}</td>
       <td>${escapeHTML(v.genre)}</td>
@@ -561,26 +1138,27 @@ function renderAdminVideos(videos) {
     let thumb = form['adm-video-thumb'].value.trim();
     const src = form['adm-video-src'].value.trim();
     const idx = form['adm-video-edit-idx'].value;
-    // Default YouTube thumbnail if blank and link is a YouTube embed
     if (!thumb && src.includes('youtube.com/embed/')) {
       const match = src.match(/embed\/([a-zA-Z0-9_-]+)/);
       if (match) {
         thumb = `https://i.ytimg.com/vi/${match[1]}/hqdefault.jpg`;
       }
     }
-    let videos = getAdminVideos();
+    let videos = videosData;
     if (idx === "" || idx === null) {
       videos.push({ title, genre, thumbnail: thumb, videoSrc: src });
     } else {
       videos[idx] = { title, genre, thumbnail: thumb, videoSrc: src };
     }
-    setAdminVideos(videos);
+    localStorage.setItem('videosData', JSON.stringify(videos));
+    videosData = videos;
     renderAdminVideos(videos);
-    window.videosData = videos;
+    populateGenreFilter();
+    renderFeaturedSection();
     displayVideos();
   };
   sec.querySelector("#adm-video-cancel").onclick = () => {
-    renderAdminVideos(getAdminVideos());
+    renderAdminVideos(videosData);
   };
   window.editVideo = function(idx) {
     const v = videos[idx];
@@ -594,12 +1172,25 @@ function renderAdminVideos(videos) {
   }
   window.deleteVideo = function(idx) {
     if (!confirm("Delete this video?")) return;
-    let videos = getAdminVideos();
+    let videos = videosData;
     videos.splice(idx, 1);
-    setAdminVideos(videos);
+    localStorage.setItem('videosData', JSON.stringify(videos));
+    videosData = videos;
+    if (featured.type==="video" && featured.index==idx) {
+      featured = {type:"track", index:0};
+      localStorage.setItem("featuredItem", JSON.stringify(featured));
+    }
     renderAdminVideos(videos);
-    window.videosData = videos;
+    populateGenreFilter();
+    renderFeaturedSection();
     displayVideos();
+  }
+  window.makeFeaturedVideo = function(idx) {
+    featured = {type: "video", index: idx};
+    localStorage.setItem("featuredItem", JSON.stringify(featured));
+    renderAdminTracks(tracksData);
+    renderAdminVideos(videosData);
+    renderFeaturedSection();
   }
 }
 function escapeHTML(str) {
@@ -608,15 +1199,6 @@ function escapeHTML(str) {
     { '<':'&lt;', '>':'&gt;', '&':'&amp;', '"':'&quot;', "'":'&#39;' }[c]
   ));
 }
-// When page loads, update data sources from localStorage
-(function(){
-  const tracks = getAdminTracks();
-  const videos = getAdminVideos();
-  if (tracks && tracks.length) window.tracksData = tracks;
-  if (videos && videos.length) window.videosData = videos;
-  displayTracks();
-  displayVideos();
-})();
 </script>
 </body>
 </html>
