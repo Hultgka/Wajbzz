@@ -7,187 +7,250 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body, html { height:100%; background:#000; color:#3ec1e0; font-family:'Orbitron',sans-serif; }
-    nav { background:#0f0f0f; display:flex; justify-content:center; padding:1rem 0; position:sticky; top:0; z-index:10; }
-    nav a { color:#3ec1e0; text-decoration:none; margin:0 1.5rem; font-size:1.1rem; transition:color .3s; display:flex; align-items:center; gap:.3rem; }
-    nav a:hover { color:#00ffff; }
-    .social-buttons { position:fixed; bottom:1rem; left:1rem; display:flex; gap:.5rem; z-index:10000; }
-    .social-buttons a { background:#111; border:2px solid #3ec1e0; color:#3ec1e0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:6px; transition:all .3s; }
-    .social-buttons a:hover { background:#00ffff; color:#000; border-color:#00ffff; }
-    .lang-buttons { position:fixed; top:1rem; right:1rem; display:flex; gap:.5rem; z-index:10000; }
-    .lang-buttons button { background:none; border:2px solid #3ec1e0; color:#3ec1e0; font-family:'Orbitron',sans-serif; cursor:pointer; padding:.3rem .8rem; font-size:.9rem; border-radius:4px; transition:background .3s,color .3s; }
-    .lang-buttons button.active, .lang-buttons button:hover { background:#00ffff; color:#000; border-color:#00ffff; }
-    main { max-width:1100px; margin:3rem auto 5rem; padding:0 1rem; }
-    h1 { font-size:2.8rem; text-align:center; margin-bottom:1rem; text-shadow:0 0 8px #00ffff; }
-    #search-date-container {
-      max-width: 350px;
-      margin: 0 auto 2rem;
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-    }
-    #search-input {
-      flex: 1;
-      padding: 0.5rem;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: 2px solid #3ec1e0;
-      background: #111;
-      color: #3ec1e0;
-      font-family: 'Orbitron', sans-serif;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    #search-input:focus {
-      border-color: #00ffff;
-    }
-    #date-input {
-      padding: 0.5rem;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: 2px solid #3ec1e0;
-      background: #111;
-      color: #3ec1e0;
-      font-family: 'Orbitron', sans-serif;
-      outline: none;
-      transition: border-color 0.3s;
-      max-width: 150px;
-    }
-    #date-input::-webkit-calendar-picker-indicator {
-      filter: invert(1);
-    }
-    #clear-search {
-      cursor: pointer;
-      color: #00ffff;
-      background: none;
-      border: none;
-      font-size: 1rem;
-      font-family: 'Orbitron', sans-serif;
-      align-self: center;
-      padding-left: 0.5rem;
-      transition: color 0.3s;
-    }
-    #clear-search:hover {
-      color: #3ec1e0;
-    }
-    section { margin-bottom:3rem; padding:1.5rem; background:#111; border-radius:10px; box-shadow:0 0 12px #00ffff22; }
-    h2[data-key] {
-      font-size:1.8rem;
-      margin-bottom:1rem;
-      text-shadow:0 0 6px #00ffffaa;
-      border-bottom:1px solid #3ec1e0;
-      padding-bottom:.4rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    h2[data-key].clickable::after {
-      content: '(Click to see more)';
-      font-size: 0.9rem;
-      font-weight: 400;
-      opacity: 0.7;
-      color: #3ec1e0;
-    }
-    .card-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:1rem; }
-    .interview-card { background:#1a1a1a; border:1px solid #3ec1e0; border-radius:8px; overflow:hidden; transition:transform .2s; display:flex; flex-direction:column; }
-    .interview-card img, .card-admin img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-      border-radius: 4px;
-      border: 1px solid #3ec1e0;
-    }
-    .interview-card div { padding:.8rem; }
-    .interview-card div[data-key] { min-height:3em; }
-    .interview-card:hover { transform:scale(1.02); }
-    .new-interviews .interview-card { border-color:#00ffff; box-shadow:0 0 10px #00ffff44; }
-    .archived-interviews { font-size:.9rem; opacity:.8; }
-    .archived-interviews .interview-card { border-color:#2a2a2a; background:#111; }
-    .new-interviews .card-grid {
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
-    }
-    .new-interviews .interview-card {
-      min-height: 280px;
-    }
-    #modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 100000;
-      padding: 1rem;
-    }
-    #modal-content {
-      background: #111;
-      border: 2px solid #00ffff;
-      border-radius: 10px;
-      max-width: 1200px;
-      width: 90vw;
-      max-height: 70vh;
-      overflow-y: auto;
-      padding: 1rem;
-      box-shadow: 0 0 20px #00ffffaa;
-      position: relative;
-    }
-    #modal-close {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: #00ffff;
-      border: none;
-      color: #000;
-      font-weight: 700;
-      font-size: 1.2rem;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      line-height: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: background 0.3s;
-    }
-    #modal-close:hover {
-      background: #3ec1e0;
-    }
-    .new-interviews .card-img img { display:block; margin:0 auto; max-width:100%; height:auto; }
-    .footer-bottom-right {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      padding: 10px 18px;
-      color: #3ec1e0;
-      font-size: .9rem;
-      background: #0f0f0f;
-      border-top-left-radius: 10px;
-      z-index: 100;
-      border-top: 1px solid #222;
-      border-left: 1px solid #222;
-      text-align: right;
-      box-shadow: 0 0 10px #00ffff22;
-    }
-    #admin-settings-trigger {
-      position: fixed;
-      right: 22px;
-      bottom: 80px;
-      text-align: right;
-      padding: 1rem;
-      z-index: 110;
-    }
-/* === MOBILE FRIENDLY ADDITIONS === */
+* { margin:0; padding:0; box-sizing:border-box; }
+body, html { height:100%; background:#000; color:#3ec1e0; font-family:'Orbitron',sans-serif; }
+nav { background:#0f0f0f; display:flex; justify-content:center; padding:1rem 0; position:sticky; top:0; z-index:10; }
+nav a { color:#3ec1e0; text-decoration:none; margin:0 1.5rem; font-size:1.1rem; transition:color .3s; display:flex; align-items:center; gap:.3rem; }
+nav a:hover { color:#00ffff; }
+.social-buttons { position:fixed; bottom:1rem; left:1rem; display:flex; gap:.5rem; z-index:10000; }
+.social-buttons a { background:#111; border:2px solid #3ec1e0; color:#3ec1e0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:6px; transition:all .3s; }
+.social-buttons a:hover { background:#00ffff; color:#000; border-color:#00ffff; }
+.lang-buttons { position:fixed; top:1rem; right:1rem; display:flex; gap:.5rem; z-index:10000; }
+.lang-buttons button { background:none; border:2px solid #3ec1e0; color:#3ec1e0; font-family:'Orbitron',sans-serif; cursor:pointer; padding:.3rem .8rem; font-size:.9rem; border-radius:4px; transition:background .3s,color .3s; }
+.lang-buttons button.active, .lang-buttons button:hover { background:#00ffff; color:#000; border-color:#00ffff; }
+main { max-width:1100px; margin:3rem auto 5rem; padding:0 1rem; }
+h1 { font-size:2.8rem; text-align:center; margin-bottom:1rem; text-shadow:0 0 8px #00ffff; }
+#search-date-container {
+  max-width: 350px;
+  margin: 0 auto 2rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+#search-input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 2px solid #3ec1e0;
+  background: #111;
+  color: #3ec1e0;
+  font-family: 'Orbitron', sans-serif;
+  outline: none;
+  transition: border-color 0.3s;
+}
+#search-input:focus {
+  border-color: #00ffff;
+}
+#date-input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 2px solid #3ec1e0;
+  background: #111;
+  color: #3ec1e0;
+  font-family: 'Orbitron', sans-serif;
+  outline: none;
+  transition: border-color 0.3s;
+  max-width: 150px;
+}
+#date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+#clear-search {
+  cursor: pointer;
+  color: #00ffff;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-family: 'Orbitron', sans-serif;
+  align-self: center;
+  padding-left: 0.5rem;
+  transition: color 0.3s;
+}
+#clear-search:hover {
+  color: #3ec1e0;
+}
+section { margin-bottom:3rem; padding:1.5rem; background:#111; border-radius:10px; box-shadow:0 0 12px #00ffff22; }
+h2[data-key] {
+  font-size:1.8rem;
+  margin-bottom:1rem;
+  text-shadow:0 0 6px #00ffffaa;
+  border-bottom:1px solid #3ec1e0;
+  padding-bottom:.4rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+h2[data-key].clickable::after {
+  content: '(Click to see more)';
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.7;
+  color: #3ec1e0;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+}
+.interview-card {
+  background: #1a1a1a;
+  border: 1.5px solid #3ec1e0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform .18s, box-shadow .16s;
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+  width: 100%;
+  box-shadow: 0 0 8px #00ffff22;
+}
+.interview-card img, .card-admin img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px solid #3ec1e0;
+  background: #000;
+}
+.interview-card div {
+  padding: 1rem;
+  text-align: left;
+  font-size: 1.08rem;
+  color: #00ffff;
+  background: #121212;
+  border-radius: 0 0 6px 6px;
+  min-height: 2.2em;
+}
+.interview-card:hover { transform:scale(1.022); box-shadow:0 0 14px #00ffff44; }
+.new-interviews .interview-card { border-color:#00ffff; box-shadow:0 0 10px #00ffff55; }
+.archived-interviews .interview-card { border-color:#2a2a2a; background:#111; }
+/* Internal scroll for video and archive card grids on main page */
+.video-interviews .card-grid,
+.archived-interviews .card-grid {
+  max-height: 1200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00ffff #111;
+}
+.video-interviews .card-grid::-webkit-scrollbar,
+.archived-interviews .card-grid::-webkit-scrollbar {
+  width: 8px;
+  background: #111;
+}
+.video-interviews .card-grid::-webkit-scrollbar-thumb,
+.archived-interviews .card-grid::-webkit-scrollbar-thumb {
+  background: #00ffff;
+  border-radius: 10px;
+}
+@media (max-width: 900px) {
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .interview-card { max-width: 98vw; }
+  .video-interviews .card-grid,
+  .archived-interviews .card-grid {
+    max-height: 700px;
+  }
+}
+@media (max-width: 700px) {
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+  .interview-card { max-width: 99vw; }
+  .interview-card img { height: 110px; }
+  .video-interviews .card-grid,
+  .archived-interviews .card-grid {
+    max-height: 380px;
+  }
+}
+@media (max-width: 420px) {
+  .interview-card img { height: 85px; }
+}
+#modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000;
+  padding: 1rem;
+}
+#modal-content {
+  background: #111;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  max-width: 1200px;
+  width: 90vw;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+  box-shadow: 0 0 20px #00ffffaa;
+  position: relative;
+}
+#modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #00ffff;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s;
+}
+#modal-close:hover {
+  background: #3ec1e0;
+}
+.new-interviews .card-img img { display:block; margin:0 auto; max-width:100%; height:auto; }
+.footer-bottom-right {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 10px 18px;
+  color: #3ec1e0;
+  font-size: .9rem;
+  background: #0f0f0f;
+  border-top-left-radius: 10px;
+  z-index: 100;
+  border-top: 1px solid #222;
+  border-left: 1px solid #222;
+  text-align: right;
+  box-shadow: 0 0 10px #00ffff22;
+}
+#admin-settings-trigger {
+  position: fixed;
+  right: 22px;
+  bottom: 80px;
+  text-align: right;
+  padding: 1rem;
+  z-index: 110;
+}
+.toast {
+  position: fixed;
+  bottom: 104px;
+  right: 40px;
+  background: #28a745;
+  color: white;
+  padding: .75rem 1.25rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: none;
+  z-index: 1001;
+}
 @media (max-width: 900px) {
   main { max-width: 99vw; }
   #modal-content { max-width: 99vw; }
-  .card-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-  .new-interviews .card-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
 }
 @media (max-width: 700px) {
   nav {
@@ -215,17 +278,6 @@
   section {
     padding: 0.7rem;
     margin-bottom: 2rem;
-  }
-  .card-grid {
-    gap: 0.8rem;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  }
-  .interview-card img {
-    height: 120px;
-  }
-  .new-interviews .card-grid {
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 1rem;
   }
   .footer-bottom-right {
     left: 0;
@@ -259,7 +311,6 @@
   h1 { font-size: 1.28rem; }
   #search-date-container { gap: 0.2rem; }
   .card-grid { gap: 0.5rem; }
-  .interview-card img { height: 85px; }
   .footer-bottom-right { font-size: 0.85rem; }
   .social-buttons a {
     width: 30px;
@@ -297,7 +348,7 @@
 </div>
 <section class="new-interviews">
   <h2 data-key="new">New</h2>
-  <div class="card-grid"></div>
+  <div class="card-grid" id="new-preview"></div>
 </section>
 <section class="video-interviews">
 <h2 class="clickable" data-key="videos">Videos</h2>
@@ -331,62 +382,77 @@
 <div class="card-grid" id="modal-cards"></div>
 </div>
 </div>
-<!-- Language/translation JSON is embedded below, no separate file needed! -->
+<div id="toast" class="toast"></div>
 <script id="translations-json" type="application/json">
   {
     "en": {
       "start": "Start", "reviews": "Reviews", "interviews": "Interviews", "music": "Music",
       "events": "Events", "team": "Team", "contact": "Contact", "page_title": "Interviews",
-      "new": "New", "videos": "Videos", "archive": "Archive", "special": "Specials",
-      "card1": "Interview with Artist X (2025)",
-      "card2": "Exclusive Talk with Producer Y",
-      "card3": "MC Alpha @ Summer Fest",
-      "card4": "Behind the Scenes: DJ Echo's Studio",
-      "card5": "Classic Chat: Artist Z (2019)",
-      "card6": "Old School Legends Roundtable",
-      "card7": "Special Interview: Guest A's Journey",
-      "card8": "Insights with Special Guest B"
+      "new": "New", "videos": "Videos", "archive": "Archive", "special": "Specials"
     },
     "pl": {
       "start": "Start", "reviews": "Recenzje", "interviews": "Wywiady", "music": "Muzyka",
       "events": "Wydarzenia", "team": "Zespół", "contact": "Kontakt", "page_title": "Wywiady",
-      "new": "Nowe", "videos": "Wideo", "archive": "Archiwum", "special": "Specjalne",
-      "card1": "Wywiad z Artistą X (2025)",
-      "card2": "Ekskluzywna rozmowa z Producentem Y",
-      "card3": "MC Alpha na Summer Fest",
-      "card4": "Za kulisami: Studio DJ Echo",
-      "card5": "Klasyczna rozmowa: Artysta Z (2019)",
-      "card6": "Stół dyskusyjny legend oldschoolu",
-      "card7": "Specjalny wywiad: Podróż Gościa A",
-      "card8": "Wgląd z Gościem Specjalnym B"
+      "new": "Nowe", "videos": "Wideo", "archive": "Archiwum", "special": "Specjalne"
     }
   }
 </script>
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
+  authDomain: "wajbzz-website.firebaseapp.com",
+  projectId: "wajbzz-website",
+  storageBucket: "wajbzz-website.appspot.com",
+  messagingSenderId: "387063007187",
+  appId: "1:387063007187:web:2929f1a25716ca1ea71126",
+  measurementId: "G-7F5F1YLRF2"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const videoPreview = document.getElementById('video-preview');
+const archivePreview = document.getElementById('archive-preview');
+const newPreview = document.getElementById('new-preview');
+const searchInput = document.getElementById('search-input');
+const dateInput = document.getElementById('date-input');
+const clearSearchBtn = document.getElementById('clear-search');
 const translations = JSON.parse(document.getElementById('translations-json').textContent);
 let currentLang = 'en';
 
-function translatePage() {
-  document.querySelectorAll('[data-key]').forEach(el => {
-    const key = el.getAttribute('data-key');
-    if(translations[currentLang] && translations[currentLang][key]){
-      el.textContent = translations[currentLang][key];
-    }
+let interviews = [];
+let videoInterviews = [];
+let newInterviews = [];
+let archivedInterviews = [];
+
+function showToast(msg, color="#28a745") {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.style.background = color;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 1850);
+}
+
+// --- Firestore listeners
+function fetchInterviewsRealtime() {
+  const q = query(collection(db, "interviews"), orderBy("date", "desc"));
+  onSnapshot(q, snapshot => {
+    interviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    categorizeInterviews();
+    fillPreviews();
+    if (window.renderAdminVideoList) window.renderAdminVideoList();
   });
 }
-document.getElementById('btn-en').addEventListener('click', () => {
-  currentLang = 'en';
-  translatePage(); updateAllCardsLanguage();
-});
-document.getElementById('btn-pl').addEventListener('click', () => {
-  currentLang = 'pl';
-  translatePage(); updateAllCardsLanguage();
-});
-translatePage();
+fetchInterviewsRealtime();
 
-/* ... rest of your JavaScript unchanged ... */
+function categorizeInterviews() {
+  videoInterviews = interviews.filter(i => i.section === "videos");
+  newInterviews = interviews.filter(i => i.section === "new");
+  archivedInterviews = interviews.filter(i => i.section === "archive");
+}
 
-/* --- Helper for video embed URLs --- */
 function parseVideoUrl(url) {
   if (!url) return "";
   if (url.includes("youtube.com/watch?v=")) {
@@ -420,33 +486,15 @@ function getDefaultThumbnail(videoUrl) {
   if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
   return 'img/default-thumbnail.jpg';
 }
-
-const videoInterviews = [
-  { img:'img/interview3.jpg', descKey:'card3', date:'2025-05-05', videoUrl: 'https://www.youtube.com/embed/xyz' },
-  { img:'img/interview4.jpg', descKey:'card4', date:'2025-04-22', videoUrl: 'https://www.youtube.com/embed/xyz' },
-  { img:'img/interview5.jpg', descKey:'card5', date:'2024-11-10', videoUrl: 'https://www.youtube.com/embed/xyz' },
-  { img:'img/interview6.jpg', descKey:'card6', date:'2024-09-15', videoUrl: 'https://www.youtube.com/embed/xyz' },
-  { img:'img/interview7.jpg', descKey:'card7', date:'2023-12-01', videoUrl: 'https://www.youtube.com/embed/xyz' },
-  { img:'img/interview8.jpg', descKey:'card8', date:'2023-06-30', videoUrl: 'https://www.youtube.com/embed/xyz' }
-];
-const newInterviews = [
-  { img:'img/interview1.jpg', descKey:'card1', date:'2025-05-12', videoUrl: '' },
-  { img:'img/interview2.jpg', descKey:'card2', date:'2025-04-30', videoUrl: '' }
-];
-const archivedInterviews = [
-  { img:'img/interview9.jpg', descKey:'card5', date:'2019-05-20', videoUrl: '' },
-  { img:'img/interview10.jpg', descKey:'card6', date:'2018-12-12', videoUrl: '' },
-  { img:'img/interview11.jpg', descKey:'card7', date:'2017-08-08', videoUrl: '' },
-  { img:'img/interview12.jpg', descKey:'card8', date:'2016-02-18', videoUrl: '' },
-  { img:'img/interview13.jpg', descKey:'card3', date:'2015-11-01', videoUrl: '' },
-  { img:'img/interview14.jpg', descKey:'card4', date:'2014-07-22', videoUrl: '' }
-];
+function t(key) {
+  return translations[currentLang][key] || key;
+}
 
 function createCard(interview) {
   const card = document.createElement('div');
   card.className = 'interview-card';
   card.dataset.date = interview.date;
-  const title = interview._title || translations?.en?.[interview.descKey] || 'Untitled';
+  const title = interview.title || t(interview.descKey) || 'Untitled';
   const img = document.createElement('img');
   img.src = interview.img || getDefaultThumbnail(interview.videoUrl);
   img.alt = title;
@@ -464,30 +512,36 @@ function createCard(interview) {
 }
 
 function fillPreviews() {
-  const videoPreview = document.getElementById('video-preview');
-  const archivePreview = document.getElementById('archive-preview');
-  const newContainer = document.querySelector('.new-interviews .card-grid');
+  const searchTerm = (searchInput.value || "").toLowerCase().trim();
+  const filterDate = dateInput.value || "";
+  function filterFunc(i) {
+    const desc = (i.title || t(i.descKey)).toLowerCase();
+    const dateMatch = filterDate ? (i.date === filterDate) : true;
+    const textMatch = desc.includes(searchTerm);
+    return dateMatch && textMatch;
+  }
   videoPreview.innerHTML = '';
+  videoInterviews.filter(filterFunc).forEach(i => videoPreview.appendChild(createCard(i)));
   archivePreview.innerHTML = '';
-  newContainer.innerHTML = '';
-  videoInterviews.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(i => {
-    videoPreview.appendChild(createCard(i));
-  });
-  archivedInterviews.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(i => {
-    archivePreview.appendChild(createCard(i));
-  });
-  newInterviews.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(i => {
-    newContainer.appendChild(createCard(i));
-  });
+  archivedInterviews.filter(filterFunc).forEach(i => archivePreview.appendChild(createCard(i)));
+  newPreview.innerHTML = '';
+  newInterviews.filter(filterFunc).forEach(i => newPreview.appendChild(createCard(i)));
 }
-fillPreviews();
+searchInput.addEventListener('input', fillPreviews);
+dateInput.addEventListener('change', fillPreviews);
+clearSearchBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  dateInput.value = '';
+  fillPreviews();
+});
 
+// --- Modal
 const modalOverlay = document.getElementById('modal-overlay');
 const modalCards = document.getElementById('modal-cards');
 const modalTitle = document.getElementById('modal-title');
 const modalClose = document.getElementById('modal-close');
 function openModal(sectionName, cardsArray) {
-  modalTitle.textContent = translations[currentLang][sectionName] || sectionName;
+  modalTitle.textContent = t(sectionName) || sectionName;
   modalCards.innerHTML = '';
   cardsArray.forEach(i => modalCards.appendChild(createCard(i)));
   modalOverlay.style.display = 'flex';
@@ -500,43 +554,7 @@ modalClose.addEventListener('click', () => { modalOverlay.style.display = 'none'
 modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) { modalOverlay.style.display = 'none'; } });
 document.querySelector('.video-interviews h2').addEventListener('click', () => { openModal('videos', videoInterviews); });
 document.querySelector('.archived-interviews h2').addEventListener('click', () => { openModal('archive', archivedInterviews); });
-
-function updateAllCardsLanguage() {
-  fillPreviews();
-  if(modalOverlay.style.display === 'flex') {
-    const key = Object.keys(translations[currentLang]).find(k => translations[currentLang][k] === modalTitle.textContent);
-    if(key === 'videos') openModal('videos', videoInterviews);
-    else if(key === 'archive') openModal('archive', archivedInterviews);
-  }
-}
-const searchInput = document.getElementById('search-input');
-const dateInput = document.getElementById('date-input');
-const clearSearchBtn = document.getElementById('clear-search');
-function filterAndRenderPreviews() {
-  const searchTerm = searchInput.value.toLowerCase();
-  const filterDate = dateInput.value;
-  function filterFunc(i) {
-    const desc = translations[currentLang][i.descKey].toLowerCase();
-    const dateMatch = filterDate ? (i.date === filterDate) : true;
-    const textMatch = desc.includes(searchTerm);
-    return dateMatch && textMatch;
-  }
-  const filteredVideos = videoInterviews.filter(filterFunc).slice(0,5);
-  const videoPreview = document.getElementById('video-preview');
-  videoPreview.innerHTML = '';
-  filteredVideos.forEach(i => videoPreview.appendChild(createCard(i)));
-  const filteredArchive = archivedInterviews.filter(filterFunc).slice(0,5);
-  const archivePreview = document.getElementById('archive-preview');
-  archivePreview.innerHTML = '';
-  filteredArchive.forEach(i => archivePreview.appendChild(createCard(i)));
-}
-searchInput.addEventListener('input', filterAndRenderPreviews);
-dateInput.addEventListener('change', filterAndRenderPreviews);
-clearSearchBtn.addEventListener('click', () => {
-  searchInput.value = '';
-  dateInput.value = '';
-  filterAndRenderPreviews();
-});
+document.querySelector('.new-interviews h2').addEventListener('click', () => { openModal('new', newInterviews); });
 const modalSearchInput = document.getElementById('modal-search-input');
 modalSearchInput?.addEventListener('input', () => {
   const term = modalSearchInput.value.toLowerCase();
@@ -547,247 +565,218 @@ modalSearchInput?.addEventListener('input', () => {
   });
 });
 
-// === VIDEO PLAYER MODAL ===
-function openVideoModal(url, title) {
-  const iframe = document.getElementById("video-iframe");
-  iframe.src = url;
-  document.getElementById("video-player-modal").style.display = "flex";
+// --- Language switch
+document.getElementById('btn-en').addEventListener('click', () => { currentLang = 'en'; translatePage(); });
+document.getElementById('btn-pl').addEventListener('click', () => { currentLang = 'pl'; translatePage(); });
+function translatePage() {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if(translations[currentLang] && translations[currentLang][key]){
+      el.textContent = translations[currentLang][key];
+    }
+  });
+  fillPreviews();
 }
-function closeVideoModal() {
-  const iframe = document.getElementById("video-iframe");
-  iframe.src = "";
-  document.getElementById("video-player-modal").style.display = "none";
-}
-</script>
-<div id="video-player-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);z-index:100001;justify-content:center;align-items:center;">
-<div style="position:relative;width:90vw;max-width:900px;">
-<iframe allowfullscreen="" frameborder="0" height="500" id="video-iframe" style="border:2px solid #00ffff;border-radius:10px;" width="100%"></iframe>
-<button onclick="closeVideoModal()" style="position:absolute;top:-10px;right:-10px;background:#00ffff;border:none;border-radius:50%;width:32px;height:32px;font-weight:bold;cursor:pointer;">×</button>
-</div>
-</div>
-<!-- ADMIN PANEL -->
-<div id="admin-modal-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);z-index:100000;justify-content:center;align-items:center;">
-<div style="background:#111;border:2px solid #00ffff;padding:2rem;border-radius:10px;max-width:400px;width:90%;text-align:center;box-shadow:0 0 20px #00ffffaa;">
-<h2 style="color:#3ec1e0;margin-bottom:1rem;">Admin Login</h2>
-<input id="admin-password" placeholder="Enter password" style="width:100%;padding:.5rem;margin-bottom:1rem;border:2px solid #3ec1e0;border-radius:6px;background:#000;color:#3ec1e0;" type="password"/>
-<br/>
-<button id="admin-login-btn" style="padding:.5rem 1rem;background:#00ffff;color:#000;border:none;border-radius:6px;cursor:pointer;">Login</button>
-<p id="admin-error" style="color:red;margin-top:1rem;display:none;">Incorrect password</p>
-</div>
-</div>
-<script>
-const adminTrigger = document.getElementById("admin-settings-trigger");
-const adminOverlay = document.getElementById("admin-modal-overlay");
-const adminLoginBtn = document.getElementById("admin-login-btn");
-const adminPassword = document.getElementById("admin-password");
-const adminError = document.getElementById("admin-error");
-adminTrigger.addEventListener("click", () => {
-  adminOverlay.style.display = "flex";
-  adminPassword.value = '';
-  adminError.style.display = 'none';
-});
-adminLoginBtn.addEventListener("click", () => {
-  const entered = adminPassword.value;
-  const correct = "wajbzz123";
-  if (entered === correct) { launchAdminPanel(); }
-  else { adminError.style.display = 'block'; }
-});
-function showToast(msg) {
-  let toast = document.getElementById("toast");
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.id = "toast";
-    toast.style = "position:fixed;bottom:104px;right:40px;background:#28a745;color:white;padding:.75rem 1.25rem;border-radius:4px;font-size:1rem;display:none;z-index:1001;";
-    document.body.appendChild(toast);
+translatePage();
+
+// --- Video modal
+window.openVideoModal = function(url, title) {
+  let playerModal = document.getElementById("video-player-modal");
+  if (!playerModal) {
+    playerModal = document.createElement('div');
+    playerModal.id = "video-player-modal";
+    playerModal.style = "display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);z-index:100001;justify-content:center;align-items:center;";
+    playerModal.innerHTML = `<div style="position:relative;width:90vw;max-width:900px;">
+      <iframe allowfullscreen="" frameborder="0" height="500" id="video-iframe" style="border:2px solid #00ffff;border-radius:10px;" width="100%"></iframe>
+      <button onclick="closeVideoModal()" style="position:absolute;top:-10px;right:-10px;background:#00ffff;border:none;border-radius:50%;width:32px;height:32px;font-weight:bold;cursor:pointer;">×</button>
+      </div>`;
+    document.body.appendChild(playerModal);
   }
-  toast.textContent = msg;
-  toast.style.display = "block";
-  setTimeout(() => { toast.style.display = "none"; }, 2000);
-}
-function launchAdminPanel() {
+  playerModal.style.display = "flex";
+  document.getElementById("video-iframe").src = url;
+};
+window.closeVideoModal = function() {
+  document.getElementById("video-iframe").src = "";
+  document.getElementById("video-player-modal").style.display = "none";
+};
+
+// === ADMIN PANEL ===
+const adminTrigger = document.getElementById("admin-settings-trigger");
+const adminOverlay = document.createElement("div");
+adminOverlay.id = "admin-modal-overlay";
+adminOverlay.style = "display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);z-index:100000;justify-content:center;align-items:center;";
+document.body.appendChild(adminOverlay);
+
+adminTrigger.addEventListener("click", () => {
   adminOverlay.innerHTML = `
     <div style="background:#111;border:2px solid #00ffff;padding:2rem;border-radius:10px;max-width:1000px;width:95%;text-align:left;box-shadow:0 0 20px #00ffffaa;max-height:90vh;overflow-y:auto;">
       <h2 style="color:#3ec1e0;margin-bottom:1rem;">Admin Panel – Video Interviews</h2>
-      <input type="text" id="admin-search" placeholder="Search videos..." style="width:100%;padding:.5rem;margin-bottom:1rem;border:2px solid #3ec1e0;border-radius:6px;background:#000;color:#3ec1e0;">
+      <input type="password" id="admin-password" placeholder="Enter password" style="width:100%;padding:.5rem 0.8rem;margin-bottom:1rem;border:2px solid #3ec1e0;border-radius:6px;background:#000;color:#3ec1e0;">
+      <button id="admin-login-btn" style="padding:.5rem 1rem;background:#00ffff;color:#000;border:none;border-radius:6px;cursor:pointer;">Login</button>
+      <p id="admin-error" style="color:red;margin-top:1rem;display:none;">Incorrect password</p>
+    </div>
+  `;
+  adminOverlay.style.display = "flex";
+  adminOverlay.onclick = function(e) { if (e.target === adminOverlay) adminOverlay.style.display = "none"; };
+  document.getElementById("admin-login-btn").onclick = function() {
+    const entered = document.getElementById("admin-password").value;
+    if (entered === "wajbzz123") {
+      launchAdminPanel();
+    } else {
+      document.getElementById("admin-error").style.display = "block";
+    }
+  };
+});
+
+window.launchAdminPanel = function() {
+  adminOverlay.innerHTML = `
+    <div style="background:#111;border:2px solid #00ffff;padding:2rem;border-radius:10px;max-width:1000px;width:95%;text-align:left;box-shadow:0 0 20px #00ffffaa;max-height:90vh;overflow-y:auto;">
+      <h2 style="color:#3ec1e0;margin-bottom:1rem;">Admin Panel – Video Interviews</h2>
+      <div style="display:flex;gap:1em;align-items:center;margin-bottom:1em;">
+        <input type="text" id="admin-search" placeholder="Search interviews..." style="flex:1;padding:.5rem;border:2px solid #3ec1e0;border-radius:6px;background:#000;color:#3ec1e0;">
+        <select id="admin-section-filter" style="padding:.5rem .8rem;border-radius:6px;background:#000;color:#3ec1e0;border:2px solid #3ec1e0;">
+          <option value="">All Sections</option>
+          <option value="new">New</option>
+          <option value="videos">Videos</option>
+          <option value="archive">Archive</option>
+        </select>
+      </div>
       <div id="admin-video-list"></div>
       <div style="margin-top:2rem;padding:1rem;border-top:1px solid #3ec1e0;">
-        <h3 style="color:#3ec1e0;">Add New Video Interview</h3>
-        <input type="text" id="new-title" placeholder="Title (English)" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <h3 style="color:#3ec1e0;">Add New Interview</h3>
+        <input type="text" id="new-title" placeholder="Title" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
         <input type="date" id="new-date" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
-        <input type="text" id="new-video-url" placeholder="Video URL (YouTube, Vimeo)" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <input type="text" id="new-video-url" placeholder="Video URL (YouTube, Vimeo or blank)" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
         <select id="new-section" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
           <option value="videos">Videos</option>
           <option value="new">New</option>
           <option value="archive">Archive</option>
         </select>
-        <input type="text" id="new-img" placeholder="Image URL (blank = YouTube thumbnail)" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
-        <button onclick="addNewVideo()" style="padding:.4rem 1rem;background:#00ffff;color:#000;border:none;border-radius:4px;cursor:pointer;">Add Interview</button>
+        <input type="text" id="new-img" placeholder="Image URL (optional)" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <button id="add-interview-btn" style="padding:.4rem 1rem;background:#00ffff;color:#000;border:none;border-radius:4px;cursor:pointer;">Add Interview</button>
       </div>
       <div style="text-align:right;margin-top:1rem;">
         <button onclick="adminOverlay.style.display='none'" style="padding:.5rem 1rem;background:#3ec1e0;color:#000;border:none;border-radius:6px;cursor:pointer;">Close</button>
       </div>
     </div>
   `;
-  renderVideoList();
-}
-function addNewVideo() {
+  renderAdminVideoList();
+  document.getElementById("add-interview-btn").onclick = addNewInterview;
+  document.getElementById("admin-search").oninput = function(e) {
+    renderAdminVideoList();
+  };
+  document.getElementById("admin-section-filter").onchange = function() {
+    renderAdminVideoList();
+  };
+};
+
+window.addNewInterview = async function() {
   const title = document.getElementById("new-title").value.trim();
   const date = document.getElementById("new-date").value;
   const img = document.getElementById("new-img").value.trim();
-  const videoUrl = document.getElementById("new-video-url").value.trim();
-  if (!videoUrl) { alert("Video URL is required."); return; }
-  if (!title || !date) { alert("Please fill out all fields."); return; }
-  let n = 9; while (translations.en["card" + n]) n++;
-  const key = "card" + n;
-  translations.en[key] = title;
-  if (!translations.pl[key]) translations.pl[key] = title;
+  const videoUrl = parseVideoUrl(document.getElementById("new-video-url").value.trim());
   const section = document.getElementById("new-section").value;
-  const videoUrlEmbed = parseVideoUrl(videoUrl);
-  const imgValue = img || getDefaultThumbnail(videoUrl);
-  const newObj = { img: imgValue, descKey: key, date, videoUrl: videoUrlEmbed };
-  if (section === 'videos') videoInterviews.push(newObj);
-  else if (section === 'new') newInterviews.push(newObj);
-  else if (section === 'archive') archivedInterviews.push(newObj);
-  renderVideoList(document.getElementById("admin-search")?.value || '');
-  fillPreviews();
-  showToast("Interview added.");
-}
-function renderVideoList(filter = "") {
+  if (!title || !date) { alert("Please fill out at least title and date."); return; }
+  try {
+    await addDoc(collection(db, "interviews"), {
+      title,
+      date,
+      img,
+      videoUrl,
+      section
+    });
+    showToast("Interview added.");
+    document.getElementById("new-title").value = "";
+    document.getElementById("new-date").value = "";
+    document.getElementById("new-img").value = "";
+    document.getElementById("new-video-url").value = "";
+    renderAdminVideoList();
+  } catch (e) { alert("Error: " + e.message); }
+};
+
+window.renderAdminVideoList = function() {
   const list = document.getElementById("admin-video-list");
-  list.innerHTML = "";
-  function renderSection(title, dataArray, sectionKey) {
-    const section = document.createElement("div");
-    section.innerHTML = `<h3 style="color:#00ffff;border-bottom:1px solid #3ec1e0;margin-top:1rem;">${title}</h3>`;
-    dataArray.forEach((vid, index) => {
-      const videoTitle = vid._title || translations?.en?.[vid.descKey] || "Untitled";
-      if (filter && !videoTitle.toLowerCase().includes(filter.toLowerCase())) return;
-      const wrapper = document.createElement("div");
-      wrapper.className = "card-admin";
-      wrapper.style = "margin-bottom:1rem;padding:1rem;border:1px solid #3ec1e0;background:#1a1a1a;border-radius:6px;display:flex;gap:1rem;align-items:flex-start;";
-      const imgEl = document.createElement("img");
-      imgEl.src = vid.img || getDefaultThumbnail(vid.videoUrl);
-      imgEl.alt = "thumbnail";
-      imgEl.onerror = () => { imgEl.src = getDefaultThumbnail(vid.videoUrl); };
-      imgEl.style = "width:100px;height:70px;object-fit:cover;border-radius:4px;border:1px solid #3ec1e0";
-      const form = document.createElement("div");
-      form.style = "flex:1";
-      const titleVal = vid._title || "";
-      form.innerHTML = `
-        <label style="color:#3ec1e0;">Title:<br/>
-          <input type="text" data-field="title" value="${titleVal}" style="width:100%;margin:.3rem 0;padding:.4rem;">
-        </label>
-        <label style="color:#3ec1e0;">Thumbnail Image URL:<br/>
-          <input type="text" data-field="img" value="${vid.img || ''}" style="width:100%;margin:.3rem 0;padding:.4rem;" oninput="this.closest('.card-admin').querySelector('img').src = this.value || '${getDefaultThumbnail(vid.videoUrl)}'">
-        </label>
-        <label style="color:#3ec1e0;">Date:<br/>
-          <input type="date" data-field="date" value="${vid.date}" style="width:100%;margin:.3rem 0;padding:.4rem;">
-        </label>
-        <label style="color:#3ec1e0;">YouTube Video URL:<br/>
-          <input type="text" data-field="videoUrl" value="${vid.videoUrl}" style="width:100%;margin:.3rem 0;padding:.4rem;">
-        </label>
-        <div style="display:flex;justify-content:space-between;margin-top:.5rem;">
-          <div>
-            <select>
-              <option value="videos" ${sectionKey==="videos"?"selected":""}>Videos</option>
-              <option value="new" ${sectionKey==="new"?"selected":""}>New</option>
-              <option value="archive" ${sectionKey==="archive"?"selected":""}>Archive</option>
+  if (!list) return;
+  const filterVal = document.getElementById("admin-search")?.value.trim().toLowerCase() || "";
+  const sectionVal = document.getElementById("admin-section-filter")?.value || "";
+  let arr = interviews.filter(i =>
+    (!filterVal || (i.title && i.title.toLowerCase().includes(filterVal)))
+    && (!sectionVal || i.section === sectionVal)
+  );
+  arr = arr.sort((a, b) => ((b.date||'').localeCompare(a.date||'')));
+  let html = "";
+  arr.forEach(vid => {
+    html += `
+      <div class="card-admin" style="margin-bottom:1.1rem;padding:1rem;border:1px solid #3ec1e0;background:#1a1a1a;border-radius:6px;display:flex;gap:1rem;align-items:flex-start;">
+        <img src="${vid.img || getDefaultThumbnail(vid.videoUrl)}" alt="thumbnail" style="width:100px;height:70px;object-fit:cover;border-radius:4px;border:1px solid #3ec1e0">
+        <div style="flex:1">
+          <label style="color:#3ec1e0;">Title:<br/>
+            <input type="text" data-field="title" value="${vid.title || ""}" style="width:100%;margin:.3rem 0;padding:.4rem;">
+          </label>
+          <label style="color:#3ec1e0;">Thumbnail Image URL:<br/>
+            <input type="text" data-field="img" value="${vid.img || ''}" style="width:100%;margin:.3rem 0;padding:.4rem;" oninput="this.closest('.card-admin').querySelector('img').src = this.value || '${getDefaultThumbnail(vid.videoUrl)}'">
+          </label>
+          <label style="color:#3ec1e0;">Date:<br/>
+            <input type="date" data-field="date" value="${vid.date || ""}" style="width:100%;margin:.3rem 0;padding:.4rem;">
+          </label>
+          <label style="color:#3ec1e0;">Video URL (YouTube/Vimeo):<br/>
+            <input type="text" data-field="videoUrl" value="${vid.videoUrl || ""}" style="width:100%;margin:.3rem 0;padding:.4rem;">
+          </label>
+          <label style="color:#3ec1e0;">Section:<br/>
+            <select data-field="section" style="width:100%;margin:.3rem 0;padding:.4rem;">
+              <option value="videos" ${vid.section==="videos"?"selected":""}>Videos</option>
+              <option value="new" ${vid.section==="new"?"selected":""}>New</option>
+              <option value="archive" ${vid.section==="archive"?"selected":""}>Archive</option>
             </select>
-            <button class="move-btn" data-key="${vid.descKey}" data-array="${sectionKey}">Move</button>
-          </div>
-          <div>
-            <button class="save-btn" data-key="${vid.descKey}" data-array="${sectionKey}">Save</button>
-            <span class="save-status" style="color:#28a745;display:none;margin-left:8px">✔ Saved</span>
-            <button class="delete-btn" data-key="${vid.descKey}" data-array="${sectionKey}">Delete</button>
+          </label>
+          <div style="display:flex;justify-content:space-between;margin-top:.5rem;">
+            <button class="save-btn" data-id="${vid.id}">Save</button>
+            <button class="delete-btn" data-id="${vid.id}">Delete</button>
+            <span class="save-status" style="color:#28a745;display:none;margin-left:8px">✔</span>
           </div>
         </div>
-      `;
-      wrapper.appendChild(imgEl);
-      wrapper.appendChild(form);
-      section.appendChild(wrapper);
-    });
-    list.appendChild(section);
-  }
-  renderSection("Videos", videoInterviews, "videos");
-  renderSection("New", newInterviews, "new");
-  renderSection("Archive", archivedInterviews, "archive");
-  attachAdminHandlers();
-  document.getElementById("admin-search").oninput = e => { renderVideoList(e.target.value); };
-}
-function attachAdminHandlers() {
+      </div>
+    `;
+  });
+  list.innerHTML = html;
   document.querySelectorAll(".save-btn").forEach(btn => {
-    btn.onclick = () => {
+    btn.onclick = async function() {
+      const id = btn.getAttribute("data-id");
       const parent = btn.closest(".card-admin");
+      const title = parent.querySelector('[data-field="title"]').value;
+      const img = parent.querySelector('[data-field="img"]').value;
       const date = parent.querySelector('[data-field="date"]').value;
       const videoUrlRaw = parent.querySelector('[data-field="videoUrl"]').value;
-      const newImg = parent.querySelector('[data-field="img"]').value;
-      const newTitle = parent.querySelector('[data-field="title"]').value;
-      const key = btn.dataset.key;
-      const arrayName = btn.dataset.array;
-      const arr = { videos: videoInterviews, new: newInterviews, archive: archivedInterviews }[arrayName];
-      const item = arr.find(i => i.descKey === key);
-      if (item) {
-        item.date = date;
-        item.videoUrl = parseVideoUrl(videoUrlRaw);
-        item.img = newImg || getDefaultThumbnail(videoUrlRaw);
-        item._title = newTitle;
-
-        // Show checkmark
+      const section = parent.querySelector('[data-field="section"]').value;
+      try {
+        await updateDoc(doc(db, "interviews", id), {
+          title,
+          img,
+          date,
+          videoUrl: parseVideoUrl(videoUrlRaw),
+          section
+        });
         const status = parent.querySelector(".save-status");
         if (status) {
           status.style.display = "inline";
+          setTimeout(() => { status.style.display = "none"; }, 1300);
         }
         showToast("Saved.");
-        // Wait 2 seconds before re-rendering so checkmark is visible!
-        setTimeout(() => {
-          renderVideoList(document.getElementById("admin-search")?.value || '');
-          fillPreviews();
-        }, 2000);
-      }
+      } catch (e) { alert("Error: " + e.message); }
     };
   });
   document.querySelectorAll(".delete-btn").forEach(btn => {
-    btn.onclick = () => {
-      const key = btn.dataset.key;
-      const arrayName = btn.dataset.array;
-      const arr = { videos: videoInterviews, new: newInterviews, archive: archivedInterviews }[arrayName];
-      const index = arr.findIndex(i => i.descKey === key);
-      if (index > -1) {
-        arr.splice(index, 1);
-        renderVideoList(document.getElementById("admin-search")?.value || '');
-        fillPreviews();
+    btn.onclick = async function() {
+      const id = btn.getAttribute("data-id");
+      if (confirm("Delete this interview?")) {
+        try {
+          await deleteDoc(doc(db, "interviews", id));
+          showToast("Deleted.", "#c0392b");
+        } catch (e) { alert("Error: " + e.message); }
       }
     };
   });
-  document.querySelectorAll(".move-btn").forEach(btn => {
-    btn.onclick = () => {
-      const key = btn.dataset.key;
-      const fromArray = btn.dataset.array;
-      const select = btn.parentNode.querySelector("select");
-      const toArray = select.value;
-      if (fromArray === toArray) return;
-      const allArrays = {
-        videos: videoInterviews,
-        new: newInterviews,
-        archive: archivedInterviews
-      };
-      const source = allArrays[fromArray];
-      const target = allArrays[toArray];
-      const index = source.findIndex(i => i.descKey === key);
-      if (index > -1) {
-        const [item] = source.splice(index, 1);
-        target.push(item);
-        renderVideoList(document.getElementById("admin-search")?.value || '');
-        fillPreviews();
-      }
-    };
-  });
-}
-adminOverlay.addEventListener("click", (e) => {
-  if (e.target === adminOverlay) {
-    adminOverlay.style.display = "none";
-  }
-});
+};
 </script>
-<div id="toast" style="position:fixed;bottom:104px;right:40px;background:#28a745;color:white;padding:.75rem 1.25rem;border-radius:4px;font-size:1rem;display:none;z-index:1001;">Saved</div>
 </body>
 </html>
