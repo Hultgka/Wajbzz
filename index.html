@@ -33,6 +33,8 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      gap: 2rem;
+      flex-wrap: wrap;
     }
     nav a {
       color: #3ec1e0;
@@ -228,6 +230,79 @@
       pointer-events: all;
       display: block;
     }
+
+    /* === MOBILE FRIENDLY ADDITIONS === */
+    @media (max-width: 700px) {
+      nav {
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.8rem 0;
+      }
+      nav a {
+        margin: 0.4rem 0;
+        font-size: 1.2rem;
+      }
+      .hero {
+        height: 210px;
+        padding-top: 0.6rem;
+        background-position: center center;
+        background-size: cover;
+      }
+      .splash-text {
+        font-size: 2.1rem;
+      }
+      .tagline {
+        font-size: 1rem;
+      }
+      .social-buttons {
+        left: 50%;
+        bottom: 0.5rem;
+        transform: translateX(-50%);
+      }
+      .lang-buttons {
+        top: auto;
+        bottom: 3.5rem;
+        right: 50%;
+        transform: translateX(50%);
+        flex-direction: row;
+      }
+      #lang-cover {
+        top: auto;
+        bottom: 3.5rem;
+        right: 50%;
+        transform: translateX(50%);
+        width: 110px;
+      }
+      footer {
+        right: 0;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        font-size: 0.95rem;
+        background: #000a;
+        padding: 0.3rem 0;
+      }
+    }
+    @media (max-width: 420px) {
+      .splash-text {
+        font-size: 1.2rem;
+      }
+      .tagline {
+        font-size: 0.85rem;
+      }
+      .hero {
+        height: 120px;
+      }
+      .social-buttons a {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+      }
+      .lang-buttons button {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -358,4 +433,3 @@
   </script>
 </body>
 </html>
-
