@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
   <style>
+    /* --- your original CSS, unchanged --- */
     body, html { min-height: 100vh; background: #000; color: #3ec1e0; font-family: 'Orbitron', sans-serif; margin: 0; }
     nav { background: #0f0f0f; display: flex; justify-content: center; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; gap: 2rem; flex-wrap: wrap; }
     nav a { color: #3ec1e0; text-decoration: none; font-size: 1.1rem; display: flex; align-items: center; gap: .4rem; transition: color .3s; padding: .3rem .8rem; border-radius: 6px; }
@@ -27,14 +28,12 @@
     .reviews-controls select, .reviews-controls button { background: #111; border: 2px solid #3ec1e0; color: #3ec1e0; font-family: 'Orbitron', sans-serif; padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background 0.3s, color 0.3s; }
     .reviews-controls select:focus, .reviews-controls button:focus { border-color: #00ffff; outline: 2px solid #00ffff; outline-offset: 2px; }
     .reviews-controls button.active, .reviews-controls button:hover { background: #00ffff; color: #000; border-color: #00ffff; }
-    /* LATEST */
     .latest-section { margin-bottom: 2.4rem; }
     .latest-label { font-size: 1.3rem; color: #00ffff; font-weight: bold; text-align: center; margin-bottom: 1rem; text-shadow: 0 0 6px #00ffff77; }
     .latest-review-card { display: flex; flex-direction: column; align-items: center; background: #181818; border-radius: 14px; box-shadow: 0 0 20px #00ffff77; padding: 1.2rem 2rem 1.7rem 2rem; margin: 0 auto 2.2rem auto; width: 350px; max-width: 98vw; cursor: pointer; border: 2.5px solid #00ffff; }
     .latest-review-img { width: 92%; height: 180px; object-fit: cover; border-radius: 10px; box-shadow: 0 0 15px #00ffff33; background: #1a1a1a; margin-bottom: 1em; }
     .latest-review-title { font-size: 1.23rem; font-weight: 700; color: #00ffff; margin-bottom: 0.2em; text-align: center; text-shadow: 0 0 3px #003344; }
     .latest-review-stars { color: #FFD600; font-size: 1.16em; letter-spacing: 1px; margin-bottom: 0.4em; text-align: center; }
-    /* Grid */
     .reviews-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -102,7 +101,6 @@
       margin-bottom: 0.1em;
       text-align: center;
     }
-    /* Modal styles */
     #review-modal-bg {
       position: fixed;
       left: 0; top: 0; right: 0; bottom: 0;
@@ -184,12 +182,10 @@
       margin-top: 0.2em;
       text-align: right;
     }
-    /* Pagination */
     .pagination { display: flex; justify-content: center; gap: 0.7em; margin-top: 1.5rem; }
     .pagination button { background: #181818; border: 2px solid #00ffff; color: #00ffff; border-radius: 8px; font-size: 1.03rem; padding: 0.28em 1.2em; cursor: pointer; }
     .pagination button.active, .pagination button:disabled { background: #00ffff; color: #181818; border-color: #00ffff; }
     .pagination button:disabled { opacity: .7; cursor: default; }
-    /* Admin Cog */
     .settings-btn {
       position: fixed;
       right: 1.2rem;
@@ -304,6 +300,7 @@
         bottom: 3.9rem;
         padding: 0.7rem;
       }
+      #admin-modal { padding: 0.8rem 0.4rem; min-width: 0; }
     }
     @media (max-width: 450px) {
       main { margin: 0.5rem auto 2rem; padding: 0 0.1rem; }
@@ -331,13 +328,13 @@
 </head>
 <body>
 <nav>
-  <a href="index.html" tabindex="0"><i class="fa-solid fa-house"></i> <span data-i18n="navStart">Start</span></a>
-  <a href="reviews.html" tabindex="0"><i class="fa-solid fa-star"></i> <span data-i18n="navReviews">Reviews</span></a>
-  <a href="interviews.html" tabindex="0"><i class="fa-solid fa-microphone"></i> <span data-i18n="navInterviews">Interviews</span></a>
-  <a href="music.html" tabindex="0"><i class="fa-solid fa-music"></i> <span data-i18n="navMusic">Music</span></a>
-  <a href="events.html"><i class="fas fa-calendar-alt"></i><span data-i18n="navEvents">Events</span></a>
-  <a href="team.html" tabindex="0"><i class="fa-solid fa-users"></i> <span data-i18n="navTeam">Team</span></a>
-  <a href="contact.html" tabindex="0"><i class="fa-solid fa-envelope"></i> <span data-i18n="navContact">Contact</span></a>
+  <a href="index.html" data-i18n="navStart" tabindex="0"><i class="fa-solid fa-house"></i> <span data-i18n="navStart">Start</span></a>
+  <a href="reviews.html" data-i18n="navReviews" tabindex="0"><i class="fa-solid fa-star"></i> <span data-i18n="navReviews">Reviews</span></a>
+  <a href="interviews.html" data-i18n="navInterviews" tabindex="0"><i class="fa-solid fa-microphone"></i> <span data-i18n="navInterviews">Interviews</span></a>
+  <a href="music.html" data-i18n="navMusic" tabindex="0"><i class="fa-solid fa-music"></i> <span data-i18n="navMusic">Music</span></a>
+  <a href="events.html" data-i18n="navEvents"><i class="fas fa-calendar-alt"></i><span data-i18n="navEvents">Events</span></a>
+  <a href="team.html" data-i18n="navTeam" tabindex="0"><i class="fa-solid fa-users"></i> <span data-i18n="navTeam">Team</span></a>
+  <a href="contact.html" data-i18n="navContact" tabindex="0"><i class="fa-solid fa-envelope"></i> <span data-i18n="navContact">Contact</span></a>
 </nav>
 <div class="lang-buttons" role="group" aria-label="Language selector">
   <button id="lang-en" aria-pressed="true" class="active" aria-label="English">EN</button>
@@ -395,7 +392,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ==== MAIN LOGIC ====
-// [rest of your JavaScript remains unchanged, as in the previous file above]
 const REVIEWS_PER_PAGE = 12;
 let currentLang = "en";
 let reviews = [];
@@ -494,11 +490,9 @@ function renderLatest(latest) {
 }
 
 function renderReviewsSection() {
-  // Already sorted by date DESC
   const latest = reviews[0] || null;
   let rest = reviews.slice(1);
 
-  // Search/filter
   const search = (document.getElementById("search-bar").value || "").toLowerCase();
   if (search) {
     rest = rest.filter(r =>
@@ -507,7 +501,6 @@ function renderReviewsSection() {
       (r.reviewer||"").toLowerCase().includes(search)
     );
   }
-  // Sort
   const sortVal = document.getElementById("sort-select").value;
   rest.sort((a, b) => {
     if (sortVal === "date-desc") return new Date(b.date) - new Date(a.date);
@@ -518,7 +511,6 @@ function renderReviewsSection() {
     if (sortVal === "stars-asc") return (a.stars||0) - (b.stars||0);
     return 0;
   });
-  // Pagination
   renderPagination(rest.length, REVIEWS_PER_PAGE, currentPage);
   const grid = document.getElementById("reviews-grid");
   grid.innerHTML = "";
@@ -581,7 +573,6 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && reviewModalBg.classList.contains("active")) closeReviewModal();
 });
 
-// Controls
 document.getElementById("search-bar").oninput = function() { currentPage = 1; renderReviewsSection(); };
 document.getElementById("sort-select").onchange = function() { currentPage = 1; renderReviewsSection(); };
 function updateSortOptions() {
@@ -723,9 +714,6 @@ window.renderAdminPanel = function(editId = null) {
       } else {
         updateDoc(doc(db, "reviews", id), obj);
       }
-      currentPage=1;
-      renderAll();
-      renderAdminPanel();
     }
     if (imgFile) {
       let reader = new FileReader();
@@ -763,16 +751,11 @@ window.renderAdminPanel = function(editId = null) {
   window.deleteReview = async function(id) {
     if (!confirm("Delete this review?")) return;
     await deleteDoc(doc(db, "reviews", id));
-    currentPage=1;
-    renderAll();
-    renderAdminPanel();
   }
   window.editReview = function(id) {
     renderAdminPanel(id);
   }
 }
-
-// MAIN RENDER
 function renderAll() {
   renderReviewsSection();
 }
