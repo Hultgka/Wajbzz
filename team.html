@@ -81,7 +81,6 @@
       margin-bottom: 0.18em;
       word-break: break-word;
     }
-    /* Modal styles */
     #team-modal-bg {
       position: fixed;
       left: 0; top: 0; right: 0; bottom: 0;
@@ -152,7 +151,6 @@
       text-align: left;
       white-space: pre-line;
     }
-    /* Admin Cog */
     .settings-btn {
       position: fixed;
       right: 1.2rem;
@@ -290,13 +288,13 @@
 </head>
 <body>
 <nav>
-  <a href="index.html" data-i18n="navStart" tabindex="0"><i class="fa-solid fa-house"></i> <span>Start</span></a>
-  <a href="reviews.html" data-i18n="navReviews" tabindex="0"><i class="fa-solid fa-star"></i> <span>Reviews</span></a>
-  <a href="interviews.html" data-i18n="navInterviews" tabindex="0"><i class="fa-solid fa-microphone"></i> <span>Interviews</span></a>
-  <a href="music.html" data-i18n="navMusic" tabindex="0"><i class="fa-solid fa-music"></i> <span>Music</span></a>
-  <a href="events.html" data-i18n="navEvents"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
-  <a href="team.html" data-i18n="navTeam" tabindex="0"><i class="fa-solid fa-users"></i> <span>Team</span></a>
-  <a href="contact.html" data-i18n="navContact" tabindex="0"><i class="fa-solid fa-envelope"></i> <span>Contact</span></a>
+  <a href="index.html" data-i18n="navStart" tabindex="0"><i class="fa-solid fa-house"></i> <span data-i18n="navStart">Start</span></a>
+  <a href="reviews.html" data-i18n="navReviews" tabindex="0"><i class="fa-solid fa-star"></i> <span data-i18n="navReviews">Reviews</span></a>
+  <a href="interviews.html" data-i18n="navInterviews" tabindex="0"><i class="fa-solid fa-microphone"></i> <span data-i18n="navInterviews">Interviews</span></a>
+  <a href="music.html" data-i18n="navMusic" tabindex="0"><i class="fa-solid fa-music"></i> <span data-i18n="navMusic">Music</span></a>
+  <a href="events.html" data-i18n="navEvents"><i class="fas fa-calendar-alt"></i><span data-i18n="navEvents">Events</span></a>
+  <a href="team.html" data-i18n="navTeam" tabindex="0"><i class="fa-solid fa-users"></i> <span data-i18n="navTeam">Team</span></a>
+  <a href="contact.html" data-i18n="navContact" tabindex="0"><i class="fa-solid fa-envelope"></i> <span data-i18n="navContact">Contact</span></a>
 </nav>
 <div class="lang-buttons" role="group" aria-label="Language selector">
   <button id="lang-en" aria-pressed="true" class="active" aria-label="English">EN</button>
@@ -323,11 +321,27 @@
 <div id="team-modal-bg">
   <div id="team-modal"></div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-const teamKey = "wajbzzTeamData";
-const adminPassword = "wajbzz123";
+<script type="module">
+// ==== FIREBASE SETUP ====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
+  authDomain: "wajbzz-website.firebaseapp.com",
+  projectId: "wajbzz-website",
+  storageBucket: "wajbzz-website.appspot.com",
+  messagingSenderId: "387063007187",
+  appId: "1:387063007187:web:2929f1a25716ca1ea71126",
+  measurementId: "G-7F5F1YLRF2"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let team = [];
 let currentLang = "en";
+let adminPassword = "wajbzz123";
+
 const langData = {
   en: {
     pageTitle: "Wajbzz - Team",
@@ -399,18 +413,24 @@ function setLang(lang) {
   document.title = langData[lang].pageTitle;
   renderTeam();
 }
-function getTeam() {
-  try { return JSON.parse(localStorage.getItem(teamKey)) || []; }
-  catch { return []; }
+
+function escapeHTML(str) { return (str||"").replace(/[<>&"']/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// === FIREBASE TEAM LISTEN ===
+function listenToTeam() {
+  const q = query(collection(db, "team"), orderBy("name_en", "asc"));
+  onSnapshot(q, snap => {
+    team = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    renderTeam();
+    if (window.renderAdminPanel) window.renderAdminPanel();
+  });
 }
-function setTeam(arr) {
-  localStorage.setItem(teamKey, JSON.stringify(arr));
-}
+listenToTeam();
+
 function renderTeam() {
-  const team = getTeam();
   const grid = document.getElementById("team-grid");
   grid.innerHTML = "";
-  if (team.length===0) {
+  if (team.length === 0) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#888;font-size:1.1rem;">(${currentLang==="pl"?"Brak członków zespołu":"No team members yet."})</div>`;
     return;
   }
@@ -444,7 +464,7 @@ function renderTeam() {
 const teamModalBg = document.getElementById("team-modal-bg");
 const teamModal = document.getElementById("team-modal");
 function openTeamModal(idx) {
-  let m = getTeam()[idx];
+  let m = team[idx];
   if (!m) return;
   teamModal.innerHTML = `
     <button class="close-btn" onclick="closeTeamModal()" aria-label="Close">&times;</button>
@@ -492,7 +512,7 @@ function showAdminLogin() {
     const val = document.getElementById("admin-pw-input").value;
     if (val === adminPassword) {
       window.adminAuthed = true;
-      showAdminPanel();
+      renderAdminPanel();
       adminModalBg.classList.add("active");
     } else {
       document.getElementById("admin-pw-msg").textContent = langData[currentLang].wrongPassword;
@@ -502,10 +522,9 @@ function showAdminLogin() {
     if (e.key === "Enter") document.getElementById("admin-pw-submit").click();
   }
 }
-function showAdminPanel(editIdx = null) {
-  let team = getTeam();
+window.renderAdminPanel = function(editId = null) {
   let editMember = null;
-  if (editIdx !== null && team[editIdx]) editMember = team[editIdx];
+  if (editId !== null) editMember = team.find(m => m.id === editId);
   adminModal.innerHTML = `
     <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
     <h2>${langData[currentLang].adminPanel}</h2>
@@ -529,9 +548,9 @@ function showAdminPanel(editIdx = null) {
         <input type="file" id="adm-image-file" accept="image/*" style="margin-left:0.6em;display:inline-block;"/>
       </div>
       <div style="display:none;color:#ff4d4d;" id="admin-form-msg"></div>
-      <input type="hidden" id="adm-edit-idx" value="${editIdx!==null?editIdx:''}"/>
+      <input type="hidden" id="adm-edit-id" value="${editMember?editMember.id:''}"/>
       <button type="submit" class="admin-btn">${editMember ? langData[currentLang].save : langData[currentLang].addMember}</button>
-      ${editMember !== null ? `<button type="button" class="admin-btn" id="adm-cancel">${langData[currentLang].cancel}</button>` : ""}
+      ${editMember ? `<button type="button" class="admin-btn" id="adm-cancel">${langData[currentLang].cancel}</button>` : ""}
     </form>
     <table class="admin-list-table" style="margin-top:1.8em;">
       <thead>
@@ -542,7 +561,7 @@ function showAdminPanel(editIdx = null) {
       <tbody id="admin-team-tbody"></tbody>
     </table>
   `;
-  document.getElementById("admin-team-form").onsubmit = function(e) {
+  document.getElementById("admin-team-form").onsubmit = async function(e) {
     e.preventDefault();
     let name_en = this["adm-name-en"].value.trim();
     let name_pl = this["adm-name-pl"].value.trim();
@@ -552,7 +571,7 @@ function showAdminPanel(editIdx = null) {
     let bio_pl = this["adm-bio-pl"].value.trim();
     let imgUrl = this["adm-image-url"].value.trim();
     let imgFile = this["adm-image-file"].files[0];
-    let idx = this["adm-edit-idx"].value;
+    let id = this["adm-edit-id"].value;
     let msg = document.getElementById("admin-form-msg");
 
     if (!name_en || !name_pl || !role_en || !role_pl || !bio_en || !bio_pl ) {
@@ -562,12 +581,13 @@ function showAdminPanel(editIdx = null) {
     }
     function finishAndSave(img, isUrl) {
       let obj = {name_en, name_pl, role_en, role_pl, bio_en, bio_pl, image: img, imageIsUrl: isUrl};
-      let team = getTeam();
-      if (idx) team[parseInt(idx)] = obj;
-      else team.push(obj);
-      setTeam(team);
+      if (!id) {
+        addDoc(collection(db, "team"), obj);
+      } else {
+        updateDoc(doc(db, "team", id), obj);
+      }
       renderTeam();
-      showAdminPanel();
+      renderAdminPanel();
     }
     if (imgFile) {
       let reader = new FileReader();
@@ -583,39 +603,34 @@ function showAdminPanel(editIdx = null) {
       return;
     }
   };
-  if (editMember !== null)
-    document.getElementById("adm-cancel").onclick = () => showAdminPanel();
+  if (editMember)
+    document.getElementById("adm-cancel").onclick = () => renderAdminPanel();
 
   // Table
   let tbody = document.getElementById("admin-team-tbody");
   tbody.innerHTML = "";
-  for (let i=0; i<team.length; ++i) {
-    let m = team[i];
+  team.forEach((m, i) => {
     let tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${i+1}</td>
       <td>${escapeHTML(m["name_"+currentLang]||m.name_en||m.name_pl)}</td>
       <td>${escapeHTML(m["role_"+currentLang]||m.role_en||m.role_pl)}</td>
-      <td><button class="admin-btn delete" onclick="window.deleteMember(${i})">${langData[currentLang].delete}</button></td>
-      <td><button class="admin-btn" onclick="window.editMember(${i})">${langData[currentLang].editMember}</button></td>
+      <td><button class="admin-btn delete" onclick="window.deleteMember('${m.id}')">${langData[currentLang].delete}</button></td>
+      <td><button class="admin-btn" onclick="window.editMember('${m.id}')">${langData[currentLang].editMember}</button></td>
     `;
     tbody.appendChild(tr);
-  }
-  window.deleteMember = function(idx) {
+  });
+  window.deleteMember = async function(id) {
     if (!confirm("Delete this member?")) return;
-    let team = getTeam();
-    team.splice(idx,1);
-    setTeam(team);
+    await deleteDoc(doc(db, "team", id));
     renderTeam();
-    showAdminPanel();
+    renderAdminPanel();
   }
-  window.editMember = function(idx) {
-    showAdminPanel(idx);
+  window.editMember = function(id) {
+    renderAdminPanel(id);
   }
 }
-function escapeHTML(str) { return (str||"").replace(/[<>&"']/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
 setLang(currentLang);
-});
 </script>
 </body>
 </html>
