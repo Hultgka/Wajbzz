@@ -41,21 +41,14 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   object-fit: cover;
   transition: border-color 0.15s;
 }
-.featured-thumb:focus, .featured-thumb:hover {
-  border-color: #00ffff;
-}
-.featured-info {
-  flex: 1;
-}
+.featured-thumb:focus, .featured-thumb:hover { border-color: #00ffff; }
+.featured-info { flex: 1; }
 .featured-info h2 {
   margin: 0 0 0.3em 0;
   color: #00ffff;
   font-size: 1.35rem;
 }
-.featured-info p {
-  margin: 0;
-  color: #e1eaff;
-}
+.featured-info p { margin: 0; color: #e1eaff; }
 .filters {
   display: flex;
   gap: 1em;
@@ -76,9 +69,7 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   outline: none;
   transition: border-color 0.3s;
 }
-#search-bar:focus {
-  border-color: #00ffff;
-}
+#search-bar:focus { border-color: #00ffff; }
 #genre-filter {
   padding: 0.4em 0.8em;
   border-radius: 4px;
@@ -139,9 +130,7 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   justify-content: space-between;
   width: 300px;
 }
-.track-info {
-  margin-bottom: 0.4em;
-}
+.track-info { margin-bottom: 0.4em; }
 .track-title {
   font-weight: bold;
   font-size: 1.05rem;
@@ -151,11 +140,7 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   align-items: center;
   gap: 0.5em;
 }
-.track-artist {
-  margin: 0;
-  color: #e1eaff;
-  font-size: 0.95rem;
-}
+.track-artist { margin: 0; color: #e1eaff; font-size: 0.95rem; }
 .track-genre {
   display: inline-block;
   background: #232949;
@@ -166,14 +151,8 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   margin-left: 0.6em;
   font-weight: 400;
 }
-.track-audio {
-  width: 100%;
-  margin-top: 0.5em;
-}
-#videos-container {
-  gap: 1.5em;
-  margin-bottom: 2em;
-}
+.track-audio { width: 100%; margin-top: 0.5em; }
+#videos-container { gap: 1.5em; margin-bottom: 2em; }
 .video-thumb {
   width: 160px;
   height: 90px;
@@ -185,9 +164,7 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   object-fit: cover;
   transition: border-color 0.15s;
 }
-.video-thumb:focus, .video-thumb:hover {
-  border-color: #00ffff;
-}
+.video-thumb:focus, .video-thumb:hover { border-color: #00ffff; }
 #video-modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -262,6 +239,26 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   max-height:90vh;
   overflow-y:auto;
   position:relative;
+}
+.pagination { text-align: center; margin:1.5em 0; }
+.pagination button {
+  margin: 0 3px;
+  background: #232949;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.2em 0.9em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family:'Orbitron',sans-serif;
+  outline: none;
+}
+.pagination button.active,
+.pagination button:focus {
+  background: #00ffff;
+  color: #232949;
+  font-weight: bold;
 }
 @media (max-width: 800px) {
   main { max-width: 100%; }
@@ -428,57 +425,121 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
 <div id="admin-modal-overlay">
   <div id="admin-modal-inner"></div>
 </div>
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
+  authDomain: "wajbzz-website.firebaseapp.com",
+  projectId: "wajbzz-website",
+  storageBucket: "wajbzz-website.firebasestorage.app",
+  messagingSenderId: "387063007187",
+  appId: "1:387063007187:web:2929f1a25716ca1ea71126",
+  measurementId: "G-7F5F1YLRF2"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// --- DATA STATE ---
+let tracksData = [];
+let videosData = [];
+let userGenres = [];
+let featured = {type: "video", id: ""};
+const TRACKS_PER_PAGE = 10;
+const VIDEOS_PER_PAGE = 10;
+let tracksPage = 1;
+let videosPage = 1;
+
+// --- REALTIME LISTENERS ---
+function listenAllFirestore() {
+  onSnapshot(collection(db, "tracks"), (snapshot) => {
+    tracksData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if (tracksPage > Math.ceil(tracksData.length / TRACKS_PER_PAGE)) tracksPage = 1;
+    displayTracks();
+    updateTracksPagination();
+    if (featured.type === "track" && !tracksData.find(t => t.id === featured.id)) {
+      featured = {type: "video", id: videosData[0]?.id || ""};
+      saveFeaturedToFirestore();
+    }
+    renderFeaturedSection();
+    if (window.renderAdminTracks) renderAdminTracks(tracksData);
+  });
+  onSnapshot(collection(db, "videos"), (snapshot) => {
+    videosData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if (videosPage > Math.ceil(videosData.length / VIDEOS_PER_PAGE)) videosPage = 1;
+    displayVideos();
+    updateVideosPagination();
+    if (featured.type === "video" && !videosData.find(v => v.id === featured.id)) {
+      featured = {type: "track", id: tracksData[0]?.id || ""};
+      saveFeaturedToFirestore();
+    }
+    renderFeaturedSection();
+    if (window.renderAdminVideos) renderAdminVideos(videosData);
+  });
+  onSnapshot(collection(db, "genres"), (snapshot) => {
+    userGenres = snapshot.docs.map(doc => doc.data().name);
+    populateGenreFilter();
+    if (window.renderAdminGenres) renderAdminGenres();
+  });
+  onSnapshot(doc(db, "site", "featured"), (d) => {
+    if (d.exists()) {
+      featured = d.data();
+      renderFeaturedSection();
+      if (window.renderAdminTracks) renderAdminTracks(tracksData);
+      if (window.renderAdminVideos) renderAdminVideos(videosData);
+    }
+  });
+}
+listenAllFirestore();
+
+// --- FIRESTORE HELPERS ---
+async function addTrack({title, artist, genre, audioSrc}) {
+  await addDoc(collection(db, "tracks"), { title, artist, genre, audioSrc });
+}
+async function updateTrack(id, data) {
+  await updateDoc(doc(db, "tracks", id), data);
+}
+async function deleteTrack(id) {
+  await deleteDoc(doc(db, "tracks", id));
+}
+async function addVideo({title, genre, thumbnail, videoSrc}) {
+  await addDoc(collection(db, "videos"), { title, genre, thumbnail, videoSrc });
+}
+async function updateVideo(id, data) {
+  await updateDoc(doc(db, "videos", id), data);
+}
+async function deleteVideo(id) {
+  await deleteDoc(doc(db, "videos", id));
+}
+async function addGenre(name) {
+  if (!userGenres.includes(name)) await addDoc(collection(db, "genres"), { name });
+}
+async function deleteGenre(name) {
+  const snap = await getDocs(collection(db, "genres"));
+  snap.forEach(docu => { if (docu.data().name === name) deleteDoc(doc(db, "genres", docu.id)); });
+}
+async function saveFeaturedToFirestore() {
+  await setDoc(doc(db, "site", "featured"), featured);
+}
+
+// --- TRANSLATIONS and GENRE DATA ---
 const translations = {
   en: {
-    start: "Start",
-    reviews: "Reviews",
-    interviews: "Interviews",
-    music: "Music",
-    events: "Events",
-    team: "Team",
-    contact: "Contact",
-    "featured-artist": "Featured Artist",
-    "featured-artist-desc": "Electronic synthwave music producer.",
-    "filter-genre-label": "Filter by genre:",
-    tracks: "Tracks",
-    videos: "Videos",
-    "Music": "Music", "Tracks": "Tracks", "Videos": "Videos",
-    "Featured Artist": "Featured Artist",
-    "Electronic synthwave music producer.": "Electronic synthwave music producer.",
-    "Filter by genre:": "Filter by genre:",
-    "Search...": "Search...",
-    "All genres": "All genres",
-    "No results found.": "No results found.",
-    "Featured": "Featured",
-    "add-genre": "Add Genre",
-    "new-genre-placeholder": "New genre name...",
-    "add-genre-btn": "Add"
+    start: "Start", reviews: "Reviews", interviews: "Interviews", music: "Music", events: "Events", team: "Team", contact: "Contact",
+    "featured-artist": "Featured Artist", "featured-artist-desc": "Electronic synthwave music producer.",
+    "filter-genre-label": "Filter by genre:", tracks: "Tracks", videos: "Videos", "Music": "Music", "Tracks": "Tracks", "Videos": "Videos",
+    "Featured Artist": "Featured Artist", "Electronic synthwave music producer.": "Electronic synthwave music producer.",
+    "Filter by genre:": "Filter by genre:", "Search...": "Search...", "All genres": "All genres", "No results found.": "No results found.",
+    "Featured": "Featured", "add-genre": "Add Genre", "new-genre-placeholder": "New genre name...", "add-genre-btn": "Add"
   },
   pl: {
-    start: "Start",
-    reviews: "Recenzje",
-    interviews: "Wywiady",
-    music: "Muzyka",
-    events: "Wydarzenia",
-    team: "Zespół",
-    contact: "Kontakt",
-    "featured-artist": "Wyróżniony artysta",
-    "featured-artist-desc": "Producent elektronicznej muzyki synthwave.",
-    "filter-genre-label": "Filtruj według gatunku:",
-    tracks: "Utwory",
-    videos: "Wideo",
-    "Music": "Muzyka", "Tracks": "Utwory", "Videos": "Wideo",
-    "Featured Artist": "Wyróżniony artysta",
-    "Electronic synthwave music producer.": "Producent elektronicznej muzyki synthwave.",
-    "Filter by genre:": "Filtruj według gatunku:",
-    "Search...": "Szukaj...",
-    "All genres": "Wszystkie gatunki",
-    "No results found.": "Brak wyników.",
-    "Featured": "Wyróżniony",
-    "add-genre": "Dodaj gatunek",
-    "new-genre-placeholder": "Nazwa nowego gatunku...",
-    "add-genre-btn": "Dodaj"
+    start: "Start", reviews: "Recenzje", interviews: "Wywiady", music: "Muzyka", events: "Wydarzenia", team: "Zespół", contact: "Kontakt",
+    "featured-artist": "Wyróżniony artysta", "featured-artist-desc": "Producent elektronicznej muzyki synthwave.",
+    "filter-genre-label": "Filtruj według gatunku:", tracks: "Utwory", videos: "Wideo", "Music": "Muzyka", "Tracks": "Utwory", "Videos": "Wideo",
+    "Featured Artist": "Wyróżniony artysta", "Electronic synthwave music producer.": "Producent elektronicznej muzyki synthwave.",
+    "Filter by genre:": "Filtruj według gatunku:", "Search...": "Szukaj...", "All genres": "Wszystkie gatunki", "No results found.": "Brak wyników.",
+    "Featured": "Wyróżniony", "add-genre": "Dodaj gatunek", "new-genre-placeholder": "Nazwa nowego gatunku...", "add-genre-btn": "Dodaj"
   }
 };
 let currentLang = 'en';
@@ -487,16 +548,6 @@ const standardGenreKeysDefault = [
   "Ambient", "Electronic", "Indie", "Funk", "Soul", "Disco", "Trance", "EDM",
   "House", "Dubstep", "Lo-fi", "Reggae", "Country", "Metal"
 ];
-let userGenres = JSON.parse(localStorage.getItem("userGenres")||"[]");
-function allGenreKeys() {
-  return [...new Set([...standardGenreKeysDefault, ...userGenres])];
-}
-function addUserGenre(newGenre) {
-  if (!userGenres.includes(newGenre)) {
-    userGenres.push(newGenre);
-    localStorage.setItem("userGenres", JSON.stringify(userGenres));
-  }
-}
 const genreTranslations = {
   en: Object.fromEntries(standardGenreKeysDefault.map(g => [g, g])),
   pl: {
@@ -507,40 +558,11 @@ const genreTranslations = {
     "Dubstep": "Dubstep","Lo-fi": "Lo-fi","Reggae": "Reggae","Country": "Country","Metal": "Metal"
   }
 };
-const tracksDataDefault = [
-  { title: "Afterglow", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_01_-_Afterglow.mp3" },
-  { title: "Future City", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_02_-_Future_City.mp3" },
-  { title: "Neon Nights", artist: "Wajbzz", genre: "Retrowave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_03_-_Neon_Nights.mp3" }
-];
-const videosDataDefault = [
-  { title: "Afterglow", genre: "Synthwave", thumbnail: "https://i.ytimg.com/vi/PEErX2p-lmw/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/PEErX2p-lmw" },
-  { title: "Future City", genre: "Synthwave", thumbnail: "https://i.ytimg.com/vi/Rs1b97v7Ols/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/Rs1b97v7Ols" },
-  { title: "Neon Nights", genre: "Retrowave", thumbnail: "https://i.ytimg.com/vi/jR2xbNWm3Kg/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/jR2xbNWm3Kg" }
-];
-let tracksData = JSON.parse(localStorage.getItem('tracksData')) || tracksDataDefault.slice();
-let videosData = JSON.parse(localStorage.getItem('videosData')) || videosDataDefault.slice();
-let featured = JSON.parse(localStorage.getItem('featuredItem')) || {type: "video", index: 0};
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const TRACKS_PER_PAGE = 10;
-const VIDEOS_PER_PAGE = 10;
-let tracksPage = 1;
-let videosPage = 1;
-function escapeHTML(str) {
-  if (!str) return "";
-  return str.replace(/[<>&"']/g, c => (
-    { '<':'&lt;', '>':'&gt;', '&':'&amp;', '"':'&quot;', "'":'&#39;' }[c]
-  ));
-}
-function getYoutubeThumb(video) {
-  if (video.thumbnail && video.thumbnail.trim()) return video.thumbnail;
-  let match = (video.videoSrc || "").match(/embed\/([a-zA-Z0-9_-]+)/);
-  if (!match && video.videoSrc) {
-    match = video.videoSrc.match(/(?:watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
-  }
-  if (match) {
-    return `https://i.ytimg.com/vi/${match[1]}/hqdefault.jpg`;
-  }
-  return '';
+
+// --- LANGUAGE, FILTER, GENRE, AND UI UTILS ---
+function allGenreKeys() {
+  return [...new Set([...standardGenreKeysDefault, ...userGenres])];
 }
 function t(key) {
   return (translations[currentLang] && translations[currentLang][key]) || key;
@@ -560,15 +582,19 @@ function setLang(lang) {
   populateGenreFilter();
   displayTracks();
   displayVideos();
+  updateTracksPagination();
+  updateVideosPagination();
 }
 document.getElementById('btn-en').onclick = () => setLang('en');
 document.getElementById('btn-pl').onclick = () => setLang('pl');
+
 function renderFeaturedSection() {
   const sec = document.getElementById("featured-section");
   sec.innerHTML = "";
   let html = "";
-  if (featured.type === "track" && tracksData[featured.index]) {
-    const track = tracksData[featured.index];
+  if (featured.type === "track" && tracksData.length > 0) {
+    const track = tracksData.find(t => t.id === featured.id) || tracksData[0];
+    if (!track) return;
     html = `
       <img src="https://img.icons8.com/color/96/000000/musical-notes.png" class="featured-thumb" style="background:#121425" />
       <div class="featured-info">
@@ -577,8 +603,9 @@ function renderFeaturedSection() {
         <audio class="track-audio" controls src="${track.audioSrc}"></audio>
       </div>
     `;
-  } else if (featured.type === "video" && videosData[featured.index]) {
-    const video = videosData[featured.index];
+  } else if (featured.type === "video" && videosData.length > 0) {
+    const video = videosData.find(v => v.id === featured.id) || videosData[0];
+    if (!video) return;
     html = `
       <img src="${getYoutubeThumb(video)}" class="featured-thumb" style="background:#121425" tabindex="0" onclick="showVideoModal('${video.videoSrc}')" />
       <div class="featured-info">
@@ -591,14 +618,14 @@ function renderFeaturedSection() {
   }
   sec.innerHTML = html;
 }
-renderFeaturedSection();
+
 function populateGenreFilter() {
   const select = document.getElementById('genre-filter');
   let genres = allGenreKeys();
   select.innerHTML = `<option value="">${t("All genres")}</option>` +
     genres.map(g => `<option value="${escapeHTML(g)}">${genreT(g)}</option>`).join('');
 }
-populateGenreFilter();
+
 function renderAlphabetFilter() {
   const wrap = document.getElementById("alphabet-filter");
   wrap.innerHTML = "";
@@ -610,7 +637,9 @@ function renderAlphabetFilter() {
       btn.classList.add("active");
       document.getElementById("search-bar").value="";
       document.getElementById("genre-filter").value="";
+      tracksPage = 1;
       displayTracks(ltr);
+      updateTracksPagination();
     };
     wrap.appendChild(btn);
   });
@@ -619,11 +648,33 @@ function renderAlphabetFilter() {
   allBtn.onclick = () => {
     document.querySelectorAll("#alphabet-filter button").forEach(b=>b.classList.remove("active"));
     allBtn.classList.add("active");
+    tracksPage = 1;
     displayTracks();
+    updateTracksPagination();
   };
   wrap.appendChild(allBtn);
 }
 renderAlphabetFilter();
+
+function escapeHTML(str) {
+  if (!str) return "";
+  return str.replace(/[<>&"']/g, c => (
+    { '<':'&lt;', '>':'&gt;', '&':'&amp;', '"':'&quot;', "'":'&#39;' }[c]
+  ));
+}
+function getYoutubeThumb(video) {
+  if (video.thumbnail && video.thumbnail.trim()) return video.thumbnail;
+  let match = (video.videoSrc || "").match(/embed\/([a-zA-Z0-9_-]+)/);
+  if (!match && video.videoSrc) {
+    match = video.videoSrc.match(/(?:watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  }
+  if (match) {
+    return `https://i.ytimg.com/vi/${match[1]}/hqdefault.jpg`;
+  }
+  return '';
+}
+
+// --- DISPLAY + PAGINATION ---
 function displayTracks(alpha) {
   let search = document.getElementById("search-bar").value.toLowerCase();
   let genre = document.getElementById("genre-filter").value;
@@ -633,12 +684,17 @@ function displayTracks(alpha) {
     (!alpha || (track.title[0] && track.title[0].toUpperCase() === alpha))
   );
   const container = document.getElementById("tracks-container");
+  const totalPages = Math.max(1, Math.ceil(filtered.length / TRACKS_PER_PAGE));
+  if (tracksPage > totalPages) tracksPage = 1;
   if (!filtered.length) {
     container.innerHTML = `<div style="color:#fff;">${t("No results found.")}</div>`;
+    document.getElementById("tracks-pagination").innerHTML = "";
     return;
   }
+  const start = (tracksPage - 1) * TRACKS_PER_PAGE;
+  const end = start + TRACKS_PER_PAGE;
   let html = "";
-  filtered.forEach((track, i) => {
+  filtered.slice(start, end).forEach((track) => {
     html += `<div class="track-item">
       <div class="track-info">
         <div class="track-title">
@@ -651,10 +707,8 @@ function displayTracks(alpha) {
     </div>`;
   });
   container.innerHTML = html;
+  updateTracksPagination(filtered.length);
 }
-displayTracks();
-document.getElementById("search-bar").oninput = () => { displayTracks(); displayVideos(); };
-document.getElementById("genre-filter").onchange = () => { displayTracks(); displayVideos(); };
 function displayVideos() {
   let search = document.getElementById("search-bar").value.toLowerCase();
   let genre = document.getElementById("genre-filter").value;
@@ -663,17 +717,22 @@ function displayVideos() {
     (!genre || video.genre === genre)
   );
   const container = document.getElementById("videos-container");
+  const totalPages = Math.max(1, Math.ceil(filtered.length / VIDEOS_PER_PAGE));
+  if (videosPage > totalPages) videosPage = 1;
   if (!filtered.length) {
     container.innerHTML = `<div style="color:#fff;">${t("No results found.")}</div>`;
+    document.getElementById("videos-pagination").innerHTML = "";
     return;
   }
+  const start = (videosPage - 1) * VIDEOS_PER_PAGE;
+  const end = start + VIDEOS_PER_PAGE;
   let html = "";
-  filtered.forEach((video, i) => {
+  filtered.slice(start, end).forEach((video) => {
     html += `<img src="${getYoutubeThumb(video)}" class="video-thumb" tabindex="0" onclick="showVideoModal('${video.videoSrc}')" alt="${escapeHTML(video.title)}"/>`;
   });
   container.innerHTML = html;
+  updateVideosPagination(filtered.length);
 }
-displayVideos();
 window.showVideoModal = function(videoSrc) {
   function toEmbed(url) {
     if (url.includes('/embed/')) return url;
@@ -702,9 +761,289 @@ window.closeVideoModal = function() {
   modal.classList.remove("active");
   modal.style.display = "none";
 };
-document.addEventListener("keydown", function(e){
-  if (e.key==="Escape") closeVideoModal();
-});
+document.getElementById("search-bar").oninput = () => { tracksPage = 1; videosPage = 1; displayTracks(); displayVideos(); updateTracksPagination(); updateVideosPagination(); };
+document.getElementById("genre-filter").onchange = () => { tracksPage = 1; videosPage = 1; displayTracks(); displayVideos(); updateTracksPagination(); updateVideosPagination(); };
+
+// PAGINATION CONTROLS
+function updateTracksPagination(filteredLen) {
+  let search = document.getElementById("search-bar").value.toLowerCase();
+  let genre = document.getElementById("genre-filter").value;
+  let alphaBtn = document.querySelector("#alphabet-filter button.active");
+  let alpha = alphaBtn && alphaBtn.textContent !== "All" ? alphaBtn.textContent : "";
+  let filtered = tracksData.filter(track =>
+    (!search || track.title.toLowerCase().includes(search) || (track.artist && track.artist.toLowerCase().includes(search))) &&
+    (!genre || track.genre === genre) &&
+    (!alpha || (track.title[0] && track.title[0].toUpperCase() === alpha))
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / TRACKS_PER_PAGE));
+  if (tracksPage > totalPages) tracksPage = 1;
+  let pag = document.getElementById("tracks-pagination");
+  if (filtered.length <= TRACKS_PER_PAGE) { pag.innerHTML = ""; return; }
+  let buttons = '';
+  if (tracksPage > 1) buttons += `<button onclick="tracksPrevPage()" style="margin-right:8px;">&laquo; Prev</button>`;
+  for (let p = 1; p <= totalPages; ++p) {
+    buttons += `<button onclick="tracksSetPage(${p})" ${p===tracksPage?'style="font-weight:bold;background:#00ffff;color:#232949;"':''}>${p}</button> `;
+  }
+  if (tracksPage < totalPages) buttons += `<button onclick="tracksNextPage()" style="margin-left:8px;">Next &raquo;</button>`;
+  pag.innerHTML = buttons;
+}
+window.tracksPrevPage = function() { if (tracksPage > 1) { tracksPage--; displayTracks(); updateTracksPagination(); } };
+window.tracksNextPage = function() { 
+  let search = document.getElementById("search-bar").value.toLowerCase();
+  let genre = document.getElementById("genre-filter").value;
+  let alphaBtn = document.querySelector("#alphabet-filter button.active");
+  let alpha = alphaBtn && alphaBtn.textContent !== "All" ? alphaBtn.textContent : "";
+  let filtered = tracksData.filter(track =>
+    (!search || track.title.toLowerCase().includes(search) || (track.artist && track.artist.toLowerCase().includes(search))) &&
+    (!genre || track.genre === genre) &&
+    (!alpha || (track.title[0] && track.title[0].toUpperCase() === alpha))
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / TRACKS_PER_PAGE));
+  if (tracksPage < totalPages) { tracksPage++; displayTracks(); updateTracksPagination(); }
+};
+window.tracksSetPage = function(p) { tracksPage = p; displayTracks(); updateTracksPagination(); };
+
+function updateVideosPagination(filteredLen) {
+  let search = document.getElementById("search-bar").value.toLowerCase();
+  let genre = document.getElementById("genre-filter").value;
+  let filtered = videosData.filter(video =>
+    (!search || video.title.toLowerCase().includes(search)) &&
+    (!genre || video.genre === genre)
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / VIDEOS_PER_PAGE));
+  if (videosPage > totalPages) videosPage = 1;
+  let pag = document.getElementById("videos-pagination");
+  if (filtered.length <= VIDEOS_PER_PAGE) { pag.innerHTML = ""; return; }
+  let buttons = '';
+  if (videosPage > 1) buttons += `<button onclick="videosPrevPage()" style="margin-right:8px;">&laquo; Prev</button>`;
+  for (let p = 1; p <= totalPages; ++p) {
+    buttons += `<button onclick="videosSetPage(${p})" ${p===videosPage?'style="font-weight:bold;background:#00ffff;color:#232949;"':''}>${p}</button> `;
+  }
+  if (videosPage < totalPages) buttons += `<button onclick="videosNextPage()" style="margin-left:8px;">Next &raquo;</button>`;
+  pag.innerHTML = buttons;
+}
+window.videosPrevPage = function() { if (videosPage > 1) { videosPage--; displayVideos(); updateVideosPagination(); } };
+window.videosNextPage = function() { 
+  let search = document.getElementById("search-bar").value.toLowerCase();
+  let genre = document.getElementById("genre-filter").value;
+  let filtered = videosData.filter(video =>
+    (!search || video.title.toLowerCase().includes(search)) &&
+    (!genre || video.genre === genre)
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / VIDEOS_PER_PAGE));
+  if (videosPage < totalPages) { videosPage++; displayVideos(); updateVideosPagination(); }
+};
+window.videosSetPage = function(p) { videosPage = p; displayVideos(); updateVideosPagination(); };
+
+// --- ADMIN PANEL ---
+window.renderAdminTracks = function(tracks) {
+  const sec = document.getElementById("admin-section-tracks");
+  sec.innerHTML = `
+    <form id="admin-track-form" class="admin-form">
+      <div>
+        <label>Title</label>
+        <input type="text" id="adm-track-title" required autocomplete="off"/>
+        <label>Artist</label>
+        <input type="text" id="adm-track-artist" required autocomplete="off"/>
+        <label>Genre</label>
+        <select id="adm-track-genre">${allGenreKeys().map(g => `<option value="${escapeHTML(g)}">${genreT(g)}</option>`)}</select>
+        <label>Audio Link</label>
+        <input type="url" id="adm-track-src" required autocomplete="off"/>
+      </div>
+      <button type="submit" class="admin-btn">Add Track</button>
+      <button type="button" class="admin-btn" style="display:none;" id="adm-track-cancel">Cancel</button>
+      <input type="hidden" id="adm-track-edit-id" value=""/>
+    </form>
+    <table class="admin-list-table" style="margin-top:1.4em;">
+      <thead>
+        <tr>
+          <th></th>
+          <th>#</th><th>Title</th><th>Artist</th><th>Genre</th><th>Audio Link</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="admin-tracks-tbody"></tbody>
+    </table>
+  `;
+  const tbody = sec.querySelector("#admin-tracks-tbody");
+  tbody.innerHTML = tracks.map((t, i) => `
+    <tr>
+      <td>
+        <button class="admin-btn featured${(featured.type==="track" && featured.id==t.id)?" selected":""}" onclick="makeFeaturedTrack('${t.id}');return false;" title="Make Featured Track">⭐</button>
+      </td>
+      <td>${i+1}</td>
+      <td>${escapeHTML(t.title)}</td>
+      <td>${escapeHTML(t.artist)}</td>
+      <td>${escapeHTML(t.genre)}</td>
+      <td><a href="${t.audioSrc}" target="_blank" style="color:#00ffff;">Audio</a></td>
+      <td>
+        <button class="admin-btn" onclick="editTrack('${t.id}')">Edit</button>
+        <button class="admin-btn delete" onclick="deleteTrack('${t.id}')">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+  const form = sec.querySelector("#admin-track-form");
+  form.onsubmit = async e => {
+    e.preventDefault();
+    const title = form['adm-track-title'].value.trim();
+    const artist = form['adm-track-artist'].value.trim();
+    const genre = form['adm-track-genre'].value;
+    const audioSrc = form['adm-track-src'].value.trim();
+    const id = form['adm-track-edit-id'].value;
+    if (!id) { await addTrack({ title, artist, genre, audioSrc }); }
+    else { await updateTrack(id, { title, artist, genre, audioSrc }); }
+    form.reset();
+    sec.querySelector("#adm-track-cancel").style.display = "none";
+    form['adm-track-edit-id'].value = "";
+    form.querySelector("button[type=submit]").textContent = "Add Track";
+  };
+  sec.querySelector("#adm-track-cancel").onclick = () => {
+    form.reset();
+    sec.querySelector("#adm-track-cancel").style.display = "none";
+    form['adm-track-edit-id'].value = "";
+    form.querySelector("button[type=submit]").textContent = "Add Track";
+  };
+  window.editTrack = function(id) {
+    const t = tracksData.find(x => x.id === id);
+    if (!t) return;
+    form['adm-track-title'].value = t.title || '';
+    form['adm-track-artist'].value = t.artist || '';
+    form.querySelector('#adm-track-genre').value = t.genre || '';
+    form['adm-track-src'].value = t.audioSrc || '';
+    form['adm-track-edit-id'].value = id;
+    form.querySelector("button[type=submit]").textContent = "Save";
+    sec.querySelector("#adm-track-cancel").style.display = "";
+  };
+  window.deleteTrack = async function(id) {
+    if (!confirm("Delete this track?")) return;
+    await deleteTrack(id);
+  };
+  window.makeFeaturedTrack = async function(id) {
+    featured = { type: "track", id };
+    await saveFeaturedToFirestore();
+  };
+};
+window.renderAdminVideos = function(videos) {
+  const sec = document.getElementById("admin-section-videos");
+  sec.innerHTML = `
+    <form id="admin-video-form" class="admin-form">
+      <div>
+        <label>Title</label>
+        <input type="text" id="adm-video-title" required autocomplete="off"/>
+        <label>Genre</label>
+        <select id="adm-video-genre">${allGenreKeys().map(g => `<option value="${escapeHTML(g)}">${genreT(g)}</option>`)}</select>
+        <label>Video Link (YouTube or embed or youtu.be)</label>
+        <input type="url" id="adm-video-src" required autocomplete="off"/>
+        <label>Thumbnail Link (optional, auto from YouTube if blank)</label>
+        <input type="url" id="adm-video-thumb" autocomplete="off"/>
+      </div>
+      <button type="submit" class="admin-btn">Add Video</button>
+      <button type="button" class="admin-btn" style="display:none;" id="adm-video-cancel">Cancel</button>
+      <input type="hidden" id="adm-video-edit-id" value=""/>
+    </form>
+    <table class="admin-list-table" style="margin-top:1.4em;">
+      <thead>
+        <tr>
+          <th></th>
+          <th>#</th><th>Title</th><th>Genre</th><th>Thumbnail</th><th>Video Link</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="admin-videos-tbody"></tbody>
+    </table>
+  `;
+  const tbody = sec.querySelector("#admin-videos-tbody");
+  tbody.innerHTML = videos.map((v, i) => `
+    <tr>
+      <td>
+        <button class="admin-btn featured${(featured.type==="video" && featured.id==v.id)?" selected":""}" onclick="makeFeaturedVideo('${v.id}');return false;" title="Make Featured Video">⭐</button>
+      </td>
+      <td>${i+1}</td>
+      <td>${escapeHTML(v.title)}</td>
+      <td>${escapeHTML(v.genre)}</td>
+      <td><img src="${getYoutubeThumb(v)}" alt="thumb" style="width:62px; border-radius:5px;"/></td>
+      <td><a href="${v.videoSrc}" target="_blank" style="color:#00ffff;">Video</a></td>
+      <td>
+        <button class="admin-btn" onclick="editVideo('${v.id}')">Edit</button>
+        <button class="admin-btn delete" onclick="deleteVideo('${v.id}')">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+  const form = sec.querySelector("#admin-video-form");
+  form.onsubmit = async e => {
+    e.preventDefault();
+    const title = form['adm-video-title'].value.trim();
+    const genre = form['adm-video-genre'].value;
+    let thumb = form['adm-video-thumb'].value.trim();
+    let src = form['adm-video-src'].value.trim();
+    let youtubeId = "";
+    const ytMatch = src.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]+)/);
+    if (ytMatch) {
+      youtubeId = ytMatch[1];
+      src = `https://www.youtube.com/embed/${youtubeId}`;
+      if (!thumb) {
+        thumb = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
+      }
+    }
+    const id = form['adm-video-edit-id'].value;
+    if (!id) { await addVideo({ title, genre, thumbnail: thumb, videoSrc: src }); }
+    else { await updateVideo(id, { title, genre, thumbnail: thumb, videoSrc: src }); }
+    form.reset();
+    sec.querySelector("#adm-video-cancel").style.display = "none";
+    form['adm-video-edit-id'].value = "";
+    form.querySelector("button[type=submit]").textContent = "Add Video";
+  };
+  sec.querySelector("#adm-video-cancel").onclick = () => {
+    form.reset();
+    sec.querySelector("#adm-video-cancel").style.display = "none";
+    form['adm-video-edit-id'].value = "";
+    form.querySelector("button[type=submit]").textContent = "Add Video";
+  };
+  window.editVideo = function(id) {
+    const v = videosData.find(x => x.id === id);
+    if (!v) return;
+    form['adm-video-title'].value = v.title || '';
+    form.querySelector('#adm-video-genre').value = v.genre || '';
+    form['adm-video-thumb'].value = v.thumbnail || '';
+    form['adm-video-src'].value = v.videoSrc || '';
+    form['adm-video-edit-id'].value = id;
+    form.querySelector("button[type=submit]").textContent = "Save";
+    sec.querySelector("#adm-video-cancel").style.display = "";
+  };
+  window.deleteVideo = async function(id) {
+    if (!confirm("Delete this video?")) return;
+    await deleteVideo(id);
+  };
+  window.makeFeaturedVideo = async function(id) {
+    featured = { type: "video", id };
+    await saveFeaturedToFirestore();
+  };
+};
+window.renderAdminGenres = function() {
+  const sec = document.getElementById("admin-section-genres");
+  sec.innerHTML = `
+    <form id="admin-genre-form" class="admin-form" style="margin-bottom:1.2em;">
+      <input id="new-genre-name" type="text" placeholder="${t("new-genre-placeholder")}" required/>
+      <button type="submit" class="admin-btn">${t("add-genre-btn")}</button>
+    </form>
+    <ul style="color:#fff;list-style:none;padding:0;">
+      ${userGenres.map((g,i) => `
+        <li>
+          ${escapeHTML(g)}
+          <button class="admin-btn delete" onclick="removeUserGenre('${g}')">Delete</button>
+        </li>
+      `).join('')}
+    </ul>
+  `;
+  sec.querySelector("#admin-genre-form").onsubmit = async e => {
+    e.preventDefault();
+    const name = sec.querySelector("#new-genre-name").value.trim();
+    if (!name) return;
+    await addGenre(name);
+  };
+  window.removeUserGenre = async function(name) {
+    await deleteGenre(name);
+  };
+};
+
 function renderAdmin() {
   const overlay = document.getElementById("admin-modal-overlay");
   const inner = document.getElementById("admin-modal-inner");
@@ -740,9 +1079,9 @@ function renderAdmin() {
     btn.onclick = ()=>switchTab(btn.dataset.tab);
   });
   switchTab('tracks');
-  renderAdminTracks(tracksData);
-  renderAdminVideos(videosData);
-  renderAdminGenres();
+  window.renderAdminTracks(tracksData);
+  window.renderAdminVideos(videosData);
+  window.renderAdminGenres();
   overlay.style.display = "flex";
 }
 function closeAdmin() {
@@ -751,260 +1090,9 @@ function closeAdmin() {
 document.getElementById("admin-modal-overlay").onclick = function(e){
   if (e.target === this) closeAdmin();
 };
-function renderGenreDropdown(id, value) {
-  let html = `<select id="${id}">` +
-    allGenreKeys().map(g => `<option value="${escapeHTML(g)}"${g===value?' selected':''}>${genreT(g)}</option>`)
-    .join('') + `</select>`;
-  return html;
-}
-function renderAdminTracks(tracks) {
-  const sec = document.getElementById("admin-section-tracks");
-  sec.innerHTML = `
-    <form id="admin-track-form" class="admin-form">
-      <div>
-        <label>Title</label>
-        <input type="text" id="adm-track-title" required autocomplete="off"/>
-        <label>Artist</label>
-        <input type="text" id="adm-track-artist" required autocomplete="off"/>
-        <label>Genre</label>
-        ${renderGenreDropdown('adm-track-genre', '')}
-        <label>Audio Link</label>
-        <input type="url" id="adm-track-src" required autocomplete="off"/>
-      </div>
-      <button type="submit" class="admin-btn">Add Track</button>
-      <button type="button" class="admin-btn" style="display:none;" id="adm-track-cancel">Cancel</button>
-      <input type="hidden" id="adm-track-edit-idx" value=""/>
-    </form>
-    <table class="admin-list-table" style="margin-top:1.4em;">
-      <thead>
-        <tr>
-          <th></th>
-          <th>#</th><th>Title</th><th>Artist</th><th>Genre</th><th>Audio Link</th><th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="admin-tracks-tbody"></tbody>
-    </table>
-  `;
-  const tbody = sec.querySelector("#admin-tracks-tbody");
-  tbody.innerHTML = tracks.map((t, i) => `
-    <tr>
-      <td>
-        <button class="admin-btn featured${(featured.type==="track" && featured.index==i)?" selected":""}" onclick="makeFeaturedTrack(${i});return false;" title="Make Featured Track">⭐</button>
-      </td>
-      <td>${i+1}</td>
-      <td>${escapeHTML(t.title)}</td>
-      <td>${escapeHTML(t.artist)}</td>
-      <td>${escapeHTML(t.genre)}</td>
-      <td><a href="${t.audioSrc}" target="_blank" style="color:#00ffff;">Audio</a></td>
-      <td>
-        <button class="admin-btn" onclick="editTrack(${i})">Edit</button>
-        <button class="admin-btn delete" onclick="deleteTrack(${i})">Delete</button>
-      </td>
-    </tr>
-  `).join('');
-  const form = sec.querySelector("#admin-track-form");
-  form.onsubmit = e => {
-    e.preventDefault();
-    const title = form['adm-track-title'].value.trim();
-    const artist = form['adm-track-artist'].value.trim();
-    const genre = form['adm-track-genre'].value;
-    const audioSrc = form['adm-track-src'].value.trim();
-    let tracks = tracksData;
-    const idx = form['adm-track-edit-idx'].value;
-    if (idx === "" || idx === null) {
-      tracks.push({ title, artist, genre, audioSrc });
-    } else {
-      tracks[idx] = { title, artist, genre, audioSrc };
-    }
-    localStorage.setItem('tracksData', JSON.stringify(tracks));
-    tracksData = tracks;
-    renderAdminTracks(tracks);
-    populateGenreFilter();
-    renderFeaturedSection();
-    displayTracks();
-  };
-  sec.querySelector("#adm-track-cancel").onclick = () => {
-    renderAdminTracks(tracksData);
-  };
-  window.editTrack = function(idx) {
-    const t = tracks[idx];
-    form['adm-track-title'].value = t.title || '';
-    form['adm-track-artist'].value = t.artist || '';
-    form.querySelector('#adm-track-genre').value = t.genre || '';
-    form['adm-track-src'].value = t.audioSrc || '';
-    form['adm-track-edit-idx'].value = idx;
-    form.querySelector("button[type=submit]").textContent = "Save";
-    form.querySelector("#adm-track-cancel").style.display = "";
-  }
-  window.deleteTrack = function(idx) {
-    if (!confirm("Delete this track?")) return;
-    let tracks = tracksData;
-    tracks.splice(idx, 1);
-    localStorage.setItem('tracksData', JSON.stringify(tracks));
-    tracksData = tracks;
-    if (featured.type==="track" && featured.index==idx) {
-      featured = {type:"video", index:0};
-      localStorage.setItem("featuredItem", JSON.stringify(featured));
-    }
-    renderAdminTracks(tracks);
-    populateGenreFilter();
-    renderFeaturedSection();
-    displayTracks();
-  }
-  window.makeFeaturedTrack = function(idx) {
-    featured = {type: "track", index: idx};
-    localStorage.setItem("featuredItem", JSON.stringify(featured));
-    renderAdminTracks(tracksData);
-    renderAdminVideos(videosData);
-    renderFeaturedSection();
-  }
-}
-function renderAdminVideos(videos) {
-  const sec = document.getElementById("admin-section-videos");
-  sec.innerHTML = `
-    <form id="admin-video-form" class="admin-form">
-      <div>
-        <label>Title</label>
-        <input type="text" id="adm-video-title" required autocomplete="off"/>
-        <label>Genre</label>
-        ${renderGenreDropdown('adm-video-genre', '')}
-        <label>Video Link (YouTube or embed or youtu.be)</label>
-        <input type="url" id="adm-video-src" required autocomplete="off"/>
-        <label>Thumbnail Link (optional, auto from YouTube if blank)</label>
-        <input type="url" id="adm-video-thumb" autocomplete="off"/>
-      </div>
-      <button type="submit" class="admin-btn">Add Video</button>
-      <button type="button" class="admin-btn" style="display:none;" id="adm-video-cancel">Cancel</button>
-      <input type="hidden" id="adm-video-edit-idx" value=""/>
-    </form>
-    <table class="admin-list-table" style="margin-top:1.4em;">
-      <thead>
-        <tr>
-          <th></th>
-          <th>#</th><th>Title</th><th>Genre</th><th>Thumbnail</th><th>Video Link</th><th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="admin-videos-tbody"></tbody>
-    </table>
-  `;
-  const tbody = sec.querySelector("#admin-videos-tbody");
-  tbody.innerHTML = videos.map((v, i) => `
-    <tr>
-      <td>
-        <button class="admin-btn featured${(featured.type==="video" && featured.index==i)?" selected":""}" onclick="makeFeaturedVideo(${i});return false;" title="Make Featured Video">⭐</button>
-      </td>
-      <td>${i+1}</td>
-      <td>${escapeHTML(v.title)}</td>
-      <td>${escapeHTML(v.genre)}</td>
-      <td><img src="${getYoutubeThumb(v)}" alt="thumb" style="width:62px; border-radius:5px;"/></td>
-      <td><a href="${v.videoSrc}" target="_blank" style="color:#00ffff;">Video</a></td>
-      <td>
-        <button class="admin-btn" onclick="editVideo(${i})">Edit</button>
-        <button class="admin-btn delete" onclick="deleteVideo(${i})">Delete</button>
-      </td>
-    </tr>
-  `).join('');
-  const form = sec.querySelector("#admin-video-form");
-  form.onsubmit = e => {
-    e.preventDefault();
-    const title = form['adm-video-title'].value.trim();
-    const genre = form['adm-video-genre'].value;
-    let thumb = form['adm-video-thumb'].value.trim();
-    let src = form['adm-video-src'].value.trim();
-    let youtubeId = "";
-    const ytMatch = src.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]+)/);
-    if (ytMatch) {
-      youtubeId = ytMatch[1];
-      src = `https://www.youtube.com/embed/${youtubeId}`;
-      if (!thumb) {
-        thumb = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
-      }
-    }
-    let videos = videosData;
-    const idx = form['adm-video-edit-idx'].value;
-    if (idx === "" || idx === null) {
-      videos.push({ title, genre, thumbnail: thumb, videoSrc: src });
-    } else {
-      videos[idx] = { title, genre, thumbnail: thumb, videoSrc: src };
-    }
-    localStorage.setItem('videosData', JSON.stringify(videos));
-    videosData = videos;
-    renderAdminVideos(videos);
-    populateGenreFilter();
-    renderFeaturedSection();
-    displayVideos();
-  };
-  sec.querySelector("#adm-video-cancel").onclick = () => {
-    renderAdminVideos(videosData);
-  };
-  window.editVideo = function(idx) {
-    const v = videos[idx];
-    form['adm-video-title'].value = v.title || '';
-    form.querySelector('#adm-video-genre').value = v.genre || '';
-    form['adm-video-thumb'].value = v.thumbnail || '';
-    form['adm-video-src'].value = v.videoSrc || '';
-    form['adm-video-edit-idx'].value = idx;
-    form.querySelector("button[type=submit]").textContent = "Save";
-    form.querySelector("#adm-video-cancel").style.display = "";
-  }
-  window.deleteVideo = function(idx) {
-    if (!confirm("Delete this video?")) return;
-    let videos = videosData;
-    videos.splice(idx, 1);
-    localStorage.setItem('videosData', JSON.stringify(videos));
-    videosData = videos;
-    if (featured.type==="video" && featured.index==idx) {
-      featured = {type:"track", index:0};
-      localStorage.setItem("featuredItem", JSON.stringify(featured));
-    }
-    renderAdminVideos(videos);
-    populateGenreFilter();
-    renderFeaturedSection();
-    displayVideos();
-  }
-  window.makeFeaturedVideo = function(idx) {
-    featured = {type: "video", index: idx};
-    localStorage.setItem("featuredItem", JSON.stringify(featured));
-    renderAdminTracks(tracksData);
-    renderAdminVideos(videosData);
-    renderFeaturedSection();
-  }
-}
-function renderAdminGenres() {
-  const sec = document.getElementById("admin-section-genres");
-  sec.innerHTML = `
-    <form id="admin-genre-form" class="admin-form" style="margin-bottom:1.2em;">
-      <input id="new-genre-name" type="text" placeholder="${t("new-genre-placeholder")}" required/>
-      <button type="submit" class="admin-btn">${t("add-genre-btn")}</button>
-    </form>
-    <ul style="color:#fff;list-style:none;padding:0;">
-      ${userGenres.map((g,i) => `
-        <li>
-          ${escapeHTML(g)}
-          <button class="admin-btn delete" onclick="removeUserGenre(${i})">Delete</button>
-        </li>
-      `).join('')}
-    </ul>
-  `;
-  sec.querySelector("#admin-genre-form").onsubmit = e => {
-    e.preventDefault();
-    const name = sec.querySelector("#new-genre-name").value.trim();
-    if (!name) return;
-    addUserGenre(name);
-    renderAdminGenres();
-    populateGenreFilter();
-  };
-  window.removeUserGenre = function(idx) {
-    userGenres.splice(idx, 1);
-    localStorage.setItem("userGenres", JSON.stringify(userGenres));
-    renderAdminGenres();
-    populateGenreFilter();
-  }
-}
 
 // --- Password protection for admin ---
 const ADMIN_PASSWORD = "wajbzz123";
-
 function promptAdminPasswordAndOpen() {
   if (sessionStorage.getItem("adminAuth") === "ok") {
     renderAdmin();
@@ -1019,6 +1107,11 @@ function promptAdminPasswordAndOpen() {
   }
 }
 document.getElementById("admin-settings-trigger").onclick = promptAdminPasswordAndOpen;
-</script>
+
+// --- INITIALIZE ---
+populateGenreFilter();
+renderFeaturedSection();
+displayTracks();
+displayVideos();</script>
 </body>
 </html>
