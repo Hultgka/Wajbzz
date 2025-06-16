@@ -271,6 +271,117 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   #videos-container { justify-content: center; }
   #admin-modal-inner { max-width:98vw;padding:1em;}
 }
+@media (max-width: 700px) {
+  nav {
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.8rem 0;
+  }
+  nav a {
+    margin: 0.4rem 0;
+    font-size: 1.2rem;
+  }
+  main {
+    margin: 1rem auto 3rem;
+    padding: 0 .2rem;
+    max-width: 100vw;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  .featured-section {
+    flex-direction: column;
+    gap: 0.7em;
+    padding: 0.7em;
+    text-align: center;
+  }
+  .featured-thumb {
+    width: 96px;
+    height: 54px;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 0.2em 0;
+  }
+  .track-item,
+  .video-thumb {
+    width: 98vw;
+    min-width: 0;
+    max-width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  #tracks-container,
+  #videos-container {
+    flex-direction: column;
+    gap: 0.8em;
+    align-items: stretch;
+  }
+  #videos-container {
+    gap: 0.7em;
+    margin-bottom: 1em;
+  }
+  .track-info {
+    font-size: 0.98rem;
+  }
+  .section-header {
+    font-size: 1.1rem;
+    margin-top: 1.1em;
+    margin-bottom: 0.5em;
+  }
+  .footer-bottom-right {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+    text-align: center;
+    font-size: 0.95rem;
+    background: #000a;
+    padding: 0.3rem 0;
+  }
+  .social-buttons {
+    left: 50%;
+    bottom: 0.7rem;
+    transform: translateX(-50%);
+  }
+  .lang-buttons {
+    top: auto;
+    bottom: 3.5rem;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+  }
+  #admin-settings-trigger {
+    right: 10px;
+    bottom: 3.9rem;
+    padding: 0.7rem;
+  }
+  #admin-modal-inner {
+    max-width: 99vw;
+    padding: 0.6em;
+  }
+}
+@media (max-width: 420px) {
+  h1 { font-size: 1.16rem; }
+  .featured-thumb { width: 72px; height: 40px; }
+  .track-item { padding: 0.7em 0.6em 0.7em 0.6em; font-size: 0.92rem;}
+  .footer-bottom-right { font-size: 0.85rem; }
+  .social-buttons a {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+  }
+  .lang-buttons button {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+  }
+  #admin-settings-trigger {
+    font-size: 1.1rem;
+    bottom: 3.7rem;
+  }
+  #admin-modal-inner { padding: 0.2em; font-size: 0.92rem;}
+}
 </style>
 </head>
 <body>
