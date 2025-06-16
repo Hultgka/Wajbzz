@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title data-i18n="pageTitle">Wajbzz - Team</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body, html { background: #000; color: #3ec1e0; font-family: 'Orbitron', sans-serif; margin: 0; }
+    nav { background: #0f0f0f; display: flex; justify-content: center; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; gap: 2rem; flex-wrap: wrap; }
+    nav a { color: #3ec1e0; text-decoration: none; font-size: 1.1rem; display: flex; align-items: center; gap: .4rem; transition: color .3s; padding: .3rem .8rem; border-radius: 6px; }
+    nav a:hover, nav a:focus { color: #00ffff; background: #003344; outline: none; }
+    nav a:focus-visible { outline: 2px solid #00ffff; outline-offset: 2px; }
+    .social-buttons { position: fixed; bottom: 1rem; left: 1rem; display: flex; gap: 0.5rem; z-index: 10000; }
+    .social-buttons a { background: #111; border: 2px solid #3ec1e0; color: #3ec1e0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.3s; font-size: 1.1rem; text-decoration: none; }
+    .social-buttons a:hover { background: #00ffff; color: #000; border-color: #00ffff; }
+    .lang-buttons { position: fixed; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 10000; }
+    .lang-buttons button { background: none; border: 2px solid #3ec1e0; color: #3ec1e0; font-family: 'Orbitron', sans-serif; cursor: pointer; padding: 0.3rem 0.8rem; font-size: 0.9rem; border-radius: 4px; transition: background 0.3s, color 0.3s; }
+    .lang-buttons button.active, .lang-buttons button:hover { background: #00ffff; color: #000; border-color: #00ffff; }
+    .lang-buttons button:focus-visible { outline: 2px solid #00ffff; outline-offset: 2px; }
+    .footer-bottom-right { position: fixed; right: 0; bottom: 0; padding: 10px 18px; color: #3ec1e0; font-size: .9rem; background: #0f0f0f; border-top-left-radius: 10px; z-index: 100; border-top: 1px solid #222; border-left: 1px solid #222; text-align: right; box-shadow: 0 0 10px #00ffff22; }
+    main { max-width: 1200px; margin: 3rem auto 5rem; padding: 0 1rem; min-height: 50vh; }
+    h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1.5rem; text-shadow: 0 0 8px #00ffff; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2rem;
+      justify-items: center;
+      align-items: start;
+      padding-bottom: 2rem;
+    }
+    @media (max-width: 1200px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 800px)  { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px)  { .team-grid { grid-template-columns: 1fr; } }
+    .team-card {
+      background: #111;
+      border-radius: 14px;
+      box-shadow: 0 0 14px #00ffff44;
+      padding: 1.2rem 1rem 1.2rem 1rem;
+      width: 210px;
+      aspect-ratio: 1/1.18;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      border: 1.5px solid #222;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.16s;
+      min-width: 0;
+      min-height: 0;
+    }
+    .team-card:hover  {
+      box-shadow: 0 0 18px #00ffff77;
+      border-color: #00ffff;
+      transform: translateY(-7px) scale(1.045);
+    }
+    .team-img {
+      width: 92px;
+      height: 92px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #1a1a1a;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 12px #00ffff33;
+      border: 2.5px solid #3ec1e0;
+    }
+    .team-name {
+      font-size: 1.16rem;
+      font-weight: 700;
+      color: #00ffff;
+      text-align: center;
+      margin-bottom: 0.2em;
+      text-shadow: 0 0 2px #003344;
+      word-break: break-word;
+    }
+    .team-role {
+      font-size: 1.03rem;
+      color: #3ec1e0;
+      text-align: center;
+      font-weight: 500;
+      margin-bottom: 0.18em;
+      word-break: break-word;
+    }
+    /* Modal styles */
+    #team-modal-bg {
+      position: fixed;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+    #team-modal-bg.active { display: flex; }
+    #team-modal {
+      background: #181818;
+      border-radius: 15px;
+      box-shadow: 0 0 35px #00ffff99;
+      padding: 2.1rem 1.5rem 1.5rem 1.5rem;
+      min-width: 310px;
+      max-width: 97vw;
+      color: #3ec1e0;
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      max-height: 98vh;
+      overflow-y: auto;
+      text-align: center;
+    }
+    #team-modal .close-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #00ffff;
+      cursor: pointer;
+      z-index: 20;
+    }
+    #team-modal .close-btn:hover, #team-modal .close-btn:focus { color: #fff; outline: none; }
+    .modal-img {
+      width: 105px;
+      height: 105px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #1a1a1a;
+      display: block;
+      margin: 0 auto 1.1em auto;
+      box-shadow: 0 0 16px #00ffff33;
+      border: 3px solid #3ec1e0;
+    }
+    .modal-name {
+      font-size: 1.29rem;
+      font-weight: 700;
+      color: #00ffff;
+      margin-bottom: 0.3em;
+      text-align: center;
+      text-shadow: 0 0 3px #003344;
+    }
+    .modal-role {
+      font-size: 1.09rem;
+      color: #3ec1e0;
+      margin-bottom: 0.9em;
+      text-align: center;
+      font-weight: 500;
+    }
+    .modal-bio {
+      font-size: 1.09rem;
+      color: #d1f7ff;
+      margin-bottom: 0.9em;
+      margin-top: 0.5em;
+      text-align: left;
+      white-space: pre-line;
+    }
+    /* Admin Cog */
+    .settings-btn {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      background: #111;
+      border: 2px solid #3ec1e0;
+      color: #3ec1e0;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      z-index: 10001;
+      transition: all 0.3s;
+      cursor: pointer;
+      box-shadow: 0 0 18px #00ffff44;
+    }
+    .settings-btn:hover, .settings-btn:focus-visible { background: #00ffff; color: #000; border-color: #00ffff; outline: none; }
+    #admin-modal-bg {
+      position: fixed;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20001;
+    }
+    #admin-modal-bg.active { display: flex; }
+    #admin-modal {
+      background: #111;
+      border-radius: 14px;
+      box-shadow: 0 0 30px #00ffff99;
+      padding: 2rem 2.5rem;
+      min-width: 330px;
+      max-width: 98vw;
+      color: #3ec1e0;
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      max-height: 96vh;
+      overflow-y: auto;
+    }
+    #admin-modal .close-btn {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #00ffff;
+      cursor: pointer;
+      z-index: 20;
+    }
+    #admin-modal .close-btn:hover, #admin-modal .close-btn:focus { color: #fff; outline: none; }
+    #admin-modal h2 { margin-top: 0; font-size: 1.3rem; border-bottom: 2px solid #00ffff; padding-bottom: .4rem; margin-bottom: .9rem; }
+    .admin-form label { font-size: 0.98rem; margin-top: .5em; display: block; }
+    .admin-form input, .admin-form textarea { width: 100%; margin-top: 2px; margin-bottom: .5em; padding: 0.4em 0.7em; font-family: inherit; font-size: 1rem; border-radius: 4px; border: 1.5px solid #00ffff88; background: #181818; color: #3ec1e0; outline: none; }
+    .admin-form textarea { min-height: 2.2em; }
+    .admin-btn { padding: 0.2em 0.7em; background: #00ffff; color: #000; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 0.98rem; margin-right: 0.3em; margin-bottom: 0.2em; transition: background .2s,color .2s; }
+    .admin-btn.delete { background: #d23b3b; color: #fff; }
+    .admin-form .admin-btn { margin-top: 0.6em; }
+    .admin-modal-pw-wrap { text-align: center; }
+    .admin-modal-pw-wrap input[type=password] { margin-top: 1.5em; padding: 0.5em 1em; border-radius: 6px; border: 2px solid #3ec1e0; background: #181818; color: #3ec1e0; font-size:1.1rem; width: 85%; max-width: 340px; text-align: center; }
+    .admin-modal-pw-wrap .admin-btn { margin-top: 1.2em; width: 120px; font-size: 1.02rem; }
+    .admin-err-msg { color: #ff4d4d; margin-top: 1em; font-size: 1rem; display: block; min-height: 1.1em; }
+    @media (max-width: 600px) {
+      .team-card { width: 90vw; aspect-ratio: 1/1.1; max-width: 100vw; }
+      #admin-modal { padding: 0.8rem 0.4rem; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" data-i18n="navStart" tabindex="0"><i class="fa-solid fa-house"></i> <span>Start</span></a>
+  <a href="reviews.html" data-i18n="navReviews" tabindex="0"><i class="fa-solid fa-star"></i> <span>Reviews</span></a>
+  <a href="interviews.html" data-i18n="navInterviews" tabindex="0"><i class="fa-solid fa-microphone"></i> <span>Interviews</span></a>
+  <a href="music.html" data-i18n="navMusic" tabindex="0"><i class="fa-solid fa-music"></i> <span>Music</span></a>
+  <a href="events.html" data-i18n="navEvents"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
+  <a href="team.html" data-i18n="navTeam" tabindex="0"><i class="fa-solid fa-users"></i> <span>Team</span></a>
+  <a href="contact.html" data-i18n="navContact" tabindex="0"><i class="fa-solid fa-envelope"></i> <span>Contact</span></a>
+</nav>
+<div class="lang-buttons" role="group" aria-label="Language selector">
+  <button id="lang-en" aria-pressed="true" class="active" aria-label="English">EN</button>
+  <button id="lang-pl" aria-pressed="false" aria-label="Polish">PL</button>
+</div>
+<div class="social-buttons">
+  <a href="https://www.facebook.com/wajbzz" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.instagram.com/wajbzz/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.youtube.com/@wajbzz" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+</div>
+<main>
+  <h1 data-i18n="teamTitle">Team</h1>
+  <div class="team-grid" id="team-grid"></div>
+</main>
+<div class="footer-bottom-right">
+  © 2025 Wajbzz
+</div>
+<button class="settings-btn" id="settings-btn" title="Admin panel" aria-label="Admin panel">
+  <i class="fa fa-cog"></i>
+</button>
+<div id="admin-modal-bg">
+  <div id="admin-modal"></div>
+</div>
+<div id="team-modal-bg">
+  <div id="team-modal"></div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+const teamKey = "wajbzzTeamData";
+const adminPassword = "wajbzz123";
+let currentLang = "en";
+const langData = {
+  en: {
+    pageTitle: "Wajbzz - Team",
+    teamTitle: "Team",
+    navStart: "Start",
+    navReviews: "Reviews",
+    navInterviews: "Interviews",
+    navMusic: "Music",
+    navEvents: "Events",
+    navTeam: "Team",
+    navContact: "Contact",
+    adminPanel: "Admin Panel",
+    addMember: "Add Member",
+    editMember: "Edit Member",
+    name: "Name",
+    role: "Role",
+    bio: "Bio",
+    image: "Image (URL or file)",
+    imageURL: "Image URL",
+    imageUpload: "or upload file",
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    login: "Login",
+    wrongPassword: "Wrong password!",
+    requiredField: "Field required"
+  },
+  pl: {
+    pageTitle: "Wajbzz - Zespół",
+    teamTitle: "Zespół",
+    navStart: "Start",
+    navReviews: "Recenzje",
+    navInterviews: "Wywiady",
+    navMusic: "Muzyka",
+    navEvents: "Wydarzenia",
+    navTeam: "Zespół",
+    navContact: "Kontakt",
+    adminPanel: "Panel Admina",
+    addMember: "Dodaj osobę",
+    editMember: "Edytuj osobę",
+    name: "Imię i nazwisko",
+    role: "Rola",
+    bio: "Opis",
+    image: "Obraz (URL lub plik)",
+    imageURL: "Adres URL obrazu",
+    imageUpload: "lub wyślij plik",
+    save: "Zapisz",
+    cancel: "Anuluj",
+    delete: "Usuń",
+    login: "Zaloguj",
+    wrongPassword: "Błędne hasło!",
+    requiredField: "Pole wymagane"
+  }
+};
+const langEnBtn = document.getElementById('lang-en');
+const langPlBtn = document.getElementById('lang-pl');
+langEnBtn.onclick = () => setLang("en");
+langPlBtn.onclick = () => setLang("pl");
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    let key = el.getAttribute("data-i18n");
+    if (langData[lang][key]) el.textContent = langData[lang][key];
+  });
+  langEnBtn.classList.toggle('active', lang === "en");
+  langPlBtn.classList.toggle('active', lang === "pl");
+  langEnBtn.setAttribute("aria-pressed", lang === "en");
+  langPlBtn.setAttribute("aria-pressed", lang === "pl");
+  document.title = langData[lang].pageTitle;
+  renderTeam();
+}
+function getTeam() {
+  try { return JSON.parse(localStorage.getItem(teamKey)) || []; }
+  catch { return []; }
+}
+function setTeam(arr) {
+  localStorage.setItem(teamKey, JSON.stringify(arr));
+}
+function renderTeam() {
+  const team = getTeam();
+  const grid = document.getElementById("team-grid");
+  grid.innerHTML = "";
+  if (team.length===0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#888;font-size:1.1rem;">(${currentLang==="pl"?"Brak członków zespołu":"No team members yet."})</div>`;
+    return;
+  }
+  team.forEach((m, i) => {
+    let card = document.createElement("div");
+    card.className = "team-card";
+    card.tabIndex = 0;
+    card.setAttribute("role","button");
+    card.setAttribute("aria-label", (m["name_"+currentLang]||m.name_en||m.name_pl) + " team member");
+    card.onclick = () => openTeamModal(i);
+    card.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") openTeamModal(i); };
+    let img = document.createElement("img");
+    img.className = "team-img";
+    img.src = m.image;
+    img.alt = m["name_"+currentLang]||m.name_en||m.name_pl || "Team member";
+    card.appendChild(img);
+
+    let name = document.createElement("div");
+    name.className = "team-name";
+    name.textContent = m["name_"+currentLang]||m.name_en||m.name_pl;
+    card.appendChild(name);
+
+    let role = document.createElement("div");
+    role.className = "team-role";
+    role.textContent = m["role_"+currentLang]||m.role_en||m.role_pl;
+    card.appendChild(role);
+
+    grid.appendChild(card);
+  });
+}
+const teamModalBg = document.getElementById("team-modal-bg");
+const teamModal = document.getElementById("team-modal");
+function openTeamModal(idx) {
+  let m = getTeam()[idx];
+  if (!m) return;
+  teamModal.innerHTML = `
+    <button class="close-btn" onclick="closeTeamModal()" aria-label="Close">&times;</button>
+    <img src="${escapeHTML(m.image)}" alt="${escapeHTML(m["name_"+currentLang]||m.name_en||m.name_pl)}" class="modal-img"/>
+    <div class="modal-name">${escapeHTML(m["name_"+currentLang]||m.name_en||m.name_pl)}</div>
+    <div class="modal-role">${escapeHTML(m["role_"+currentLang]||m.role_en||m.role_pl)}</div>
+    <div class="modal-bio">${escapeHTML(m["bio_"+currentLang]||m.bio_en||m.bio_pl)}</div>
+  `;
+  teamModalBg.classList.add("active");
+}
+window.closeTeamModal = function() {
+  teamModalBg.classList.remove("active");
+}
+teamModalBg.onclick = e => { if (e.target === teamModalBg) closeTeamModal(); };
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && teamModalBg.classList.contains("active")) closeTeamModal();
+});
+
+// Admin Panel
+const settingsBtn = document.getElementById("settings-btn");
+const adminModalBg = document.getElementById("admin-modal-bg");
+const adminModal = document.getElementById("admin-modal");
+settingsBtn.addEventListener('click', openAdminModal);
+function openAdminModal() {
+  showAdminLogin();
+  adminModalBg.classList.add("active");
+}
+function closeAdminModal() { adminModalBg.classList.remove("active"); }
+adminModalBg.onclick = e => { if (e.target === adminModalBg) closeAdminModal(); };
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && adminModalBg.classList.contains("active")) closeAdminModal();
+});
+
+function showAdminLogin() {
+  adminModal.innerHTML = `
+    <div class="admin-modal-pw-wrap">
+      <h2>${langData[currentLang].adminPanel}</h2>
+      <input type="password" id="admin-pw-input" placeholder="Password..." autocomplete="current-password"/>
+      <div class="admin-err-msg" id="admin-pw-msg"></div>
+      <button class="admin-btn" id="admin-pw-submit">${langData[currentLang].login}</button>
+    </div>
+    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
+  `;
+  document.getElementById("admin-pw-submit").onclick = function() {
+    const val = document.getElementById("admin-pw-input").value;
+    if (val === adminPassword) {
+      window.adminAuthed = true;
+      showAdminPanel();
+      adminModalBg.classList.add("active");
+    } else {
+      document.getElementById("admin-pw-msg").textContent = langData[currentLang].wrongPassword;
+    }
+  };
+  document.getElementById("admin-pw-input").onkeydown = function(e) {
+    if (e.key === "Enter") document.getElementById("admin-pw-submit").click();
+  }
+}
+function showAdminPanel(editIdx = null) {
+  let team = getTeam();
+  let editMember = null;
+  if (editIdx !== null && team[editIdx]) editMember = team[editIdx];
+  adminModal.innerHTML = `
+    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
+    <h2>${langData[currentLang].adminPanel}</h2>
+    <form id="admin-team-form" class="admin-form" autocomplete="off">
+      <label>${langData[currentLang].name} (EN)*</label>
+      <input type="text" id="adm-name-en" value="${editMember ? escapeHTML(editMember.name_en||"") : ''}" required autocomplete="off"/>
+      <label>${langData[currentLang].name} (PL)*</label>
+      <input type="text" id="adm-name-pl" value="${editMember ? escapeHTML(editMember.name_pl||"") : ''}" required autocomplete="off"/>
+      <label>${langData[currentLang].role} (EN)*</label>
+      <input type="text" id="adm-role-en" value="${editMember ? escapeHTML(editMember.role_en||"") : ''}" required autocomplete="off"/>
+      <label>${langData[currentLang].role} (PL)*</label>
+      <input type="text" id="adm-role-pl" value="${editMember ? escapeHTML(editMember.role_pl||"") : ''}" required autocomplete="off"/>
+      <label>${langData[currentLang].bio} (EN)*</label>
+      <textarea id="adm-bio-en" required>${editMember ? escapeHTML(editMember.bio_en||"") : ''}</textarea>
+      <label>${langData[currentLang].bio} (PL)*</label>
+      <textarea id="adm-bio-pl" required>${editMember ? escapeHTML(editMember.bio_pl||"") : ''}</textarea>
+      <label>${langData[currentLang].image}*</label>
+      <input type="url" id="adm-image-url" placeholder="${langData[currentLang].imageURL}" value="${editMember&&editMember.imageIsUrl!==false?escapeHTML(editMember.image):''}" style="margin-bottom:0.4em;"/>
+      <div style="margin-bottom:0.6em;">
+        <span style="font-size:0.93em;">${langData[currentLang].imageUpload}</span>
+        <input type="file" id="adm-image-file" accept="image/*" style="margin-left:0.6em;display:inline-block;"/>
+      </div>
+      <div style="display:none;color:#ff4d4d;" id="admin-form-msg"></div>
+      <input type="hidden" id="adm-edit-idx" value="${editIdx!==null?editIdx:''}"/>
+      <button type="submit" class="admin-btn">${editMember ? langData[currentLang].save : langData[currentLang].addMember}</button>
+      ${editMember !== null ? `<button type="button" class="admin-btn" id="adm-cancel">${langData[currentLang].cancel}</button>` : ""}
+    </form>
+    <table class="admin-list-table" style="margin-top:1.8em;">
+      <thead>
+        <tr>
+          <th>#</th><th>${langData[currentLang].name}</th><th>${langData[currentLang].role}</th><th>${langData[currentLang].delete}</th><th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="admin-team-tbody"></tbody>
+    </table>
+  `;
+  document.getElementById("admin-team-form").onsubmit = function(e) {
+    e.preventDefault();
+    let name_en = this["adm-name-en"].value.trim();
+    let name_pl = this["adm-name-pl"].value.trim();
+    let role_en = this["adm-role-en"].value.trim();
+    let role_pl = this["adm-role-pl"].value.trim();
+    let bio_en = this["adm-bio-en"].value.trim();
+    let bio_pl = this["adm-bio-pl"].value.trim();
+    let imgUrl = this["adm-image-url"].value.trim();
+    let imgFile = this["adm-image-file"].files[0];
+    let idx = this["adm-edit-idx"].value;
+    let msg = document.getElementById("admin-form-msg");
+
+    if (!name_en || !name_pl || !role_en || !role_pl || !bio_en || !bio_pl ) {
+      msg.textContent = langData[currentLang].requiredField;
+      msg.style.display = "";
+      return;
+    }
+    function finishAndSave(img, isUrl) {
+      let obj = {name_en, name_pl, role_en, role_pl, bio_en, bio_pl, image: img, imageIsUrl: isUrl};
+      let team = getTeam();
+      if (idx) team[parseInt(idx)] = obj;
+      else team.push(obj);
+      setTeam(team);
+      renderTeam();
+      showAdminPanel();
+    }
+    if (imgFile) {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        finishAndSave(e.target.result, false);
+      };
+      reader.readAsDataURL(imgFile);
+    } else if (imgUrl) {
+      finishAndSave(imgUrl, true);
+    } else {
+      msg.textContent = langData[currentLang].requiredField;
+      msg.style.display = "";
+      return;
+    }
+  };
+  if (editMember !== null)
+    document.getElementById("adm-cancel").onclick = () => showAdminPanel();
+
+  // Table
+  let tbody = document.getElementById("admin-team-tbody");
+  tbody.innerHTML = "";
+  for (let i=0; i<team.length; ++i) {
+    let m = team[i];
+    let tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${escapeHTML(m["name_"+currentLang]||m.name_en||m.name_pl)}</td>
+      <td>${escapeHTML(m["role_"+currentLang]||m.role_en||m.role_pl)}</td>
+      <td><button class="admin-btn delete" onclick="window.deleteMember(${i})">${langData[currentLang].delete}</button></td>
+      <td><button class="admin-btn" onclick="window.editMember(${i})">${langData[currentLang].editMember}</button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+  window.deleteMember = function(idx) {
+    if (!confirm("Delete this member?")) return;
+    let team = getTeam();
+    team.splice(idx,1);
+    setTeam(team);
+    renderTeam();
+    showAdminPanel();
+  }
+  window.editMember = function(idx) {
+    showAdminPanel(idx);
+  }
+}
+function escapeHTML(str) { return (str||"").replace(/[<>&"']/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+setLang(currentLang);
+});
+</script>
+</body>
+</html>

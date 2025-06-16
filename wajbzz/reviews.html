@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title data-i18n="pageTitle">Wajbzz - Reviews</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body, html { min-height: 100vh; background: #000; color: #3ec1e0; font-family: 'Orbitron', sans-serif; margin: 0; }
+    nav { background: #0f0f0f; display: flex; justify-content: center; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; gap: 2rem; flex-wrap: wrap; }
+    nav a { color: #3ec1e0; text-decoration: none; font-size: 1.1rem; display: flex; align-items: center; gap: .4rem; transition: color .3s; padding: .3rem .8rem; border-radius: 6px; }
+    nav a:hover, nav a:focus { color: #00ffff; background: #003344; outline: none; }
+    nav a:focus-visible { outline: 2px solid #00ffff; outline-offset: 2px; }
+    .social-buttons { position: fixed; bottom: 1rem; left: 1rem; display: flex; gap: 0.5rem; z-index: 10000; }
+    .social-buttons a { background: #111; border: 2px solid #3ec1e0; color: #3ec1e0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.3s; font-size: 1.1rem; text-decoration: none; }
+    .social-buttons a:hover { background: #00ffff; color: #000; border-color: #00ffff; }
+    .lang-buttons { position: fixed; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 10000; }
+    .lang-buttons button { background: none; border: 2px solid #3ec1e0; color: #3ec1e0; font-family: 'Orbitron', sans-serif; cursor: pointer; padding: 0.3rem 0.8rem; font-size: 0.9rem; border-radius: 4px; transition: background 0.3s, color 0.3s; }
+    .lang-buttons button.active, .lang-buttons button:hover { background: #00ffff; color: #000; border-color: #00ffff; }
+    .lang-buttons button:focus-visible { outline: 2px solid #00ffff; outline-offset: 2px; }
+    .footer-bottom-right { position: fixed; right: 0; bottom: 0; padding: 10px 18px; color: #3ec1e0; font-size: .9rem; background: #0f0f0f; border-top-left-radius: 10px; z-index: 100; border-top: 1px solid #222; border-left: 1px solid #222; text-align: right; box-shadow: 0 0 10px #00ffff22; }
+    main { max-width: 1200px; margin: 3rem auto 5rem; padding: 0 1rem; min-height: 50vh; }
+    h1 { font-size: 2.5rem; text-align: center; margin-bottom: 1.5rem; text-shadow: 0 0 8px #00ffff; }
+    .reviews-controls { display: flex; flex-wrap: wrap; gap: 1em; align-items: center; margin-bottom: 1.5em; justify-content: center; }
+    .reviews-controls input[type="search"] { padding: 0.7rem 1rem; font-size: 1.05rem; border-radius: 8px; border: 2px solid #3ec1e0; background: #111; color: #3ec1e0; font-family: 'Orbitron', sans-serif; outline-offset: 2px; outline-color: #00ffff; transition: border-color 0.3s; width: 230px; }
+    .reviews-controls select, .reviews-controls button { background: #111; border: 2px solid #3ec1e0; color: #3ec1e0; font-family: 'Orbitron', sans-serif; padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background 0.3s, color 0.3s; }
+    .reviews-controls select:focus, .reviews-controls button:focus { border-color: #00ffff; outline: 2px solid #00ffff; outline-offset: 2px; }
+    .reviews-controls button.active, .reviews-controls button:hover { background: #00ffff; color: #000; border-color: #00ffff; }
+    /* LATEST */
+    .latest-section { margin-bottom: 2.4rem; }
+    .latest-label { font-size: 1.3rem; color: #00ffff; font-weight: bold; text-align: center; margin-bottom: 1rem; text-shadow: 0 0 6px #00ffff77; }
+    .latest-review-card { display: flex; flex-direction: column; align-items: center; background: #181818; border-radius: 14px; box-shadow: 0 0 20px #00ffff77; padding: 1.2rem 2rem 1.7rem 2rem; margin: 0 auto 2.2rem auto; width: 350px; max-width: 98vw; cursor: pointer; border: 2.5px solid #00ffff; }
+    .latest-review-img { width: 92%; height: 180px; object-fit: cover; border-radius: 10px; box-shadow: 0 0 15px #00ffff33; background: #1a1a1a; margin-bottom: 1em; }
+    .latest-review-title { font-size: 1.23rem; font-weight: 700; color: #00ffff; margin-bottom: 0.2em; text-align: center; text-shadow: 0 0 3px #003344; }
+    .latest-review-stars { color: #FFD600; font-size: 1.16em; letter-spacing: 1px; margin-bottom: 0.4em; text-align: center; }
+    /* Grid */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.2rem;
+      justify-items: center;
+      align-items: start;
+      padding-bottom: 2rem;
+    }
+    @media (max-width: 1200px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 800px)  { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px)  { .reviews-grid { grid-template-columns: 1fr; } }
+    .review-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ffff44;
+      padding: 1rem 0.5rem 1rem 0.5rem;
+      width: 200px;
+      aspect-ratio: 1 / 1;
+      max-width: 100%;
+      max-height: 240px;
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+      border: 1.5px solid #222;
+      overflow: hidden;
+      margin: 0 auto;
+      min-width: 0;
+      min-height: 0;
+      justify-self: center;
+    }
+    .review-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 0 17px #00ffff77;
+      border-color: #00ffff;
+    }
+    .review-img {
+      width: 90%;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #00ffff33;
+      background: #1a1a1a;
+      margin-bottom: 0.5em;
+      margin-top: 0.3em;
+    }
+    .review-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #00ffff;
+      margin-bottom: 0.15em;
+      text-align: center;
+      text-shadow: 0 0 3px #003344;
+      width: 100%;
+      max-width: 170px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .review-stars {
+      color: #FFD600;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+      margin-bottom: 0.1em;
+      text-align: center;
+    }
+    /* Modal styles */
+    #review-modal-bg {
+      position: fixed;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+    #review-modal-bg.active { display: flex; }
+    #review-modal {
+      background: #181818;
+      border-radius: 15px;
+      box-shadow: 0 0 35px #00ffff99;
+      padding: 2.1rem 1.5rem 1.5rem 1.5rem;
+      min-width: 310px;
+      max-width: 97vw;
+      color: #3ec1e0;
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      max-height: 98vh;
+      overflow-y: auto;
+    }
+    #review-modal .close-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #00ffff;
+      cursor: pointer;
+      z-index: 20;
+    }
+    #review-modal .close-btn:hover, #review-modal .close-btn:focus { color: #fff; outline: none; }
+    .modal-img {
+      width: 100%;
+      max-width: 350px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 9px;
+      box-shadow: 0 0 15px #00ffff33;
+      background: #1a1a1a;
+      display: block;
+      margin: 0 auto 1.1em auto;
+    }
+    .modal-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #00ffff;
+      margin-bottom: 0.4em;
+      text-align: center;
+      text-shadow: 0 0 3px #003344;
+    }
+    .modal-meta {
+      font-size: 1.03rem;
+      color: #66e0ffcc;
+      margin-bottom: 0.5em;
+      text-align: center;
+    }
+    .modal-stars {
+      color: #FFD600;
+      font-size: 1.2em;
+      letter-spacing: 1px;
+      margin-bottom: 0.5em;
+      text-align: center;
+    }
+    .modal-text {
+      font-size: 1.13rem;
+      color: #d1f7ff;
+      margin-bottom: 0.9em;
+      margin-top: 0.5em;
+      text-align: left;
+      white-space: pre-line;
+    }
+    .modal-date {
+      font-size: 1.01rem;
+      color: #3ec1e0;
+      margin-top: 0.2em;
+      text-align: right;
+    }
+    /* Pagination */
+    .pagination { display: flex; justify-content: center; gap: 0.7em; margin-top: 1.5rem; }
+    .pagination button { background: #181818; border: 2px solid #00ffff; color: #00ffff; border-radius: 8px; font-size: 1.03rem; padding: 0.28em 1.2em; cursor: pointer; }
+    .pagination button.active, .pagination button:disabled { background: #00ffff; color: #181818; border-color: #00ffff; }
+    .pagination button:disabled { opacity: .7; cursor: default; }
+    /* Admin Cog */
+    .settings-btn {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      background: #111;
+      border: 2px solid #3ec1e0;
+      color: #3ec1e0;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      z-index: 10001;
+      transition: all 0.3s;
+      cursor: pointer;
+      box-shadow: 0 0 18px #00ffff44;
+    }
+    .settings-btn:hover, .settings-btn:focus-visible { background: #00ffff; color: #000; border-color: #00ffff; outline: none; }
+    #admin-modal-bg {
+      position: fixed;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20001;
+    }
+    #admin-modal-bg.active { display: flex; }
+    #admin-modal {
+      background: #111;
+      border-radius: 14px;
+      box-shadow: 0 0 30px #00ffff99;
+      padding: 2rem 2.5rem;
+      min-width: 330px;
+      max-width: 98vw;
+      color: #3ec1e0;
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      max-height: 96vh;
+      overflow-y: auto;
+    }
+    #admin-modal .close-btn {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #00ffff;
+      cursor: pointer;
+      z-index: 20;
+    }
+    #admin-modal .close-btn:hover, #admin-modal .close-btn:focus { color: #fff; outline: none; }
+    #admin-modal h2 { margin-top: 0; font-size: 1.3rem; border-bottom: 2px solid #00ffff; padding-bottom: .4rem; margin-bottom: .9rem; }
+    .admin-form label { font-size: 0.98rem; margin-top: .5em; display: block; }
+    .admin-form input, .admin-form textarea { width: 100%; margin-top: 2px; margin-bottom: .5em; padding: 0.4em 0.7em; font-family: inherit; font-size: 1rem; border-radius: 4px; border: 1.5px solid #00ffff88; background: #181818; color: #3ec1e0; outline: none; }
+    .admin-form textarea { min-height: 2.2em; }
+    .admin-btn { padding: 0.2em 0.7em; background: #00ffff; color: #000; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 0.98rem; margin-right: 0.3em; margin-bottom: 0.2em; transition: background .2s,color .2s; }
+    .admin-btn.delete { background: #d23b3b; color: #fff; }
+    .admin-form .admin-btn { margin-top: 0.6em; }
+    .admin-modal-pw-wrap { text-align: center; }
+    .admin-modal-pw-wrap input[type=password] { margin-top: 1.5em; padding: 0.5em 1em; border-radius: 6px; border: 2px solid #3ec1e0; background: #181818; color: #3ec1e0; font-size:1.1rem; width: 85%; max-width: 340px; text-align: center; }
+    .admin-modal-pw-wrap .admin-btn { margin-top: 1.2em; width: 120px; font-size: 1.02rem; }
+    .admin-err-msg { color: #ff4d4d; margin-top: 1em; font-size: 1rem; display: block; min-height: 1.1em; }
+    @media (max-width: 600px) {
+      .review-card { width: 90vw; aspect-ratio: 1/1; max-width: 100vw; }
+      #admin-modal { padding: 0.8rem 0.4rem; min-width: 0; }
+      .review-img { max-width: 120px; height: 80px; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" data-i18n="navStart" tabindex="0"><i class="fa-solid fa-house"></i> <span>Start</span></a>
+  <a href="reviews.html" data-i18n="navReviews" tabindex="0"><i class="fa-solid fa-star"></i> <span>Reviews</span></a>
+  <a href="interviews.html" data-i18n="navInterviews" tabindex="0"><i class="fa-solid fa-microphone"></i> <span>Interviews</span></a>
+  <a href="music.html" data-i18n="navMusic" tabindex="0"><i class="fa-solid fa-music"></i> <span>Music</span></a>
+  <a href="events.html" data-i18n="navEvents"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
+  <a href="team.html" data-i18n="navTeam" tabindex="0"><i class="fa-solid fa-users"></i> <span>Team</span></a>
+  <a href="contact.html" data-i18n="navContact" tabindex="0"><i class="fa-solid fa-envelope"></i> <span>Contact</span></a>
+</nav>
+<div class="lang-buttons" role="group" aria-label="Language selector">
+  <button id="lang-en" aria-pressed="true" class="active" aria-label="English">EN</button>
+  <button id="lang-pl" aria-pressed="false" aria-label="Polish">PL</button>
+</div>
+<div class="social-buttons">
+  <a href="https://www.facebook.com/wajbzz" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.instagram.com/wajbzz/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.youtube.com/@wajbzz" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+</div>
+<main>
+  <h1 data-i18n="reviewsTitle">Reviews</h1>
+  <div class="reviews-controls">
+    <input type="search" id="search-bar" placeholder="Search reviews..." aria-label="Search reviews" />
+    <select id="sort-select" aria-label="Sort reviews">
+      <option value="date-desc">Newest</option>
+      <option value="date-asc">Oldest</option>
+      <option value="alpha-asc">A-Z</option>
+      <option value="alpha-desc">Z-A</option>
+      <option value="stars-desc">Top rated</option>
+      <option value="stars-asc">Lowest rated</option>
+    </select>
+  </div>
+  <div class="latest-section" id="latest-section"></div>
+  <div class="reviews-grid" id="reviews-grid"></div>
+  <div class="pagination" id="pagination"></div>
+</main>
+<div class="footer-bottom-right">
+  © 2025 Wajbzz
+</div>
+<button class="settings-btn" id="settings-btn" title="Admin panel" aria-label="Admin panel">
+  <i class="fa fa-cog"></i>
+</button>
+<div id="admin-modal-bg">
+  <div id="admin-modal"></div>
+</div>
+<div id="review-modal-bg">
+  <div id="review-modal"></div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+const reviewsKey = "wajbzzReviewsData";
+const adminPassword = "wajbzz123";
+const REVIEWS_PER_PAGE = 12;
+let currentLang = "en";
+
+const langData = {
+  en: { pageTitle: "Wajbzz - Reviews", reviewsTitle: "Reviews", latest: "Latest", addReview: "Add Review", editReview: "Edit Review", reviewTitle: "Title", reviewText: "Review Text", reviewerName: "Reviewer Name (optional)", reviewDate: "Date", reviewStars: "Star Rating", reviewImage: "Image (URL or file)", imageURL: "Image URL", imageUpload: "or upload file", save: "Save", cancel: "Cancel", delete: "Delete", login: "Login", wrongPassword: "Wrong password!", requiredField: "Field required", searchPlaceholder: "Search reviews...", newest: "Newest", oldest: "Oldest", az: "A-Z", za: "Z-A", topRated: "Top rated", lowRated: "Lowest rated", noReviews: "No reviews yet." },
+  pl: { pageTitle: "Wajbzz - Recenzje", reviewsTitle: "Recenzje", latest: "Najnowsza", addReview: "Dodaj recenzję", editReview: "Edytuj recenzję", reviewTitle: "Tytuł", reviewText: "Treść recenzji", reviewerName: "Recenzent (opcjonalnie)", reviewDate: "Data", reviewStars: "Ocena gwiazdkowa", reviewImage: "Obraz (URL lub plik)", imageURL: "Adres URL obrazu", imageUpload: "lub wyślij plik", save: "Zapisz", cancel: "Anuluj", delete: "Usuń", login: "Zaloguj", wrongPassword: "Błędne hasło!", requiredField: "Pole wymagane", searchPlaceholder: "Szukaj recenzji...", newest: "Najnowsze", oldest: "Najstarsze", az: "A-Z", za: "Z-A", topRated: "Najwyżej oceniane", lowRated: "Najniżej oceniane", noReviews: "Brak recenzji." }
+};
+
+const langEnBtn = document.getElementById('lang-en');
+const langPlBtn = document.getElementById('lang-pl');
+langEnBtn.onclick = () => setLang("en");
+langPlBtn.onclick = () => setLang("pl");
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    let key = el.getAttribute("data-i18n");
+    if (langData[lang][key]) el.textContent = langData[lang][key];
+  });
+  langEnBtn.classList.toggle('active', lang === "en");
+  langPlBtn.classList.toggle('active', lang === "pl");
+  langEnBtn.setAttribute("aria-pressed", lang === "en");
+  langPlBtn.setAttribute("aria-pressed", lang === "pl");
+  document.title = langData[lang].pageTitle;
+  document.getElementById("search-bar").placeholder = langData[lang].searchPlaceholder;
+  updateSortOptions();
+  renderAll();
+}
+
+function getReviews() {
+  try { return JSON.parse(localStorage.getItem(reviewsKey)) || []; }
+  catch { return []; }
+}
+function setReviews(arr) {
+  localStorage.setItem(reviewsKey, JSON.stringify(arr));
+}
+
+function renderStars(n) {
+  let s = '';
+  for (let i = 1; i <= 5; ++i)
+    s += `<i class="fa${i <= n ? 's' : 'r'} fa-star"></i>`;
+  return s;
+}
+
+function formatDate(d) {
+  if (!d) return "";
+  let dateO = new Date(d);
+  if (isNaN(dateO)) return d;
+  return dateO.toLocaleDateString(currentLang==="pl"?"pl-PL":"en-US",{year:'numeric',month:'short',day:'2-digit'});
+}
+
+// PAGINATION
+let currentPage = 1;
+function renderPagination(total, perPage, current) {
+  const pag = document.getElementById("pagination");
+  pag.innerHTML = "";
+  if (total <= perPage) return;
+  const totalPages = Math.ceil(total / perPage);
+  for (let i = 1; i <= totalPages; ++i) {
+    let btn = document.createElement("button");
+    btn.textContent = i;
+    btn.disabled = (i === current);
+    btn.className = (i===current) ? "active" : "";
+    btn.onclick = () => { currentPage = i; renderReviewsSection(); };
+    pag.appendChild(btn);
+  }
+}
+
+// LATEST REVIEW
+function renderLatest(latest) {
+  const latestSection = document.getElementById("latest-section");
+  if (!latest) { latestSection.innerHTML = ""; return; }
+  latestSection.innerHTML = `
+    <div class="latest-label">${langData[currentLang].latest}</div>
+    <div class="latest-review-card" tabindex="0" role="button" aria-label="${escapeHTML(latest.title_en||latest.title_pl)}" id="latestReviewCard">
+      <img class="latest-review-img" src="${escapeHTML(latest.image)}" alt="${escapeHTML(latest.title_en||latest.title_pl)}">
+      <div class="latest-review-title">${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}</div>
+      <div class="latest-review-stars">${renderStars(latest.stars||0)}</div>
+    </div>
+  `;
+  document.getElementById("latestReviewCard").onclick = function() { openReviewModal(latest, true); };
+  document.getElementById("latestReviewCard").onkeydown = e => { if (e.key==="Enter"||e.key===" ") openReviewModal(latest, true); };
+}
+
+// REVIEW CARDS
+function renderReviewsSection() {
+  let reviews = getReviews().slice();
+  // Sort by date DESC (most recent first)
+  reviews.sort((a, b) => new Date(b.date)-new Date(a.date));
+  // Remove the latest from the rest
+  const latest = reviews[0] || null;
+  let rest = reviews.slice(1);
+  // Search/filter
+  const search = (document.getElementById("search-bar").value || "").toLowerCase();
+  if (search) {
+    rest = rest.filter(r =>
+      (r["title_"+currentLang]||"").toLowerCase().includes(search) ||
+      (r["text_"+currentLang]||"").toLowerCase().includes(search) ||
+      (r.reviewer||"").toLowerCase().includes(search)
+    );
+  }
+  // Sort
+  const sortVal = document.getElementById("sort-select").value;
+  rest.sort((a, b) => {
+    if (sortVal === "date-desc") return new Date(b.date) - new Date(a.date);
+    if (sortVal === "date-asc") return new Date(a.date) - new Date(b.date);
+    if (sortVal === "alpha-asc") return (a["title_"+currentLang]||"").localeCompare(b["title_"+currentLang]||"");
+    if (sortVal === "alpha-desc") return (b["title_"+currentLang]||"").localeCompare(a["title_"+currentLang]||"");
+    if (sortVal === "stars-desc") return (b.stars||0) - (a.stars||0);
+    if (sortVal === "stars-asc") return (a.stars||0) - (b.stars||0);
+    return 0;
+  });
+  // Pagination
+  renderPagination(rest.length, REVIEWS_PER_PAGE, currentPage);
+  const grid = document.getElementById("reviews-grid");
+  grid.innerHTML = "";
+  const start = (currentPage-1)*REVIEWS_PER_PAGE;
+  const end = start+REVIEWS_PER_PAGE;
+  let pageReviews = rest.slice(start, end);
+  if (pageReviews.length === 0) {
+    grid.innerHTML = `<div>${langData[currentLang].noReviews}</div>`;
+    return;
+  }
+  pageReviews.forEach((r, i) => {
+    let card = document.createElement("div");
+    card.className = "review-card";
+    card.tabIndex = 0;
+    card.setAttribute("role","button");
+    card.setAttribute("aria-label", (r["title_"+currentLang]||r.title_en||r.title_pl) + " review");
+    card.onclick = () => openReviewModal(r, false);
+    card.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") openReviewModal(r, false); };
+    let img = document.createElement("img");
+    img.className = "review-img";
+    img.src = r.image;
+    img.alt = r["title_"+currentLang]||r.title_en||r.title_pl || "Review image";
+    card.appendChild(img);
+
+    let title = document.createElement("div");
+    title.className = "review-title";
+    title.textContent = r["title_"+currentLang]||r.title_en||r.title_pl;
+    card.appendChild(title);
+
+    let stars = document.createElement("div");
+    stars.className = "review-stars";
+    stars.innerHTML = renderStars(r.stars||0);
+    card.appendChild(stars);
+
+    grid.appendChild(card);
+  });
+  renderLatest(latest);
+}
+
+// MODAL
+const reviewModalBg = document.getElementById("review-modal-bg");
+const reviewModal = document.getElementById("review-modal");
+function openReviewModal(r, isLatest) {
+  if (!r) return;
+  reviewModal.innerHTML = `
+    <button class="close-btn" onclick="closeReviewModal()" aria-label="Close">&times;</button>
+    <img src="${escapeHTML(r.image)}" alt="${escapeHTML(r["title_"+currentLang]||r.title_en||r.title_pl)}" class="modal-img"/>
+    <div class="modal-title">${escapeHTML(r["title_"+currentLang]||r.title_en||r.title_pl)}</div>
+    <div class="modal-stars">${renderStars(r.stars||0)}</div>
+    <div class="modal-meta">${r.reviewer ? escapeHTML(r.reviewer) : ""}</div>
+    <div class="modal-date">${formatDate(r.date)}</div>
+    <div class="modal-text">${escapeHTML(r["text_"+currentLang]||r.text_en||r.text_pl)}</div>
+  `;
+  reviewModalBg.classList.add("active");
+}
+window.closeReviewModal = function() {
+  reviewModalBg.classList.remove("active");
+}
+reviewModalBg.onclick = e => { if (e.target === reviewModalBg) closeReviewModal(); };
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && reviewModalBg.classList.contains("active")) closeReviewModal();
+});
+
+// Controls
+document.getElementById("search-bar").oninput = function() { currentPage = 1; renderReviewsSection(); };
+document.getElementById("sort-select").onchange = function() { currentPage = 1; renderReviewsSection(); };
+function updateSortOptions() {
+  const select = document.getElementById("sort-select");
+  select.options[0].textContent = langData[currentLang].newest;
+  select.options[1].textContent = langData[currentLang].oldest;
+  select.options[2].textContent = langData[currentLang].az;
+  select.options[3].textContent = langData[currentLang].za;
+  select.options[4].textContent = langData[currentLang].topRated;
+  select.options[5].textContent = langData[currentLang].lowRated;
+}
+
+// ADMIN PANEL
+const settingsBtn = document.getElementById("settings-btn");
+const adminModalBg = document.getElementById("admin-modal-bg");
+const adminModal = document.getElementById("admin-modal");
+settingsBtn.addEventListener('click', openAdminModal);
+function openAdminModal() {
+  showAdminLogin();
+  adminModalBg.classList.add("active");
+}
+function closeAdminModal() { adminModalBg.classList.remove("active"); }
+adminModalBg.onclick = e => { if (e.target === adminModalBg) closeAdminModal(); };
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && adminModalBg.classList.contains("active")) closeAdminModal();
+});
+
+function showAdminLogin() {
+  adminModal.innerHTML = `
+    <div class="admin-modal-pw-wrap">
+      <h2>${langData[currentLang].adminPanel||"Admin Panel"}</h2>
+      <input type="password" id="admin-pw-input" placeholder="Password..." autocomplete="current-password"/>
+      <div class="admin-err-msg" id="admin-pw-msg"></div>
+      <button class="admin-btn" id="admin-pw-submit">${langData[currentLang].login}</button>
+    </div>
+    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
+  `;
+  document.getElementById("admin-pw-submit").onclick = function() {
+    const val = document.getElementById("admin-pw-input").value;
+    if (val === adminPassword) {
+      window.adminAuthed = true;
+      showAdminPanel();
+      adminModalBg.classList.add("active");
+    } else {
+      document.getElementById("admin-pw-msg").textContent = langData[currentLang].wrongPassword;
+    }
+  };
+  document.getElementById("admin-pw-input").onkeydown = function(e) {
+    if (e.key === "Enter") document.getElementById("admin-pw-submit").click();
+  }
+}
+function showAdminPanel(editIdx = null) {
+  let reviews = getReviews();
+  // Always sort reviews by date DESC
+  reviews.sort((a, b) => new Date(b.date)-new Date(a.date));
+  let editReview = null;
+  if (editIdx !== null && reviews[editIdx]) editReview = reviews[editIdx];
+  adminModal.innerHTML = `
+    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
+    <h2>${langData[currentLang].adminPanel||"Admin Panel"}</h2>
+    <form id="admin-review-form" class="admin-form" autocomplete="off">
+      <label>${langData[currentLang].reviewTitle} (EN)*</label>
+      <input type="text" id="adm-title-en" value="${editReview ? escapeHTML(editReview.title_en||"") : ''}" required autocomplete="off"/>
+      <label>${langData[currentLang].reviewTitle} (PL)*</label>
+      <input type="text" id="adm-title-pl" value="${editReview ? escapeHTML(editReview.title_pl||"") : ''}" required autocomplete="off"/>
+      <label>${langData[currentLang].reviewText} (EN)*</label>
+      <textarea id="adm-text-en" required>${editReview ? escapeHTML(editReview.text_en||"") : ''}</textarea>
+      <label>${langData[currentLang].reviewText} (PL)*</label>
+      <textarea id="adm-text-pl" required>${editReview ? escapeHTML(editReview.text_pl||"") : ''}</textarea>
+      <label>${langData[currentLang].reviewerName}</label>
+      <input type="text" id="adm-reviewer" value="${editReview ? escapeHTML(editReview.reviewer||"") : ''}" autocomplete="off"/>
+      <label>${langData[currentLang].reviewDate}*</label>
+      <input type="date" id="adm-date" value="${editReview ? toDateInput(editReview.date) : toDateInput(new Date())}" required/>
+      <label>${langData[currentLang].reviewStars}*</label>
+      <div id="adm-stars" style="margin-bottom:0.6em;"></div>
+      <label>${langData[currentLang].reviewImage}*</label>
+      <input type="url" id="adm-image-url" placeholder="${langData[currentLang].imageURL}" value="${editReview&&editReview.imageIsUrl!==false?escapeHTML(editReview.image):''}" style="margin-bottom:0.4em;"/>
+      <div style="margin-bottom:0.6em;">
+        <span style="font-size:0.93em;">${langData[currentLang].imageUpload}</span>
+        <input type="file" id="adm-image-file" accept="image/*" style="margin-left:0.6em;display:inline-block;"/>
+      </div>
+      <div style="display:none;color:#ff4d4d;" id="admin-form-msg"></div>
+      <input type="hidden" id="adm-edit-idx" value="${editIdx!==null?editIdx:''}"/>
+      <button type="submit" class="admin-btn">${editReview ? langData[currentLang].save : langData[currentLang].addReview}</button>
+      ${editReview !== null ? `<button type="button" class="admin-btn" id="adm-cancel">${langData[currentLang].cancel}</button>` : ""}
+    </form>
+    <table class="admin-list-table" style="margin-top:1.8em;">
+      <thead>
+        <tr>
+          <th>#</th><th>${langData[currentLang].reviewTitle}</th><th>${langData[currentLang].reviewerName}</th><th>${langData[currentLang].reviewStars}</th><th>${langData[currentLang].reviewDate}</th><th>${langData[currentLang].delete}</th><th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="admin-reviews-tbody"></tbody>
+    </table>
+  `;
+  // Star picker
+  let starsDiv = document.getElementById("adm-stars");
+  let stars = editReview ? (editReview.stars||0) : 0;
+  for (let i = 1; i <= 5; ++i) {
+    let starBtn = document.createElement("i");
+    starBtn.className = `fa-star fa-2x fa${i<=stars?"s":"r"}`;
+    starBtn.style.cursor = "pointer";
+    starBtn.style.marginRight = "0.18em";
+    starBtn.tabIndex = 0;
+    starBtn.setAttribute("role","button");
+    starBtn.setAttribute("aria-label",`${i} stars`);
+    starBtn.onclick = () => setStarPicker(i);
+    starBtn.onkeydown = e => { if (e.key === "Enter"||e.key===" ") setStarPicker(i); }
+    starsDiv.appendChild(starBtn);
+  }
+  function setStarPicker(n) {
+    for (let i=0; i<5; ++i)
+      starsDiv.children[i].className = "fa-star fa-2x fa" + (i<n?"s":"r");
+    starsDiv.setAttribute("data-stars", n);
+  }
+  setStarPicker(stars);
+
+  // Form
+  document.getElementById("admin-review-form").onsubmit = function(e) {
+    e.preventDefault();
+    let title_en = this["adm-title-en"].value.trim();
+    let title_pl = this["adm-title-pl"].value.trim();
+    let text_en = this["adm-text-en"].value.trim();
+    let text_pl = this["adm-text-pl"].value.trim();
+    let reviewer = this["adm-reviewer"].value.trim();
+    let date = this["adm-date"].value;
+    let stars = parseInt(starsDiv.getAttribute("data-stars")||"0");
+    let imgUrl = this["adm-image-url"].value.trim();
+    let imgFile = this["adm-image-file"].files[0];
+    let idx = this["adm-edit-idx"].value;
+    let msg = document.getElementById("admin-form-msg");
+
+    if (!title_en || !text_en || !title_pl || !text_pl || !date || !stars) {
+      msg.textContent = langData[currentLang].requiredField;
+      msg.style.display = "";
+      return;
+    }
+    function finishAndSave(img, isUrl) {
+      let obj = {title_en, title_pl, text_en, text_pl, reviewer, date, stars, image: img, imageIsUrl: isUrl};
+      let reviews = getReviews();
+      if (idx) reviews[parseInt(idx)] = obj;
+      else reviews.push(obj);
+      // Always sort by date DESC after edit/add
+      reviews.sort((a, b) => new Date(b.date)-new Date(a.date));
+      setReviews(reviews);
+      currentPage=1;
+      renderAll();
+      showAdminPanel();
+    }
+    if (imgFile) {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        finishAndSave(e.target.result, false);
+      };
+      reader.readAsDataURL(imgFile);
+    } else if (imgUrl) {
+      finishAndSave(imgUrl, true);
+    } else {
+      msg.textContent = langData[currentLang].requiredField;
+      msg.style.display = "";
+      return;
+    }
+  };
+  if (editReview !== null)
+    document.getElementById("adm-cancel").onclick = () => showAdminPanel();
+
+  // Table
+  let tbody = document.getElementById("admin-reviews-tbody");
+  tbody.innerHTML = "";
+  for (let i=0; i<reviews.length; ++i) {
+    let r = reviews[i];
+    let tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${escapeHTML(r["title_"+currentLang]||r.title_en||r.title_pl)}</td>
+      <td>${escapeHTML(r.reviewer||"")}</td>
+      <td>${renderStars(r.stars||0)}</td>
+      <td>${formatDate(r.date)}</td>
+      <td><button class="admin-btn delete" onclick="window.deleteReview(${i})">${langData[currentLang].delete}</button></td>
+      <td><button class="admin-btn" onclick="window.editReview(${i})">${langData[currentLang].editReview}</button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+  window.deleteReview = function(idx) {
+    if (!confirm("Delete this review?")) return;
+    let reviews = getReviews();
+    reviews.splice(idx,1);
+    setReviews(reviews);
+    currentPage=1;
+    renderAll();
+    showAdminPanel();
+  }
+  window.editReview = function(idx) {
+    showAdminPanel(idx);
+  }
+}
+function escapeHTML(str) { return (str||"").replace(/[<>&"']/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+function toDateInput(d) {
+  if (!d) return "";
+  let dateO = new Date(d);
+  if (isNaN(dateO)) return d;
+  let yyyy = dateO.getFullYear();
+  let mm = String(dateO.getMonth()+1).padStart(2,'0');
+  let dd = String(dateO.getDate()).padStart(2,'0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+// MAIN RENDER
+function renderAll() {
+  renderReviewsSection();
+}
+setLang(currentLang);
+});
+</script>
+</body>
+</html>

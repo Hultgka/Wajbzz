@@ -1,0 +1,622 @@
+<script>
+// --- Data, translations, and initial config ---
+const standardGenreKeys = [
+  "Synthwave", "Retrowave", "Chillwave", "Pop", "Rock", "Hip-Hop", "Jazz", "Classical",
+  "Ambient", "Electronic", "Indie", "Funk", "Soul", "Disco", "Trance", "EDM",
+  "House", "Dubstep", "Lo-fi", "Reggae", "Country", "Metal"
+];
+const genreTranslations = {
+  en: Object.fromEntries(standardGenreKeys.map(g => [g, g])),
+  pl: {
+    "Synthwave": "Synthwave",
+    "Retrowave": "Retrowave",
+    "Chillwave": "Chillwave",
+    "Pop": "Pop",
+    "Rock": "Rock",
+    "Hip-Hop": "Hip-Hop",
+    "Jazz": "Jazz",
+    "Classical": "Klasyczna",
+    "Ambient": "Ambient",
+    "Electronic": "Elektroniczna",
+    "Indie": "Indie",
+    "Funk": "Funk",
+    "Soul": "Soul",
+    "Disco": "Disco",
+    "Trance": "Trance",
+    "EDM": "EDM",
+    "House": "House",
+    "Dubstep": "Dubstep",
+    "Lo-fi": "Lo-fi",
+    "Reggae": "Reggae",
+    "Country": "Country",
+    "Metal": "Metal"
+  }
+};
+const tracksData = [
+  { title: "Afterglow", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_01_-_Afterglow.mp3" },
+  { title: "Future City", artist: "Wajbzz", genre: "Synthwave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_02_-_Future_City.mp3" },
+  { title: "Neon Nights", artist: "Wajbzz", genre: "Retrowave", audioSrc: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Wajbzz/Wajbzz_-_03_-_Neon_Nights.mp3" }
+  // ... You can add more tracks as needed ...
+];
+const videosData = [
+  { title: "Afterglow", genre: "Synthwave", thumbnail: "https://i.ytimg.com/vi/PEErX2p-lmw/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/PEErX2p-lmw" },
+  { title: "Future City", genre: "Synthwave", thumbnail: "https://i.ytimg.com/vi/Rs1b97v7Ols/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/Rs1b97v7Ols" },
+  { title: "Neon Nights", genre: "Retrowave", thumbnail: "https://i.ytimg.com/vi/jR2xbNWm3Kg/hqdefault.jpg", videoSrc: "https://www.youtube.com/embed/jR2xbNWm3Kg" }
+  // ... You can add more videos as needed ...
+];
+const translations = {
+  en: {
+    pageTitle: "Wajbzz Music",
+    tracksHeader: "Tracks",
+    videosHeader: "Videos",
+    featuredHeader: "Featured Artist",
+    featuredDesc: "Electronic synthwave music producer.",
+    navStart: "Start",
+    navReviews: "Reviews",
+    navInterviews: "Interviews",
+    navMusic: "Music",
+    navEvents: "Event",
+    navTeam: "Team",
+    navContact: "Contact",
+    filterByGenre: "Filter by genre:"
+  },
+  pl: {
+    pageTitle: "Muzyka Wajbzz",
+    tracksHeader: "Utwory",
+    videosHeader: "Wideo",
+    featuredHeader: "Wyróżniony artysta",
+    featuredDesc: "Producent elektronicznej muzyki synthwave.",
+    navStart: "Start",
+    navReviews: "Recenzje",
+    navInterviews: "Wywiady",
+    navMusic: "Muzyka",
+    navEvents: "Wydarzenia",
+    navTeam: "Zespół",
+    navContact: "Kontakt",
+    filterByGenre: "Filtruj według gatunku:"
+  }
+};
+let currentLang = 'en';
+// --- Elements ---
+const langEnBtn = document.getElementById('lang-en');
+const langPlBtn = document.getElementById('lang-pl');
+const searchBar = document.getElementById('search-bar');
+const alphabetFilter = document.getElementById('alphabet-filter');
+const tracksContainer = document.getElementById('tracks-container');
+const videosContainer = document.getElementById('videos-container');
+const featuredVideoThumb = document.querySelector('.featured-video-thumb');
+const videoModal = document.getElementById('video-modal');
+const genreFilter = document.getElementById('genre-filter');
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+// --- Filtering and Display ---
+function getAllGenreKeys() {
+  const all = [...standardGenreKeys];
+  (window.tracksData || tracksData).forEach(t => {
+    if (t.genre && !all.some(std => std.toLowerCase() === t.genre.trim().toLowerCase())) all.push(t.genre.trim());
+  });
+  (window.videosData || videosData).forEach(v => {
+    if (v.genre && !all.some(std => std.toLowerCase() === v.genre.trim().toLowerCase())) all.push(v.genre.trim());
+  });
+  return all;
+}
+function getGenreLabel(key, lang) {
+  return genreTranslations[lang]?.[key] || key;
+}
+function populateGenreFilter() {
+  genreFilter.innerHTML = '<option value="">' + (currentLang === 'pl' ? "Wszystkie gatunki" : "All genres") + '</option>';
+  getAllGenreKeys().sort((a, b) => getGenreLabel(a, currentLang).localeCompare(getGenreLabel(b, currentLang))).forEach(genreKey => {
+    const opt = document.createElement('option');
+    opt.value = genreKey;
+    opt.textContent = getGenreLabel(genreKey, currentLang);
+    genreFilter.appendChild(opt);
+  });
+}
+function initAlphabetFilter() {
+  alphabetFilter.innerHTML = '';
+  alphabet.forEach(letter => {
+    const btn = document.createElement('button');
+    btn.textContent = letter;
+    btn.setAttribute('aria-label', `Filter tracks by letter ${letter}`);
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        displayTracks();
+        displayVideos();
+      } else {
+        [...alphabetFilter.children].forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        displayTracks(letter);
+        displayVideos(letter);
+      }
+    });
+    alphabetFilter.appendChild(btn);
+  });
+}
+function displayTracks(filterLetter = null) {
+  const searchTerm = searchBar.value.trim().toLowerCase();
+  const selectedGenre = (genreFilter?.value || '').toLowerCase();
+  tracksContainer.innerHTML = '';
+  let filteredTracks = (window.tracksData || tracksData).filter(track => {
+    const titleLower = track.title.toLowerCase();
+    const artistLower = track.artist.toLowerCase();
+    const genreLower = (track.genre || '').toLowerCase();
+    let matchesGenre = true;
+    if (selectedGenre)
+      matchesGenre = genreLower === selectedGenre;
+    const matchesSearch =
+      titleLower.includes(searchTerm) ||
+      artistLower.includes(searchTerm) ||
+      genreLower.includes(searchTerm);
+    let matchesLetter = true;
+    if (filterLetter) {
+      matchesLetter = track.title.toUpperCase().startsWith(filterLetter);
+    }
+    return matchesSearch && matchesLetter && matchesGenre;
+  });
+  if (filteredTracks.length === 0) {
+    const noResults = document.createElement('p');
+    noResults.textContent = currentLang === 'pl' ? 'Brak wyników.' : 'No results found.';
+    tracksContainer.appendChild(noResults);
+    return;
+  }
+  filteredTracks.forEach(track => {
+    const div = document.createElement('div');
+    div.className = 'track-item';
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'track-info';
+    const titleP = document.createElement('p');
+    titleP.className = 'track-title';
+    titleP.textContent = track.title;
+    if (track.genre) {
+      const genreSpan = document.createElement('span');
+      genreSpan.className = "track-genre";
+      genreSpan.textContent = getGenreLabel(track.genre, currentLang);
+      titleP.appendChild(genreSpan);
+    }
+    const artistP = document.createElement('p');
+    artistP.className = 'track-artist';
+    artistP.textContent = track.artist;
+    infoDiv.appendChild(titleP);
+    infoDiv.appendChild(artistP);
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = track.audioSrc;
+    audio.className = 'track-audio';
+    audio.setAttribute('preload', 'none');
+    div.appendChild(infoDiv);
+    div.appendChild(audio);
+    tracksContainer.appendChild(div);
+  });
+}
+function displayVideos(filterLetter = null) {
+  videosContainer.innerHTML = '';
+  const searchTerm = searchBar.value.trim().toLowerCase();
+  const selectedGenre = (genreFilter?.value || '').toLowerCase();
+  let filteredVideos = (window.videosData || videosData).filter(video => {
+    const titleLower = (video.title || '').toLowerCase();
+    const genreLower = (video.genre || '').toLowerCase();
+    const matchesGenre = !selectedGenre || genreLower === selectedGenre;
+    const matchesSearch =
+      !searchTerm ||
+      titleLower.includes(searchTerm) ||
+      genreLower.includes(searchTerm);
+    let matchesLetter = true;
+    if (filterLetter) {
+      matchesLetter = (video.title || '').toUpperCase().startsWith(filterLetter);
+    }
+    return matchesGenre && matchesSearch && matchesLetter;
+  });
+  if (filteredVideos.length === 0) {
+    const noResults = document.createElement('p');
+    noResults.textContent = currentLang === 'pl' ? 'Brak wyników.' : 'No results found.';
+    videosContainer.appendChild(noResults);
+    return;
+  }
+  filteredVideos.forEach((video, idx) => {
+    const div = document.createElement('div');
+    div.style.display = 'flex';
+    div.style.flexDirection = 'column';
+    div.style.alignItems = 'center';
+    div.style.width = '160px';
+    const img = document.createElement('img');
+    img.src = video.thumbnail;
+    img.alt = video.title || `Video thumbnail ${idx + 1}`;
+    img.className = 'video-thumb';
+    img.tabIndex = 0;
+    img.setAttribute('role', 'button');
+    img.setAttribute('aria-label', `Play video ${video.title || (idx + 1)}`);
+    img.addEventListener('click', () => openVideoModal(video.videoSrc));
+    img.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openVideoModal(video.videoSrc);
+      }
+    });
+    div.appendChild(img);
+    if (video.title) {
+      const caption = document.createElement('div');
+      caption.textContent = video.title;
+      caption.style.color = '#3ec1e0';
+      caption.style.fontSize = '0.98rem';
+      caption.style.textAlign = 'center';
+      caption.style.marginTop = '0.2em';
+      caption.style.textShadow = '0 0 3px #000';
+      div.appendChild(caption);
+    }
+    if (video.genre) {
+      const genreLabel = document.createElement('div');
+      genreLabel.textContent = getGenreLabel(video.genre, currentLang);
+      genreLabel.style.color = '#00ffff';
+      genreLabel.style.fontSize = '0.85rem';
+      genreLabel.style.marginTop = '0.12em';
+      div.appendChild(genreLabel);
+    }
+    videosContainer.appendChild(div);
+  });
+}
+function openVideoModal(videoSrc) {
+  videoModal.innerHTML = `
+    <button class="close-btn" aria-label="Close video modal">&times;</button>
+    <iframe 
+      src="${videoSrc}?autoplay=1&controls=1&rel=0"
+      frameborder="0" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen
+      style="width:90vw; max-width:1280px; height:56.25vw; max-height:720px; border-radius:12px; box-shadow: 0 0 30px #00ffffcc;"
+      title="Video player"
+    ></iframe>
+  `;
+  const closeBtn = videoModal.querySelector('.close-btn');
+  closeBtn.addEventListener('click', closeVideoModal);
+  videoModal.classList.add('active');
+  closeBtn.focus();
+  document.body.style.overflow = 'hidden';
+}
+function closeVideoModal() {
+  videoModal.classList.remove('active');
+  videoModal.innerHTML = `
+    <button class="close-btn" aria-label="Close video modal">&times;</button>
+    <video controls style="max-width: 90vw; max-height: 80vh; border-radius: 12px; box-shadow: 0 0 30px #00ffffcc; background: #000;"></video>
+  `;
+  document.body.style.overflow = '';
+  searchBar.focus();
+}
+featuredVideoThumb.addEventListener('click', () => openVideoModal("https://www.youtube.com/embed/PEErX2p-lmw"));
+featuredVideoThumb.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    openVideoModal("https://www.youtube.com/embed/PEErX2p-lmw");
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === "Escape" && videoModal.classList.contains('active')) {
+    closeVideoModal();
+  }
+});
+function translatePage(lang) {
+  currentLang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const text = translations[lang][key];
+    if (text) {
+      if (el.tagName === 'A') {
+        const span = el.querySelector('span');
+        if (span) {
+          span.textContent = text;
+        } else {
+          el.textContent = text;
+        }
+      } else {
+        el.textContent = text;
+      }
+    }
+  });
+  langEnBtn.setAttribute('aria-pressed', lang === 'en');
+  langPlBtn.setAttribute('aria-pressed', lang === 'pl');
+  populateGenreFilter();
+  displayTracks();
+  displayVideos();
+}
+searchBar.addEventListener('input', () => {
+  [...alphabetFilter.children].forEach(b => b.classList.remove('active'));
+  displayTracks();
+  displayVideos();
+});
+langEnBtn.addEventListener('click', () => translatePage('en'));
+langPlBtn.addEventListener('click', () => translatePage('pl'));
+genreFilter.addEventListener('change', function() {
+  displayTracks();
+  displayVideos();
+});
+populateGenreFilter();
+initAlphabetFilter();
+displayTracks();
+displayVideos();
+translatePage(currentLang);
+
+// --- Admin Panel Section (with genre dropdown and default YouTube thumbnail) ---
+const adminPanelPassword = "wajbzz123";
+const adminModalBg = document.getElementById('admin-modal-bg');
+const adminModal = document.getElementById('admin-modal');
+const settingsBtn = document.getElementById('settings-btn');
+
+settingsBtn.addEventListener('click', openAdminModal);
+
+function openAdminModal() {
+  if (!window.adminAuthorized) {
+    showAdminLogin();
+  } else {
+    showAdminPanel();
+  }
+  adminModalBg.classList.add('active');
+}
+function closeAdminModal() {
+  adminModalBg.classList.remove('active');
+}
+adminModalBg.addEventListener('click', function(e) {
+  if (e.target === adminModalBg) closeAdminModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && adminModalBg.classList.contains('active')) closeAdminModal();
+});
+function showAdminLogin() {
+  adminModal.innerHTML = `
+    <div class="admin-modal-pw-wrap">
+      <h2>Admin Login</h2>
+      <input type="password" id="admin-pw-input" placeholder="Enter password..." autocomplete="current-password"/>
+      <div class="admin-err-msg" id="admin-pw-msg"></div>
+      <button class="admin-btn" id="admin-pw-submit">Login</button>
+    </div>
+    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
+  `;
+  document.getElementById("admin-pw-submit").onclick = function() {
+    const val = document.getElementById("admin-pw-input").value;
+    if (val === adminPanelPassword) {
+      window.adminAuthorized = true;
+      showAdminPanel();
+    } else {
+      document.getElementById("admin-pw-msg").textContent = "Wrong password!";
+    }
+  };
+  document.getElementById("admin-pw-input").onkeydown = function(e) {
+    if (e.key === "Enter") document.getElementById("admin-pw-submit").click();
+  }
+}
+function getAdminTracks() {
+  return JSON.parse(localStorage.getItem('tracksData')) || tracksData.slice();
+}
+function getAdminVideos() {
+  return JSON.parse(localStorage.getItem('videosData')) || videosData.slice();
+}
+function setAdminTracks(tracks) {
+  localStorage.setItem('tracksData', JSON.stringify(tracks));
+}
+function setAdminVideos(videos) {
+  localStorage.setItem('videosData', JSON.stringify(videos));
+}
+function showAdminPanel() {
+  const tracks = getAdminTracks();
+  const videos = getAdminVideos();
+  adminModal.innerHTML = `
+    <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
+    <h2>Admin Panel</h2>
+    <div id="admin-tabs">
+      <button id="tab-tracks" class="active">Tracks</button>
+      <button id="tab-videos">Videos</button>
+    </div>
+    <div id="admin-section-tracks" class="admin-section active"></div>
+    <div id="admin-section-videos" class="admin-section"></div>
+  `;
+  document.getElementById('tab-tracks').onclick = () => {
+    document.getElementById('tab-tracks').classList.add('active');
+    document.getElementById('tab-videos').classList.remove('active');
+    document.getElementById('admin-section-tracks').classList.add('active');
+    document.getElementById('admin-section-videos').classList.remove('active');
+  };
+  document.getElementById('tab-videos').onclick = () => {
+    document.getElementById('tab-videos').classList.add('active');
+    document.getElementById('tab-tracks').classList.remove('active');
+    document.getElementById('admin-section-videos').classList.add('active');
+    document.getElementById('admin-section-tracks').classList.remove('active');
+  };
+  renderAdminTracks(tracks);
+  renderAdminVideos(videos);
+}
+function renderGenreDropdown(selectId, selected) {
+  return `<select id="${selectId}" required style="width:100%;margin-bottom:.5em;">
+    <option value="">Select...</option>
+    ${standardGenreKeys.map(g => `<option value="${g}"${selected === g ? ' selected' : ''}>${g}</option>`).join('')}
+  </select>`;
+}
+function renderAdminTracks(tracks) {
+  const sec = document.getElementById('admin-section-tracks');
+  sec.innerHTML = `
+    <form id="admin-track-form" class="admin-form">
+      <div>
+        <label>Title</label>
+        <input type="text" id="adm-track-title" required autocomplete="off"/>
+        <label>Artist</label>
+        <input type="text" id="adm-track-artist" required autocomplete="off"/>
+        <label>Genre</label>
+        ${renderGenreDropdown('adm-track-genre', '')}
+        <label>Audio Link</label>
+        <input type="url" id="adm-track-audio" required autocomplete="off"/>
+      </div>
+      <button type="submit" class="admin-btn">Add Track</button>
+      <button type="button" class="admin-btn" style="display:none;" id="adm-track-cancel">Cancel</button>
+      <input type="hidden" id="adm-track-edit-idx" value=""/>
+    </form>
+    <table class="admin-list-table" style="margin-top:1.4em;">
+      <thead>
+        <tr>
+          <th>#</th><th>Title</th><th>Artist</th><th>Genre</th><th>Audio</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="admin-tracks-tbody"></tbody>
+    </table>
+  `;
+  const tbody = sec.querySelector("#admin-tracks-tbody");
+  tbody.innerHTML = tracks.map((t, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${escapeHTML(t.title)}</td>
+      <td>${escapeHTML(t.artist)}</td>
+      <td>${escapeHTML(t.genre)}</td>
+      <td><a href="${t.audioSrc}" target="_blank" style="color:#00ffff;">Audio</a></td>
+      <td>
+        <button class="admin-btn" onclick="window.editTrack(${i})">Edit</button>
+        <button class="admin-btn delete" onclick="window.deleteTrack(${i})">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+  const form = sec.querySelector("#admin-track-form");
+  form.onsubmit = e => {
+    e.preventDefault();
+    const t = form['adm-track-title'].value.trim();
+    const a = form['adm-track-artist'].value.trim();
+    const g = form['adm-track-genre'].value;
+    const audio = form['adm-track-audio'].value.trim();
+    const idx = form['adm-track-edit-idx'].value;
+    let tracks = getAdminTracks();
+    if (idx === "" || idx === null) {
+      tracks.push({ title: t, artist: a, genre: g, audioSrc: audio });
+    } else {
+      tracks[idx] = { title: t, artist: a, genre: g, audioSrc: audio };
+    }
+    setAdminTracks(tracks);
+    renderAdminTracks(tracks);
+    window.tracksData = tracks;
+    displayTracks();
+  };
+  sec.querySelector("#adm-track-cancel").onclick = () => {
+    renderAdminTracks(getAdminTracks());
+  };
+  window.editTrack = function(idx) {
+    const t = tracks[idx];
+    form['adm-track-title'].value = t.title;
+    form['adm-track-artist'].value = t.artist;
+    form.querySelector('#adm-track-genre').value = t.genre;
+    form['adm-track-audio'].value = t.audioSrc;
+    form['adm-track-edit-idx'].value = idx;
+    form.querySelector("button[type=submit]").textContent = "Save";
+    form.querySelector("#adm-track-cancel").style.display = "";
+  }
+  window.deleteTrack = function(idx) {
+    if (!confirm("Delete this track?")) return;
+    let tracks = getAdminTracks();
+    tracks.splice(idx,1);
+    setAdminTracks(tracks);
+    renderAdminTracks(tracks);
+    window.tracksData = tracks;
+    displayTracks();
+  }
+}
+function renderAdminVideos(videos) {
+  const sec = document.getElementById("admin-section-videos");
+  sec.innerHTML = `
+    <form id="admin-video-form" class="admin-form">
+      <div>
+        <label>Title</label>
+        <input type="text" id="adm-video-title" required autocomplete="off"/>
+        <label>Genre</label>
+        ${renderGenreDropdown('adm-video-genre', '')}
+        <label>Video Link (YouTube embed or direct)</label>
+        <input type="url" id="adm-video-src" required autocomplete="off"/>
+        <label>Thumbnail Link (optional, auto from YouTube if blank)</label>
+        <input type="url" id="adm-video-thumb" autocomplete="off"/>
+      </div>
+      <button type="submit" class="admin-btn">Add Video</button>
+      <button type="button" class="admin-btn" style="display:none;" id="adm-video-cancel">Cancel</button>
+      <input type="hidden" id="adm-video-edit-idx" value=""/>
+    </form>
+    <table class="admin-list-table" style="margin-top:1.4em;">
+      <thead>
+        <tr>
+          <th>#</th><th>Title</th><th>Genre</th><th>Thumbnail</th><th>Video Link</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="admin-videos-tbody"></tbody>
+    </table>
+  `;
+  const tbody = sec.querySelector("#admin-videos-tbody");
+  tbody.innerHTML = videos.map((v, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${escapeHTML(v.title)}</td>
+      <td>${escapeHTML(v.genre)}</td>
+      <td><img src="${v.thumbnail}" alt="thumb" style="width:62px; border-radius:5px;"/></td>
+      <td><a href="${v.videoSrc}" target="_blank" style="color:#00ffff;">Video</a></td>
+      <td>
+        <button class="admin-btn" onclick="window.editVideo(${i})">Edit</button>
+        <button class="admin-btn delete" onclick="window.deleteVideo(${i})">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+  const form = sec.querySelector("#admin-video-form");
+  form.onsubmit = e => {
+    e.preventDefault();
+    const title = form['adm-video-title'].value.trim();
+    const genre = form['adm-video-genre'].value;
+    let thumb = form['adm-video-thumb'].value.trim();
+    const src = form['adm-video-src'].value.trim();
+    const idx = form['adm-video-edit-idx'].value;
+    // Default YouTube thumbnail if blank and link is a YouTube embed
+    if (!thumb && src.includes('youtube.com/embed/')) {
+      const match = src.match(/embed\/([a-zA-Z0-9_-]+)/);
+      if (match) {
+        thumb = `https://i.ytimg.com/vi/${match[1]}/hqdefault.jpg`;
+      }
+    }
+    let videos = getAdminVideos();
+    if (idx === "" || idx === null) {
+      videos.push({ title, genre, thumbnail: thumb, videoSrc: src });
+    } else {
+      videos[idx] = { title, genre, thumbnail: thumb, videoSrc: src };
+    }
+    setAdminVideos(videos);
+    renderAdminVideos(videos);
+    window.videosData = videos;
+    displayVideos();
+  };
+  sec.querySelector("#adm-video-cancel").onclick = () => {
+    renderAdminVideos(getAdminVideos());
+  };
+  window.editVideo = function(idx) {
+    const v = videos[idx];
+    form['adm-video-title'].value = v.title || '';
+    form.querySelector('#adm-video-genre').value = v.genre || '';
+    form['adm-video-thumb'].value = v.thumbnail || '';
+    form['adm-video-src'].value = v.videoSrc || '';
+    form['adm-video-edit-idx'].value = idx;
+    form.querySelector("button[type=submit]").textContent = "Save";
+    form.querySelector("#adm-video-cancel").style.display = "";
+  }
+  window.deleteVideo = function(idx) {
+    if (!confirm("Delete this video?")) return;
+    let videos = getAdminVideos();
+    videos.splice(idx, 1);
+    setAdminVideos(videos);
+    renderAdminVideos(videos);
+    window.videosData = videos;
+    displayVideos();
+  }
+}
+function escapeHTML(str) {
+  if (!str) return "";
+  return str.replace(/[<>&"']/g, c => (
+    { '<':'&lt;', '>':'&gt;', '&':'&amp;', '"':'&quot;', "'":'&#39;' }[c]
+  ));
+}
+// When page loads, update data sources from localStorage
+(function(){
+  const tracks = getAdminTracks();
+  const videos = getAdminVideos();
+  if (tracks && tracks.length) window.tracksData = tracks;
+  if (videos && videos.length) window.videosData = videos;
+  displayTracks();
+  displayVideos();
+})();
+</script>
+</body>
+</html>
