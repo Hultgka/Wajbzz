@@ -9,7 +9,7 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body, html { height:100%; background:#000; color:#3ec1e0; font-family:'Orbitron',sans-serif; }
-    nav { background:#0f0f0f; display:flex; justify-content:center; padding:1rem 0; position:sticky; top:0; z-index:10; }
+    nav { background:#0f0f0f; display:flex; justify-content:center; padding:1rem 0; position:sticky; top:0; z-index:10; flex-wrap:wrap; gap:2rem; }
     nav a { color:#3ec1e0; text-decoration:none; margin:0 1.5rem; font-size:1.1rem; transition:color .3s; display:flex; align-items:center; gap:.3rem; }
     nav a:hover { color:#00ffff; }
     .social-buttons { position:fixed; bottom:1rem; left:1rem; display:flex; gap:.5rem; z-index:10000; }
@@ -27,7 +27,78 @@
     input[type=file] { color:#3ec1e0; }
     button[type=submit] { background:#00ffff; border:none; color:#000; font-weight:700; font-size:1.2rem; padding:.8rem 0; border-radius:6px; cursor:pointer; transition:background .3s; }
     button[type=submit]:hover { background:#3ec1e0; }
+    .email-contact { text-align:center; margin-top:1.5rem; }
+    .email-contact a { color:#00ffff; word-break:break-all; }
     footer { position:fixed; bottom:10px; right:15px; font-size:.9rem; opacity:.6; }
+    /* === MOBILE FRIENDLY ADDITIONS === */
+    @media (max-width: 700px) {
+      nav {
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.8rem 0;
+      }
+      nav a {
+        margin: 0.4rem 0;
+        font-size: 1.2rem;
+      }
+      main {
+        margin: 1.5rem auto 4.5rem;
+        padding: 0 .2rem;
+        max-width: 98vw;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      form {
+        padding: 1rem;
+        font-size: 1rem;
+      }
+      label {
+        font-size: 1rem;
+      }
+      .social-buttons {
+        left: 50%;
+        bottom: 0.7rem;
+        transform: translateX(-50%);
+      }
+      .lang-buttons {
+        top: auto;
+        bottom: 3.5rem;
+        right: 50%;
+        transform: translateX(50%);
+        flex-direction: row;
+      }
+      footer {
+        right: 0;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        font-size: 0.95rem;
+        background: #000a;
+        padding: 0.3rem 0;
+      }
+    }
+    @media (max-width: 420px) {
+      h1 {
+        font-size: 1.35rem;
+      }
+      main {
+        margin: 1rem auto 3.5rem;
+        padding: 0 .1rem;
+      }
+      form {
+        padding: 0.6rem;
+      }
+      .social-buttons a {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+      }
+      .lang-buttons button {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -43,7 +114,7 @@
 
   <main>
     <h1 data-key="page_title">Contact</h1>
-    <form action="https://formspree.io/f/mayvlzqz" method="POST" enctype="multipart/form-data">
+    <form action="sendmail.php" method="POST" enctype="multipart/form-data">
       <label for="name" data-key="label_name">Name</label>
       <input type="text" id="name" name="name" required>
 
@@ -58,6 +129,9 @@
 
       <button type="submit" data-key="button_submit">Send</button>
     </form>
+    <div class="email-contact">
+      Or email us at <a href="mailto:wajbzz.online@gmail.com">wajbzz.online@gmail.com</a>
+    </div>
   </main>
 
   <div class="social-buttons">
@@ -111,4 +185,3 @@
   </script>
 </body>
 </html>
-
