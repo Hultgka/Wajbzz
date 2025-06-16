@@ -261,83 +261,83 @@
       #admin-modal { padding: 0.8rem 0.4rem; min-width: 0; }
       .review-img { max-width: 120px; height: 80px; }
     }
-@media (max-width: 800px) {
-  main { max-width: 99vw; padding: 0 .2rem; }
-  h1 { font-size: 2rem; }
-  .reviews-grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
-  .review-card { width: 97vw; min-width: 0; max-width: 100vw; }
-  .latest-review-card { width: 97vw; min-width: 0; }
-  #review-modal { padding: 0.7rem 0.3rem; min-width: 0; }
-  #admin-modal { padding: 1rem 0.5rem; min-width: 0; }
-  .review-img { max-width: 120px; height: 80px; }
-}
-@media (max-width: 600px) {
-  .reviews-grid { grid-template-columns: 1fr; }
-  .review-card { width: 98vw; min-width: 0; max-width: 100vw; }
-  .latest-review-card { width: 98vw; min-width: 0; }
-  .reviews-controls { flex-direction: column; gap: 0.7em; }
-  .review-img { max-width: 90vw; height: 70px; }
-  .footer-bottom-right {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 0;
-    text-align: center;
-    font-size: 0.95rem;
-    background: #000a;
-    padding: 0.3rem 0;
-  }
-  .social-buttons {
-    left: 50%;
-    bottom: 0.7rem;
-    transform: translateX(-50%);
-  }
-  .lang-buttons {
-    top: auto;
-    bottom: 3.5rem;
-    right: 50%;
-    transform: translateX(50%);
-    flex-direction: row;
-  }
-  .settings-btn {
-    right: 10px;
-    bottom: 3.9rem;
-    padding: 0.7rem;
-  }
-}
-@media (max-width: 450px) {
-  main { margin: 0.5rem auto 2rem; padding: 0 0.1rem; }
-  h1 { font-size: 1.24rem; }
-  .review-card, .latest-review-card { width: 99vw; min-width: 0; }
-  .review-img { max-width: 98vw; height: 50px; }
-  .footer-bottom-right { font-size: 0.85rem; }
-  .social-buttons a {
-    width: 30px;
-    height: 30px;
-    font-size: 0.95rem;
-  }
-  .lang-buttons button {
-    font-size: 0.8rem;
-    padding: 0.2rem 0.5rem;
-  }
-  .settings-btn {
-    font-size: 1.1rem;
-    bottom: 3.7rem;
-  }
-  #admin-modal,
-  #review-modal { padding: 0.2rem 0.1rem; font-size: 0.95rem;}
-}
+    @media (max-width: 800px) {
+      main { max-width: 99vw; padding: 0 .2rem; }
+      h1 { font-size: 2rem; }
+      .reviews-grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+      .review-card { width: 97vw; min-width: 0; max-width: 100vw; }
+      .latest-review-card { width: 97vw; min-width: 0; }
+      #review-modal { padding: 0.7rem 0.3rem; min-width: 0; }
+      #admin-modal { padding: 1rem 0.5rem; min-width: 0; }
+      .review-img { max-width: 120px; height: 80px; }
+    }
+    @media (max-width: 600px) {
+      .reviews-grid { grid-template-columns: 1fr; }
+      .review-card { width: 98vw; min-width: 0; max-width: 100vw; }
+      .latest-review-card { width: 98vw; min-width: 0; }
+      .reviews-controls { flex-direction: column; gap: 0.7em; }
+      .review-img { max-width: 90vw; height: 70px; }
+      .footer-bottom-right {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+        text-align: center;
+        font-size: 0.95rem;
+        background: #000a;
+        padding: 0.3rem 0;
+      }
+      .social-buttons {
+        left: 50%;
+        bottom: 0.7rem;
+        transform: translateX(-50%);
+      }
+      .lang-buttons {
+        top: auto;
+        bottom: 3.5rem;
+        right: 50%;
+        transform: translateX(50%);
+        flex-direction: row;
+      }
+      .settings-btn {
+        right: 10px;
+        bottom: 3.9rem;
+        padding: 0.7rem;
+      }
+    }
+    @media (max-width: 450px) {
+      main { margin: 0.5rem auto 2rem; padding: 0 0.1rem; }
+      h1 { font-size: 1.24rem; }
+      .review-card, .latest-review-card { width: 99vw; min-width: 0; }
+      .review-img { max-width: 98vw; height: 50px; }
+      .footer-bottom-right { font-size: 0.85rem; }
+      .social-buttons a {
+        width: 30px;
+        height: 30px;
+        font-size: 0.95rem;
+      }
+      .lang-buttons button {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+      }
+      .settings-btn {
+        font-size: 1.1rem;
+        bottom: 3.7rem;
+      }
+      #admin-modal,
+      #review-modal { padding: 0.2rem 0.1rem; font-size: 0.95rem;}
+    }
   </style>
 </head>
 <body>
 <nav>
-  <a href="index.html" data-i18n="navStart" tabindex="0"><i class="fa-solid fa-house"></i> <span>Start</span></a>
-  <a href="reviews.html" data-i18n="navReviews" tabindex="0"><i class="fa-solid fa-star"></i> <span>Reviews</span></a>
-  <a href="interviews.html" data-i18n="navInterviews" tabindex="0"><i class="fa-solid fa-microphone"></i> <span>Interviews</span></a>
-  <a href="music.html" data-i18n="navMusic" tabindex="0"><i class="fa-solid fa-music"></i> <span>Music</span></a>
-  <a href="events.html" data-i18n="navEvents"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
-  <a href="team.html" data-i18n="navTeam" tabindex="0"><i class="fa-solid fa-users"></i> <span>Team</span></a>
-  <a href="contact.html" data-i18n="navContact" tabindex="0"><i class="fa-solid fa-envelope"></i> <span>Contact</span></a>
+  <a href="index.html" tabindex="0"><i class="fa-solid fa-house"></i> <span data-i18n="navStart">Start</span></a>
+  <a href="reviews.html" tabindex="0"><i class="fa-solid fa-star"></i> <span data-i18n="navReviews">Reviews</span></a>
+  <a href="interviews.html" tabindex="0"><i class="fa-solid fa-microphone"></i> <span data-i18n="navInterviews">Interviews</span></a>
+  <a href="music.html" tabindex="0"><i class="fa-solid fa-music"></i> <span data-i18n="navMusic">Music</span></a>
+  <a href="events.html"><i class="fas fa-calendar-alt"></i><span data-i18n="navEvents">Events</span></a>
+  <a href="team.html" tabindex="0"><i class="fa-solid fa-users"></i> <span data-i18n="navTeam">Team</span></a>
+  <a href="contact.html" tabindex="0"><i class="fa-solid fa-envelope"></i> <span data-i18n="navContact">Contact</span></a>
 </nav>
 <div class="lang-buttons" role="group" aria-label="Language selector">
   <button id="lang-en" aria-pressed="true" class="active" aria-label="English">EN</button>
@@ -377,16 +377,34 @@
 <div id="review-modal-bg">
   <div id="review-modal"></div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-const reviewsKey = "wajbzzReviewsData";
-const adminPassword = "wajbzz123";
+<script type="module">
+// ==== FIREBASE SETUP ====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
+  authDomain: "wajbzz-website.firebaseapp.com",
+  projectId: "wajbzz-website",
+  storageBucket: "wajbzz-website.appspot.com",
+  messagingSenderId: "387063007187",
+  appId: "1:387063007187:web:2929f1a25716ca1ea71126",
+  measurementId: "G-7F5F1YLRF2"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ==== MAIN LOGIC ====
+// [rest of your JavaScript remains unchanged, as in the previous file above]
 const REVIEWS_PER_PAGE = 12;
 let currentLang = "en";
+let reviews = [];
+let currentPage = 1;
+let adminPassword = "wajbzz123";
 
 const langData = {
-  en: { pageTitle: "Wajbzz - Reviews", reviewsTitle: "Reviews", latest: "Latest", addReview: "Add Review", editReview: "Edit Review", reviewTitle: "Title", reviewText: "Review Text", reviewerName: "Reviewer Name (optional)", reviewDate: "Date", reviewStars: "Star Rating", reviewImage: "Image (URL or file)", imageURL: "Image URL", imageUpload: "or upload file", save: "Save", cancel: "Cancel", delete: "Delete", login: "Login", wrongPassword: "Wrong password!", requiredField: "Field required", searchPlaceholder: "Search reviews...", newest: "Newest", oldest: "Oldest", az: "A-Z", za: "Z-A", topRated: "Top rated", lowRated: "Lowest rated", noReviews: "No reviews yet." },
-  pl: { pageTitle: "Wajbzz - Recenzje", reviewsTitle: "Recenzje", latest: "Najnowsza", addReview: "Dodaj recenzję", editReview: "Edytuj recenzję", reviewTitle: "Tytuł", reviewText: "Treść recenzji", reviewerName: "Recenzent (opcjonalnie)", reviewDate: "Data", reviewStars: "Ocena gwiazdkowa", reviewImage: "Obraz (URL lub plik)", imageURL: "Adres URL obrazu", imageUpload: "lub wyślij plik", save: "Zapisz", cancel: "Anuluj", delete: "Usuń", login: "Zaloguj", wrongPassword: "Błędne hasło!", requiredField: "Pole wymagane", searchPlaceholder: "Szukaj recenzji...", newest: "Najnowsze", oldest: "Najstarsze", az: "A-Z", za: "Z-A", topRated: "Najwyżej oceniane", lowRated: "Najniżej oceniane", noReviews: "Brak recenzji." }
+  en: { pageTitle: "Wajbzz - Reviews", reviewsTitle: "Reviews", latest: "Latest", addReview: "Add Review", editReview: "Edit Review", reviewTitle: "Title", reviewText: "Review Text", reviewerName: "Reviewer Name (optional)", reviewDate: "Date", reviewStars: "Star Rating", reviewImage: "Image (URL or file)", imageURL: "Image URL", imageUpload: "or upload file", save: "Save", cancel: "Cancel", delete: "Delete", login: "Login", wrongPassword: "Wrong password!", requiredField: "Field required", searchPlaceholder: "Search reviews...", newest: "Newest", oldest: "Oldest", az: "A-Z", za: "Z-A", topRated: "Top rated", lowRated: "Lowest rated", noReviews: "No reviews yet.", adminPanel: "Admin Panel", navStart: "Start", navReviews: "Reviews", navInterviews: "Interviews", navMusic: "Music", navEvents: "Events", navTeam: "Team", navContact: "Contact" },
+  pl: { pageTitle: "Wajbzz - Recenzje", reviewsTitle: "Recenzje", latest: "Najnowsza", addReview: "Dodaj recenzję", editReview: "Edytuj recenzję", reviewTitle: "Tytuł", reviewText: "Treść recenzji", reviewerName: "Recenzent (opcjonalnie)", reviewDate: "Data", reviewStars: "Ocena gwiazdkowa", reviewImage: "Obraz (URL lub plik)", imageURL: "Adres URL obrazu", imageUpload: "lub wyślij plik", save: "Zapisz", cancel: "Anuluj", delete: "Usuń", login: "Zaloguj", wrongPassword: "Błędne hasło!", requiredField: "Pole wymagane", searchPlaceholder: "Szukaj recenzji...", newest: "Najnowsze", oldest: "Najstarsze", az: "A-Z", za: "Z-A", topRated: "Najwyżej oceniane", lowRated: "Najniżej oceniane", noReviews: "Brak recenzji.", adminPanel: "Panel Admina", navStart: "Start", navReviews: "Recenzje", navInterviews: "Wywiady", navMusic: "Muzyka", navEvents: "Wydarzenia", navTeam: "Zespół", navContact: "Kontakt" }
 };
 
 const langEnBtn = document.getElementById('lang-en');
@@ -410,21 +428,12 @@ function setLang(lang) {
   renderAll();
 }
 
-function getReviews() {
-  try { return JSON.parse(localStorage.getItem(reviewsKey)) || []; }
-  catch { return []; }
-}
-function setReviews(arr) {
-  localStorage.setItem(reviewsKey, JSON.stringify(arr));
-}
-
 function renderStars(n) {
   let s = '';
   for (let i = 1; i <= 5; ++i)
     s += `<i class="fa${i <= n ? 's' : 'r'} fa-star"></i>`;
   return s;
 }
-
 function formatDate(d) {
   if (!d) return "";
   let dateO = new Date(d);
@@ -432,8 +441,28 @@ function formatDate(d) {
   return dateO.toLocaleDateString(currentLang==="pl"?"pl-PL":"en-US",{year:'numeric',month:'short',day:'2-digit'});
 }
 
-// PAGINATION
-let currentPage = 1;
+function escapeHTML(str) { return (str||"").replace(/[<>&"']/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+function toDateInput(d) {
+  if (!d) return "";
+  let dateO = new Date(d);
+  if (isNaN(dateO)) return d;
+  let yyyy = dateO.getFullYear();
+  let mm = String(dateO.getMonth()+1).padStart(2,'0');
+  let dd = String(dateO.getDate()).padStart(2,'0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+// === FIREBASE REVIEWS ===
+function listenToReviews() {
+  const q = query(collection(db, "reviews"), orderBy("date", "desc"));
+  onSnapshot(q, snap => {
+    reviews = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    renderAll();
+    if (window.renderAdminPanel) window.renderAdminPanel();
+  });
+}
+listenToReviews();
+
 function renderPagination(total, perPage, current) {
   const pag = document.getElementById("pagination");
   pag.innerHTML = "";
@@ -449,14 +478,13 @@ function renderPagination(total, perPage, current) {
   }
 }
 
-// LATEST REVIEW
 function renderLatest(latest) {
   const latestSection = document.getElementById("latest-section");
   if (!latest) { latestSection.innerHTML = ""; return; }
   latestSection.innerHTML = `
     <div class="latest-label">${langData[currentLang].latest}</div>
-    <div class="latest-review-card" tabindex="0" role="button" aria-label="${escapeHTML(latest.title_en||latest.title_pl)}" id="latestReviewCard">
-      <img class="latest-review-img" src="${escapeHTML(latest.image)}" alt="${escapeHTML(latest.title_en||latest.title_pl)}">
+    <div class="latest-review-card" tabindex="0" role="button" aria-label="${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}" id="latestReviewCard">
+      <img class="latest-review-img" src="${escapeHTML(latest.image)}" alt="${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}">
       <div class="latest-review-title">${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}</div>
       <div class="latest-review-stars">${renderStars(latest.stars||0)}</div>
     </div>
@@ -465,14 +493,11 @@ function renderLatest(latest) {
   document.getElementById("latestReviewCard").onkeydown = e => { if (e.key==="Enter"||e.key===" ") openReviewModal(latest, true); };
 }
 
-// REVIEW CARDS
 function renderReviewsSection() {
-  let reviews = getReviews().slice();
-  // Sort by date DESC (most recent first)
-  reviews.sort((a, b) => new Date(b.date)-new Date(a.date));
-  // Remove the latest from the rest
+  // Already sorted by date DESC
   const latest = reviews[0] || null;
   let rest = reviews.slice(1);
+
   // Search/filter
   const search = (document.getElementById("search-bar").value || "").toLowerCase();
   if (search) {
@@ -533,7 +558,6 @@ function renderReviewsSection() {
   renderLatest(latest);
 }
 
-// MODAL
 const reviewModalBg = document.getElementById("review-modal-bg");
 const reviewModal = document.getElementById("review-modal");
 function openReviewModal(r, isLatest) {
@@ -570,7 +594,7 @@ function updateSortOptions() {
   select.options[5].textContent = langData[currentLang].lowRated;
 }
 
-// ADMIN PANEL
+// ==== ADMIN PANEL ====
 const settingsBtn = document.getElementById("settings-btn");
 const adminModalBg = document.getElementById("admin-modal-bg");
 const adminModal = document.getElementById("admin-modal");
@@ -599,7 +623,7 @@ function showAdminLogin() {
     const val = document.getElementById("admin-pw-input").value;
     if (val === adminPassword) {
       window.adminAuthed = true;
-      showAdminPanel();
+      renderAdminPanel();
       adminModalBg.classList.add("active");
     } else {
       document.getElementById("admin-pw-msg").textContent = langData[currentLang].wrongPassword;
@@ -609,12 +633,9 @@ function showAdminLogin() {
     if (e.key === "Enter") document.getElementById("admin-pw-submit").click();
   }
 }
-function showAdminPanel(editIdx = null) {
-  let reviews = getReviews();
-  // Always sort reviews by date DESC
-  reviews.sort((a, b) => new Date(b.date)-new Date(a.date));
+window.renderAdminPanel = function(editId = null) {
   let editReview = null;
-  if (editIdx !== null && reviews[editIdx]) editReview = reviews[editIdx];
+  if (editId !== null) editReview = reviews.find(r => r.id === editId);
   adminModal.innerHTML = `
     <button class="close-btn" onclick="closeAdminModal()" aria-label="Close admin">&times;</button>
     <h2>${langData[currentLang].adminPanel||"Admin Panel"}</h2>
@@ -640,9 +661,9 @@ function showAdminPanel(editIdx = null) {
         <input type="file" id="adm-image-file" accept="image/*" style="margin-left:0.6em;display:inline-block;"/>
       </div>
       <div style="display:none;color:#ff4d4d;" id="admin-form-msg"></div>
-      <input type="hidden" id="adm-edit-idx" value="${editIdx!==null?editIdx:''}"/>
+      <input type="hidden" id="adm-edit-id" value="${editReview?editReview.id:''}"/>
       <button type="submit" class="admin-btn">${editReview ? langData[currentLang].save : langData[currentLang].addReview}</button>
-      ${editReview !== null ? `<button type="button" class="admin-btn" id="adm-cancel">${langData[currentLang].cancel}</button>` : ""}
+      ${editReview ? `<button type="button" class="admin-btn" id="adm-cancel">${langData[currentLang].cancel}</button>` : ""}
     </form>
     <table class="admin-list-table" style="margin-top:1.8em;">
       <thead>
@@ -676,7 +697,7 @@ function showAdminPanel(editIdx = null) {
   setStarPicker(stars);
 
   // Form
-  document.getElementById("admin-review-form").onsubmit = function(e) {
+  document.getElementById("admin-review-form").onsubmit = async function(e) {
     e.preventDefault();
     let title_en = this["adm-title-en"].value.trim();
     let title_pl = this["adm-title-pl"].value.trim();
@@ -687,7 +708,7 @@ function showAdminPanel(editIdx = null) {
     let stars = parseInt(starsDiv.getAttribute("data-stars")||"0");
     let imgUrl = this["adm-image-url"].value.trim();
     let imgFile = this["adm-image-file"].files[0];
-    let idx = this["adm-edit-idx"].value;
+    let id = this["adm-edit-id"].value;
     let msg = document.getElementById("admin-form-msg");
 
     if (!title_en || !text_en || !title_pl || !text_pl || !date || !stars) {
@@ -697,15 +718,14 @@ function showAdminPanel(editIdx = null) {
     }
     function finishAndSave(img, isUrl) {
       let obj = {title_en, title_pl, text_en, text_pl, reviewer, date, stars, image: img, imageIsUrl: isUrl};
-      let reviews = getReviews();
-      if (idx) reviews[parseInt(idx)] = obj;
-      else reviews.push(obj);
-      // Always sort by date DESC after edit/add
-      reviews.sort((a, b) => new Date(b.date)-new Date(a.date));
-      setReviews(reviews);
+      if (!id) {
+        addDoc(collection(db, "reviews"), obj);
+      } else {
+        updateDoc(doc(db, "reviews", id), obj);
+      }
       currentPage=1;
       renderAll();
-      showAdminPanel();
+      renderAdminPanel();
     }
     if (imgFile) {
       let reader = new FileReader();
@@ -721,14 +741,13 @@ function showAdminPanel(editIdx = null) {
       return;
     }
   };
-  if (editReview !== null)
-    document.getElementById("adm-cancel").onclick = () => showAdminPanel();
+  if (editReview)
+    document.getElementById("adm-cancel").onclick = () => renderAdminPanel();
 
   // Table
   let tbody = document.getElementById("admin-reviews-tbody");
   tbody.innerHTML = "";
-  for (let i=0; i<reviews.length; ++i) {
-    let r = reviews[i];
+  reviews.forEach((r, i) => {
     let tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${i+1}</td>
@@ -736,33 +755,21 @@ function showAdminPanel(editIdx = null) {
       <td>${escapeHTML(r.reviewer||"")}</td>
       <td>${renderStars(r.stars||0)}</td>
       <td>${formatDate(r.date)}</td>
-      <td><button class="admin-btn delete" onclick="window.deleteReview(${i})">${langData[currentLang].delete}</button></td>
-      <td><button class="admin-btn" onclick="window.editReview(${i})">${langData[currentLang].editReview}</button></td>
+      <td><button class="admin-btn delete" onclick="window.deleteReview('${r.id}')">${langData[currentLang].delete}</button></td>
+      <td><button class="admin-btn" onclick="window.editReview('${r.id}')">${langData[currentLang].editReview}</button></td>
     `;
     tbody.appendChild(tr);
-  }
-  window.deleteReview = function(idx) {
+  });
+  window.deleteReview = async function(id) {
     if (!confirm("Delete this review?")) return;
-    let reviews = getReviews();
-    reviews.splice(idx,1);
-    setReviews(reviews);
+    await deleteDoc(doc(db, "reviews", id));
     currentPage=1;
     renderAll();
-    showAdminPanel();
+    renderAdminPanel();
   }
-  window.editReview = function(idx) {
-    showAdminPanel(idx);
+  window.editReview = function(id) {
+    renderAdminPanel(id);
   }
-}
-function escapeHTML(str) { return (str||"").replace(/[<>&"']/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
-function toDateInput(d) {
-  if (!d) return "";
-  let dateO = new Date(d);
-  if (isNaN(dateO)) return d;
-  let yyyy = dateO.getFullYear();
-  let mm = String(dateO.getMonth()+1).padStart(2,'0');
-  let dd = String(dateO.getDate()).padStart(2,'0');
-  return `${yyyy}-${mm}-${dd}`;
 }
 
 // MAIN RENDER
@@ -770,7 +777,6 @@ function renderAll() {
   renderReviewsSection();
 }
 setLang(currentLang);
-});
 </script>
 </body>
 </html>
