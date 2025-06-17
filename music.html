@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Wajbzz - Music</title>
+<title>Wajbzz - Music & Videos</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <style>
@@ -19,256 +19,222 @@ nav a:hover { color:#00ffff; }
 .lang-buttons button { background:none; border:2px solid #3ec1e0; color:#3ec1e0; font-family:'Orbitron',sans-serif; cursor:pointer; padding:.3rem .8rem; font-size:.9rem; border-radius:4px; transition:background .3s,color .3s; }
 .lang-buttons button.active, .lang-buttons button:hover { background:#00ffff; color:#000; border-color:#00ffff; }
 main { max-width:1100px; margin:3rem auto 5rem; padding:0 1rem; }
-h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 8px #00ffff; }
-.featured-section {
-  background: linear-gradient(90deg, #232949 70%, #3ec1e0 100%);
-  border-radius: 12px;
-  margin-bottom: 2.2em;
-  box-shadow: 0 2px 18px #00ffff33;
+h1 { font-size:2.8rem; text-align:center; margin-bottom:1rem; text-shadow:0 0 8px #00ffff; }
+#search-filter-container {
+  max-width: 600px;
+  margin: 0 auto 2rem;
   display: flex;
-  align-items: center;
-  padding: 1.6em;
-  gap: 2em;
-}
-.featured-thumb {
-  width: 148px;
-  height: 84px;
-  border-radius: 8px;
-  box-shadow: 0 0 12px #00ffff99, 0 0 3px #000;
-  cursor: pointer;
-  outline: none;
-  border: 2px solid transparent;
-  object-fit: cover;
-  transition: border-color 0.15s;
-}
-.featured-thumb:focus, .featured-thumb:hover { border-color: #00ffff; }
-.featured-info { flex: 1; }
-.featured-info h2 {
-  margin: 0 0 0.3em 0;
-  color: #00ffff;
-  font-size: 1.35rem;
-}
-.featured-info p { margin: 0; color: #e1eaff; }
-.filters {
-  display: flex;
-  gap: 1em;
-  align-items: center;
-  margin-bottom: 1.5em;
+  gap: 0.5rem;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
-#search-bar {
-  padding: 0.5rem 1rem;
+#search-input, #genre-filter, #alpha-sort {
+  padding: 0.5rem;
+  font-size: 1rem;
   border-radius: 4px;
   border: 2px solid #3ec1e0;
   background: #111;
   color: #3ec1e0;
-  font-size: 1em;
-  min-width: 180px;
-  font-family: 'Orbitron',sans-serif;
+  font-family: 'Orbitron', sans-serif;
   outline: none;
   transition: border-color 0.3s;
 }
-#search-bar:focus { border-color: #00ffff; }
-#genre-filter {
-  padding: 0.4em 0.8em;
-  border-radius: 4px;
-  border: 2px solid #3ec1e0;
-  background: #111;
-  color: #3ec1e0;
-  font-size: 1em;
-  font-family:'Orbitron',sans-serif;
+#search-input:focus, #genre-filter:focus, #alpha-sort:focus {
+  border-color: #00ffff;
 }
-#alphabet-filter {
-  display: flex;
-  gap: 0.2em;
-  flex-wrap: wrap;
-}
-#alphabet-filter button {
-  background: #232949;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 0.2em 0.5em;
-  font-size: 1em;
+#clear-search {
   cursor: pointer;
-  transition: background 0.15s;
-  font-family:'Orbitron',sans-serif;
+  color: #00ffff;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-family: 'Orbitron', sans-serif;
+  align-self: center;
+  padding-left: 0.5rem;
+  transition: color 0.3s;
 }
-#alphabet-filter button.active,
-#alphabet-filter button:focus {
-  background: #00ffff;
-  color: #232949;
-  font-weight: bold;
-  outline: none;
-}
-.section-header {
+#clear-search:hover {
   color: #3ec1e0;
-  font-size: 1.25rem;
-  margin-top: 1.7em;
-  margin-bottom: 0.7em;
-  letter-spacing: 1px;
-  text-shadow:0 0 6px #00ffffaa;
 }
-#tracks-container, #videos-container {
+.main-flex {
   display: flex;
-  gap: 1.7em;
-  flex-wrap: wrap;
-  min-height: 60px;
-  align-items: stretch;
-  justify-content: center;
+  align-items: flex-start;
+  gap: 2.5rem;
 }
-.track-item {
-  background: #181c2f;
-  border-radius: 10px;
-  padding: 1.1em 1.3em 1em 1.3em;
-  box-shadow: 0 2px 8px #00ffff22;
-  margin-bottom: 1.3em;
-  min-width: 220px;
+.main-left {
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 300px;
+  gap: 2.2rem;
 }
-.track-info { margin-bottom: 0.4em; }
-.track-title {
-  font-weight: bold;
-  font-size: 1.05rem;
-  margin-bottom: 0.18em;
-  color: #00ffff;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
+.featured-section {
+  width: 360px;
+  min-width: 270px;
+  max-width: 440px;
+  flex: 0 0 auto;
+  margin-bottom: 0;
+  margin-top: 0.3rem;
+  align-self: flex-start;
+  border: 3px solid #ffdc00; 
+  background: linear-gradient(120deg, #111 90%, #fff20020 100%);
+  box-shadow: 0 0 32px #ffdc00cc, 0 0 12px #00ffff44;
 }
-.track-artist { margin: 0; color: #e1eaff; font-size: 0.95rem; }
-.track-genre {
-  display: inline-block;
-  background: #232949;
-  color: #fff;
-  border-radius: 4px;
-  padding: 0 0.5em;
-  font-size: 0.8em;
-  margin-left: 0.6em;
-  font-weight: 400;
+@media (max-width: 1000px) {
+  .main-flex {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .main-left, .featured-section {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+  }
+  .featured-section {
+    margin-bottom: 2.8rem;
+    margin-top: 0;
+    align-self: stretch;
+  }
 }
-.track-audio { width: 100%; margin-top: 0.5em; }
-#videos-container { gap: 1.5em; margin-bottom: 2em; }
-.video-thumb {
-  width: 160px;
-  height: 90px;
-  border-radius: 8px;
-  box-shadow: 0 0 12px #00ffff99, 0 0 3px #000;
-  cursor: pointer;
-  outline: none;
-  border: 2px solid transparent;
-  object-fit: cover;
-  transition: border-color 0.15s;
+.featured-section .media-card {
+  border-color:#ffdc00;
+  box-shadow:0 0 14px #ffdc0088, 0 0 30px #00ffff09;
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
 }
-.video-thumb:focus, .video-thumb:hover { border-color: #00ffff; }
-#video-modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(10,20,30,0.93);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  transition: opacity 0.18s;
-}
-#video-modal.active { display: flex; }
-#video-modal .close-btn {
+.featured-badge {
   position: absolute;
-  top: 3vw;
-  right: 4vw;
-  background: #222b4b;
-  color: #fff;
-  border: none;
-  font-size: 2.2rem;
+  top: 10px;
+  left: 10px;
+  background: #ffdc00;
+  color: #111;
+  padding: .3rem .9rem;
   border-radius: 7px;
-  padding: 0.1em 0.32em;
-  cursor: pointer;
-  z-index: 1001;
-  transition: background 0.16s;
-}
-#video-modal .close-btn:hover, #video-modal .close-btn:focus {
-  background: #00ffff;
-  color: #222b4b;
-}
-#admin-settings-trigger {
-  position: fixed;
-  right: 22px;
-  bottom: 80px;
-  text-align: right;
-  padding: 1rem;
-  z-index: 110;
-  cursor:pointer;
-}
-.footer-bottom-right {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  padding: 10px 18px;
-  color: #3ec1e0;
-  font-size: .9rem;
-  background: #0f0f0f;
-  border-top-left-radius: 10px;
-  z-index: 100;
-  border-top: 1px solid #222;
-  border-left: 1px solid #222;
-  text-align: right;
-  box-shadow: 0 0 10px #00ffff22;
-}
-#admin-modal-overlay {
-  display: none;
-  position: fixed;
-  top:0;left:0;width:100vw;height:100vh;
-  background:rgba(0,0,0,0.9);
-  z-index:100000;
-  justify-content:center;
-  align-items:center;
-}
-#admin-modal-inner {
-  background:#111;
-  border:2px solid #00ffff;
-  padding:2rem;
-  border-radius:10px;
-  max-width:900px;
-  width:95%;
-  text-align:left;
-  box-shadow:0 0 20px #00ffffaa;
-  max-height:90vh;
-  overflow-y:auto;
-  position:relative;
-}
-.pagination { text-align: center; margin:1.5em 0; }
-.pagination button {
-  margin: 0 3px;
-  background: #232949;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 0.2em 0.9em;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background 0.15s;
-  font-family:'Orbitron',sans-serif;
-  outline: none;
-}
-.pagination button.active,
-.pagination button:focus {
-  background: #00ffff;
-  color: #232949;
   font-weight: bold;
+  font-size: 1.1rem;
+  z-index: 2;
+  box-shadow:0 0 6px #ffdc00bb;
+  letter-spacing: 1px;
 }
-@media (max-width: 800px) {
-  main { max-width: 100%; }
-  .featured-section { flex-direction: column; gap: 1em; padding: 1em; text-align: center; }
-  .featured-info { width: 100%; }
-  .track-item, .video-thumb { width: 95vw; min-width: 0; }
-  #videos-container { justify-content: center; }
-  #admin-modal-inner { max-width:98vw;padding:1em;}
+.videos-section {
+  border: 2px solid #00ffff;
+  background: linear-gradient(120deg, #111 95%, #00ffff18 100%);
+  margin-bottom: 2.2rem;
+  box-shadow: 0 0 12px #00ffff88, 0 0 8px #00ffff22;
+}
+.archive-section {
+  opacity: 0.85;
+  filter: grayscale(0.25);
+  background: linear-gradient(120deg, #111 98%, #aaa8 100%);
+  border: 1.5px solid #3ec1e0;
+  margin-bottom: 1.4rem;
+  box-shadow: 0 0 2px #3ec1e0, 0 0 8px #00ffff11;
+}
+.archive-section h2 {
+  font-size: 1.3rem;
+  color: #3ec1e0;
+  text-shadow: none;
+  border-color: #3ec1e055;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+}
+h2[data-key] {
+  font-size:1.8rem;
+  margin-bottom:1rem;
+  text-shadow:0 0 6px #00ffffaa;
+  border-bottom:1px solid #3ec1e0;
+  padding-bottom:.4rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+h2[data-key].clickable::after {
+  content: '(Click to see more)';
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.7;
+  color: #3ec1e0;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+}
+.media-card {
+  background: #1a1a1a;
+  border: 1.5px solid #3ec1e0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform .18s, box-shadow .16s;
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+  width: 100%;
+  box-shadow: 0 0 8px #00ffff22;
+}
+.media-card img, .card-admin img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px solid #3ec1e0;
+  background: #000;
+}
+.archive-section .media-card img {
+  height: 100px !important;
+  object-fit: cover;
+}
+.media-card .desc {
+  padding: 1rem;
+  text-align: left;
+  font-size: 1.08rem;
+  color: #00ffff;
+  background: #121212;
+  border-radius: 0 0 6px 6px;
+  min-height: 2.2em;
+}
+.media-card:hover { transform:scale(1.022); box-shadow:0 0 14px #00ffff44; }
+.videos-section .card-grid,
+.archive-section .card-grid {
+  max-height: 1200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00ffff #111;
+}
+.videos-section .card-grid::-webkit-scrollbar,
+.archive-section .card-grid::-webkit-scrollbar {
+  width: 8px;
+  background: #111;
+}
+.videos-section .card-grid::-webkit-scrollbar-thumb,
+.archive-section .card-grid::-webkit-scrollbar-thumb {
+  background: #00ffff;
+  border-radius: 10px;
+}
+@media (max-width: 900px) {
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .media-card { max-width: 98vw; }
+  .videos-section .card-grid,
+  .archive-section .card-grid {
+    max-height: 700px;
+  }
+  .featured-section .media-card { max-width: 99vw; }
 }
 @media (max-width: 700px) {
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+  .media-card { max-width: 99vw; }
+  .media-card img { height: 110px; }
+  .videos-section .card-grid,
+  .archive-section .card-grid {
+    max-height: 380px;
+  }
   nav {
     flex-direction: column;
     gap: 0.4rem;
@@ -279,53 +245,21 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
     font-size: 1.2rem;
   }
   main {
-    margin: 1rem auto 3rem;
+    margin: 1.5rem auto 3rem;
     padding: 0 .2rem;
     max-width: 100vw;
   }
   h1 {
     font-size: 2rem;
   }
-  .featured-section {
+  #search-filter-container {
     flex-direction: column;
-    gap: 0.7em;
-    padding: 0.7em;
-    text-align: center;
+    gap: 0.4rem;
+    max-width: 99vw;
   }
-  .featured-thumb {
-    width: 96px;
-    height: 54px;
-  }
-  .filters {
-    flex-direction: column;
-    gap: 0.5em;
-    padding: 0.2em 0;
-  }
-  .track-item,
-  .video-thumb {
-    width: 98vw;
-    min-width: 0;
-    max-width: 100vw;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  #tracks-container,
-  #videos-container {
-    flex-direction: column;
-    gap: 0.8em;
-    align-items: stretch;
-  }
-  #videos-container {
-    gap: 0.7em;
-    margin-bottom: 1em;
-  }
-  .track-info {
-    font-size: 0.98rem;
-  }
-  .section-header {
-    font-size: 1.1rem;
-    margin-top: 1.1em;
-    margin-bottom: 0.5em;
+  section {
+    padding: 0.7rem;
+    margin-bottom: 2rem;
   }
   .footer-bottom-right {
     left: 0;
@@ -354,15 +288,12 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
     bottom: 3.9rem;
     padding: 0.7rem;
   }
-  #admin-modal-inner {
-    max-width: 99vw;
-    padding: 0.6em;
-  }
 }
 @media (max-width: 420px) {
-  h1 { font-size: 1.16rem; }
-  .featured-thumb { width: 72px; height: 40px; }
-  .track-item { padding: 0.7em 0.6em 0.7em 0.6em; font-size: 0.92rem;}
+  .media-card img { height: 85px; }
+  h1 { font-size: 1.28rem; }
+  #search-filter-container { gap: 0.2rem; }
+  .card-grid { gap: 0.5rem; }
   .footer-bottom-right { font-size: 0.85rem; }
   .social-buttons a {
     width: 30px;
@@ -377,617 +308,654 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
     font-size: 1.1rem;
     bottom: 3.7rem;
   }
-  #admin-modal-inner { padding: 0.2em; font-size: 0.92rem;}
+  #modal-content { padding: 0.3rem; }
+}
+#modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000;
+  padding: 1rem;
+}
+#modal-content {
+  background: #111;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  max-width: 1200px;
+  width: 90vw;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+  box-shadow: 0 0 20px #00ffffaa;
+  position: relative;
+}
+#modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #00ffff;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s;
+}
+#modal-close:hover {
+  background: #3ec1e0;
+}
+.footer-bottom-right {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 10px 18px;
+  color: #3ec1e0;
+  font-size: .9rem;
+  background: #0f0f0f;
+  border-top-left-radius: 10px;
+  z-index: 100;
+  border-top: 1px solid #222;
+  border-left: 1px solid #222;
+  text-align: right;
+  box-shadow: 0 0 10px #00ffff22;
+}
+#admin-settings-trigger {
+  position: fixed;
+  right: 22px;
+  bottom: 80px;
+  text-align: right;
+  padding: 1rem;
+  z-index: 110;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.toast {
+  position: fixed;
+  bottom: 104px;
+  right: 40px;
+  background: #28a745;
+  color: white;
+  padding: .75rem 1.25rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: none;
+  z-index: 1001;
 }
 </style>
-<!-- Firebase App (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <nav>
-  <a href="index.html" data-key="start"><i class="fas fa-home"></i><span>Start</span></a>
-  <a href="reviews.html" data-key="reviews"><i class="fas fa-star"></i><span>Reviews</span></a>
-  <a href="interviews.html" data-key="interviews"><i class="fas fa-microphone"></i><span>Interviews</span></a>
-  <a href="music.html" data-key="music"><i class="fas fa-music"></i><span>Music</span></a>
-  <a href="events.html" data-key="events"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
-  <a href="team.html" data-key="team"><i class="fas fa-users"></i><span>Team</span></a>
-  <a href="contact.html" data-key="contact"><i class="fas fa-envelope"></i><span>Contact</span></a>
+<a data-key="start" href="index.html"><i class="fas fa-home"></i><span>Start</span></a>
+<a data-key="reviews" href="reviews.html"><i class="fas fa-star"></i><span>Reviews</span></a>
+<a data-key="interviews" href="interviews.html"><i class="fas fa-microphone"></i><span>Interviews</span></a>
+<a data-key="music" href="music-videos.html"><i class="fas fa-music"></i><span>Music & Videos</span></a>
+<a data-key="events" href="events.html"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
+<a data-key="team" href="team.html"><i class="fas fa-users"></i><span>Team</span></a>
+<a data-key="contact" href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
 </nav>
 <main>
-  <div class="featured-section" id="featured-section"></div>
-  <div class="filters">
-    <input type="text" id="search-bar" placeholder="Search..." autocomplete="off" />
-    <label for="genre-filter" style="margin-right:0.2em;" data-key="filter-genre-label">Filter by genre:</label>
-    <select id="genre-filter"></select>
-    <div id="alphabet-filter"></div>
+  <h1 data-key="page_title_mv">Music & Videos</h1>
+  <div id="search-filter-container">
+    <input aria-label="Search" id="search-input" placeholder="Search tracks or videos..." type="text"/>
+    <select id="genre-filter"><option value="">All Genres</option></select>
+    <select id="alpha-sort">
+      <option value="desc">Sort: Z-A</option>
+      <option value="asc">Sort: A-Z</option>
+    </select>
+    <button id="clear-search" title="Clear search and filters">×</button>
   </div>
-  <h3 class="section-header" data-key="tracks">Tracks</h3>
-  <div id="tracks-container"></div>
-  <div id="tracks-pagination" class="pagination"></div>
-  <h3 class="section-header" data-key="videos">Videos</h3>
-  <div id="videos-container"></div>
-  <div id="videos-pagination" class="pagination"></div>
+  <div class="main-flex">
+    <div class="main-left">
+      <section class="videos-section">
+        <h2 class="clickable" data-key="videos">Videos</h2>
+        <div class="card-grid" id="videos-preview"></div>
+      </section>
+      <section class="archive-section">
+        <h2 class="clickable" data-key="archive">Archive</h2>
+        <div class="card-grid" id="archive-preview"></div>
+      </section>
+    </div>
+    <section class="featured-section">
+      <h2 data-key="featured"><i class="fas fa-star" style="color:#ffdc00;"></i> Featured</h2>
+      <div class="card-grid" id="featured-preview"></div>
+    </section>
+  </div>
 </main>
 <div class="social-buttons">
-  <a href="https://www.facebook.com/wajbzz" target="_blank"><i class="fab fa-facebook-f"></i></a>
-  <a href="https://www.instagram.com/wajbzz/" target="_blank"><i class="fab fa-instagram"></i></a>
-  <a href="https://www.youtube.com/@wajbzz" target="_blank"><i class="fab fa-youtube"></i></a>
+<a href="https://www.facebook.com/wajbzz" target="_blank"><i class="fab fa-facebook-f"></i></a>
+<a href="https://www.instagram.com/wajbzz/" target="_blank"><i class="fab fa-instagram"></i></a>
+<a href="https://www.youtube.com/@wajbzz" target="_blank"><i class="fab fa-youtube"></i></a>
 </div>
 <div class="lang-buttons">
-  <button id="btn-en" class="active">EN</button>
-  <button id="btn-pl">PL</button>
+<button id="btn-en">EN</button>
+<button id="btn-pl">PL</button>
 </div>
-<div id="admin-settings-trigger" tabindex="0" aria-label="Admin Panel">
-  <i class="fas fa-cog" style="color:#3ec1e0;font-size:1.5rem;" title="Admin Panel"></i>
-</div>
+<button id="admin-settings-trigger" title="Admin Panel">
+  <i class="fas fa-cog" style="color:#3ec1e0;font-size:1.5rem;"></i>
+</button>
 <div class="footer-bottom-right">
   © 2025 Wajbzz
 </div>
-<div id="video-modal"></div>
-<div id="admin-modal-overlay">
-  <div id="admin-modal-inner"></div>
+<div aria-labelledby="modal-title" aria-modal="true" id="modal-overlay" role="dialog" tabindex="-1">
+  <div id="modal-content">
+    <button aria-label="Close modal" id="modal-close">×</button>
+    <h2 id="modal-title"></h2>
+    <input id="modal-search-input" placeholder="Search..." style="width:100%;margin-bottom:1rem;padding:.5rem;font-family:'Orbitron',sans-serif;font-size:1rem;border:2px solid #00ffff;background:#111;color:#3ec1e0;border-radius:6px;" type="text"/>
+    <div class="card-grid" id="modal-cards"></div>
+  </div>
 </div>
-<script>
-  // ==== Firebase Config ====
-  const firebaseConfig = {
-    apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
-    authDomain: "wajbzz-website.firebaseapp.com",
-    projectId: "wajbzz-website",
-    storageBucket: "wajbzz-website.appspot.com",
-    messagingSenderId: "387063007187",
-    appId: "1:387063007187:web:2929f1a25716ca1ea71126",
-    measurementId: "G-7F5F1YLRF2"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // ==== Data and Pagination ====
-  let tracksData = [];
-  let videosData = [];
-  let userGenres = [];
-  let featured = {type: "video", id: ""};
-  const TRACKS_PER_PAGE = 10;
-  const VIDEOS_PER_PAGE = 10;
-  let tracksPage = 1;
-  let videosPage = 1;
-
-  // ==== Real-time Firestore Listeners ====
-  db.collection("tracks").onSnapshot((snapshot) => {
-    tracksData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    if (tracksPage > Math.ceil(tracksData.length / TRACKS_PER_PAGE)) tracksPage = 1;
-    displayTracks();
-    updateTracksPagination();
-    if (featured.type === "track" && !tracksData.find(t => t.id === featured.id)) {
-      featured = {type: "video", id: videosData[0]?.id || ""};
-      saveFeaturedToFirestore();
-    }
-    renderFeaturedSection();
-    if (window.renderAdminTracks) renderAdminTracks(tracksData);
-  });
-  db.collection("videos").onSnapshot((snapshot) => {
-    videosData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    if (videosPage > Math.ceil(videosData.length / VIDEOS_PER_PAGE)) videosPage = 1;
-    displayVideos();
-    updateVideosPagination();
-    if (featured.type === "video" && !videosData.find(v => v.id === featured.id)) {
-      featured = {type: "track", id: tracksData[0]?.id || ""};
-      saveFeaturedToFirestore();
-    }
-    renderFeaturedSection();
-    if (window.renderAdminVideos) renderAdminVideos(videosData);
-  });
-  db.collection("genres").onSnapshot((snapshot) => {
-    userGenres = snapshot.docs.map(doc => doc.data().name);
-    populateGenreFilter();
-    if (window.renderAdminGenres) renderAdminGenres();
-  });
-  db.collection("site").doc("featured").onSnapshot((d) => {
-    if (d.exists) {
-      featured = d.data();
-      renderFeaturedSection();
-      if (window.renderAdminTracks) renderAdminTracks(tracksData);
-      if (window.renderAdminVideos) renderAdminVideos(videosData);
-    }
-  });
-
-  // ==== Firestore Helpers ====
-  function addTrack({title, artist, genre, audioSrc}) {
-    db.collection("tracks").add({ title, artist, genre, audioSrc });
-  }
-  function updateTrack(id, data) {
-    db.collection("tracks").doc(id).update(data);
-  }
-  function deleteTrack(id) {
-    db.collection("tracks").doc(id).delete();
-  }
-  function addVideo({title, genre, thumbnail, videoSrc}) {
-    db.collection("videos").add({ title, genre, thumbnail, videoSrc });
-  }
-  function updateVideo(id, data) {
-    db.collection("videos").doc(id).update(data);
-  }
-  function deleteVideo(id) {
-    db.collection("videos").doc(id).delete();
-  }
-  function addGenre(name) {
-    if (!userGenres.includes(name)) db.collection("genres").add({ name });
-  }
-  function deleteGenre(name) {
-    db.collection("genres").where("name", "==", name).get().then(snap => {
-      snap.forEach(docu => docu.ref.delete());
-    });
-  }
-  function saveFeaturedToFirestore() {
-    db.collection("site").doc("featured").set(featured);
-  }
-
-  // ==== Translations and Genres ====
-  const translations = {
-    en: {
-      start: "Start", reviews: "Reviews", interviews: "Interviews", music: "Music", events: "Events", team: "Team", contact: "Contact",
-      "featured-artist": "Featured Artist", "featured-artist-desc": "Electronic synthwave music producer.",
-      "filter-genre-label": "Filter by genre:", tracks: "Tracks", videos: "Videos",
-      "All genres": "All genres", "No results found.": "No results found.", "Search...": "Search...",
-      "add-genre": "Add Genre", "new-genre-placeholder": "New genre name...", "add-genre-btn": "Add"
+<div id="toast" class="toast"></div>
+<script id="translations-json" type="application/json">
+  {
+    "en": {
+      "start": "Start", "reviews": "Reviews", "interviews": "Interviews", "music": "Music", "music_videos": "Music & Videos",
+      "events": "Events", "team": "Team", "contact": "Contact", "page_title_mv": "Music & Videos",
+      "featured": "Featured", "videos": "Videos", "archive": "Archive", "add_genre": "Add Genre", "delete": "Delete", "edit": "Edit", "save": "Save",
+      "all_genres": "All Genres", "no_genre": "No Genre"
     },
-    pl: {
-      start: "Start", reviews: "Recenzje", interviews: "Wywiady", music: "Muzyka", events: "Wydarzenia", team: "Zespół", contact: "Kontakt",
-      "featured-artist": "Wyróżniony artysta", "featured-artist-desc": "Producent elektronicznej muzyki synthwave.",
-      "filter-genre-label": "Filtruj według gatunku:", tracks: "Utwory", videos: "Wideo",
-      "All genres": "Wszystkie gatunki", "No results found.": "Brak wyników.", "Search...": "Szukaj...",
-      "add-genre": "Dodaj gatunek", "new-genre-placeholder": "Nazwa nowego gatunku...", "add-genre-btn": "Dodaj"
+    "pl": {
+      "start": "Start", "reviews": "Recenzje", "interviews": "Wywiady", "music": "Muzyka", "music_videos": "Muzyka i Wideo",
+      "events": "Wydarzenia", "team": "Zespół", "contact": "Kontakt", "page_title_mv": "Muzyka i Wideo",
+      "featured": "Wyróżnione", "videos": "Wideo", "archive": "Archiwum", "add_genre": "Dodaj gatunek", "delete": "Usuń", "edit": "Edytuj", "save": "Zapisz",
+      "all_genres": "Wszystkie gatunki", "no_genre": "Bez gatunku"
     }
-  };
-  let currentLang = 'en';
-  const standardGenreKeysDefault = [
-    "Synthwave", "Retrowave", "Chillwave", "Pop", "Rock", "Hip-Hop", "Jazz", "Classical",
-    "Ambient", "Electronic", "Indie", "Funk", "Soul", "Disco", "Trance", "EDM",
-    "House", "Dubstep", "Lo-fi", "Reggae", "Country", "Metal"
-  ];
-  const genreTranslations = {
-    en: Object.fromEntries(standardGenreKeysDefault.map(g => [g, g])),
-    pl: {
-      "Synthwave": "Synthwave", "Retrowave": "Retrowave", "Chillwave": "Chillwave",
-      "Pop": "Pop","Rock": "Rock","Hip-Hop": "Hip-Hop","Jazz": "Jazz","Classical": "Klasyczna",
-      "Ambient": "Ambient","Electronic": "Elektroniczna","Indie": "Indie","Funk": "Funk",
-      "Soul": "Soul","Disco": "Disco","Trance": "Trance","EDM": "EDM","House": "House",
-      "Dubstep": "Dubstep","Lo-fi": "Lo-fi","Reggae": "Reggae","Country": "Country","Metal": "Metal"
-    }
-  };
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  }
+</script>
+<script type="module">
+// Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
+  authDomain: "wajbzz-website.firebaseapp.com",
+  projectId: "wajbzz-website",
+  storageBucket: "wajbzz-website.appspot.com",
+  messagingSenderId: "387063007187",
+  appId: "1:387063007187:web:2929f1a25716ca1ea71126",
+  measurementId: "G-7F5F1YLRF2"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  // ==== Language Switch ====
-  function setLang(lang) {
-    currentLang = lang;
-    document.querySelectorAll('[data-key]').forEach(el => {
-      const key = el.getAttribute('data-key');
-      if (translations[lang][key]) el.innerText = translations[lang][key];
+const translations = JSON.parse(document.getElementById('translations-json').textContent);
+let currentLang = 'en';
+let tracks = [];
+let genres = [];
+let featured = null, videos = [], archive = [];
+const featuredPreview = document.getElementById('featured-preview');
+const videosPreview = document.getElementById('videos-preview');
+const archivePreview = document.getElementById('archive-preview');
+const searchInput = document.getElementById('search-input');
+const genreFilter = document.getElementById('genre-filter');
+const alphaSort = document.getElementById('alpha-sort');
+const clearSearchBtn = document.getElementById('clear-search');
+
+function t(key) { return translations[currentLang][key] || key; }
+function getGenreDisplayName(genreId) {
+  if (!genreId) return t('no_genre');
+  const genre = genres.find(g => g.id === genreId);
+  if (genre) return genre['name_' + currentLang] || genre['name_en'] || genre['name_pl'] || genre.name_en || genre.name_pl || "";
+  return genreId;
+}
+
+function showToast(msg, color="#28a745") {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.style.background = color;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 1850);
+}
+
+function fetchTracksRealtime() {
+  const q = query(collection(db, "media_tracks"), orderBy("date", "desc"));
+  onSnapshot(q, snapshot => {
+    tracks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    categorizeTracks();
+    fillPreviews();
+    if (window.renderAdminTrackList) window.renderAdminTrackList();
+  });
+}
+function fetchGenresRealtime() {
+  const q = query(collection(db, "media_genres"), orderBy("name_en", "asc"));
+  onSnapshot(q, snapshot => {
+    genres = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    fillGenreDropdown();
+    if (window.renderAdminGenreList) window.renderAdminGenreList();
+    fillPreviews();
+  });
+}
+fetchTracksRealtime();
+fetchGenresRealtime();
+
+function categorizeTracks() {
+  featured = tracks.find(i => i.section === "featured");
+  videos = tracks.filter(i => i.section === "videos");
+  archive = tracks.filter(i => i.section === "archive");
+}
+
+function fillGenreDropdown() {
+  let html = `<option value="">${t('all_genres')}</option>`;
+  genres.forEach(g => {
+    const name = g['name_' + currentLang] || g['name_en'] || g['name_pl'] || g.name_en || g.name_pl || "";
+    html += `<option value="${g.id}">${name}</option>`;
+  });
+  genreFilter.innerHTML = html;
+}
+function getYouTubeId(url) {
+  if (!url) return null;
+  let id = null;
+  if (url.includes("youtube.com/watch?v=")) id = url.split("v=")[1].split("&")[0];
+  else if (url.includes("youtu.be/")) id = url.split("youtu.be/")[1].split("?")[0];
+  else if (url.includes("youtube.com/embed/")) id = url.split("embed/")[1].split("?")[0];
+  return id && id.length >= 11 ? id.substr(0,11) : null;
+}
+function getDefaultThumbnail(videoUrl) {
+  const ytId = getYouTubeId(videoUrl);
+  if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+  return 'img/default-thumbnail.jpg';
+}
+function parseVideoUrl(url) {
+  if (!url) return "";
+  if (url.includes("youtube.com/watch?v=")) { const id = url.split("v=")[1].split("&")[0]; return "https://www.youtube.com/embed/" + id; }
+  else if (url.includes("youtu.be/")) { const id = url.split("youtu.be/")[1].split("?")[0]; return "https://www.youtube.com/embed/" + id; }
+  else if (url.includes("youtube.com/embed/")) return url;
+  else if (url.includes("vimeo.com/")) { const id = url.split("vimeo.com/")[1].split("?")[0]; return "https://player.vimeo.com/video/" + id; }
+  return url;
+}
+function createMediaCard(track) {
+  const card = document.createElement('div');
+  card.className = 'media-card';
+  card.dataset.date = track.date;
+  const title = track.title || 'Untitled';
+  const img = document.createElement('img');
+  img.src = track.img || getDefaultThumbnail(track.videoUrl);
+  img.alt = title;
+  img.onerror = () => { img.src = getDefaultThumbnail(track.videoUrl); };
+  const desc = document.createElement('div');
+  desc.className = 'desc';
+  desc.textContent = title + (track.genre ? " (" + getGenreDisplayName(track.genre) + ")" : "");
+  card.appendChild(img);
+  card.appendChild(desc);
+  card.addEventListener('click', () => {
+    if (track.videoUrl) openVideoModal(track.videoUrl, title);
+  });
+  if (track.section === "featured") {
+    const badge = document.createElement('div');
+    badge.className = "featured-badge";
+    badge.textContent = t("featured");
+    card.appendChild(badge);
+  }
+  return card;
+}
+function fillPreviews() {
+  const searchTerm = (searchInput.value || "").toLowerCase().trim();
+  const genreVal = genreFilter.value || "";
+  const sortVal = alphaSort.value || "desc";
+  function filterFunc(i) {
+    const desc = (i.title || "").toLowerCase();
+    const genreMatch = genreVal ? (i.genre === genreVal) : true;
+    const textMatch = desc.includes(searchTerm);
+    return genreMatch && textMatch;
+  }
+  // Featured
+  featuredPreview.innerHTML = '';
+  if (featured && filterFunc(featured)) {
+    featuredPreview.appendChild(createMediaCard(featured));
+  }
+  // Videos
+  let filteredVideos = videos.filter(filterFunc);
+  filteredVideos.sort((a, b) => {
+    if (sortVal === "asc") return (a.title||"").localeCompare(b.title||"");
+    else return (b.title||"").localeCompare(a.title||"");
+  });
+  videosPreview.innerHTML = '';
+  filteredVideos.forEach(i => videosPreview.appendChild(createMediaCard(i)));
+  // Archive
+  let filteredArchive = archive.filter(filterFunc);
+  filteredArchive.sort((a, b) => {
+    if (sortVal === "asc") return (a.title||"").localeCompare(b.title||"");
+    else return (b.title||"").localeCompare(a.title||"");
+  });
+  archivePreview.innerHTML = '';
+  filteredArchive.forEach(i => archivePreview.appendChild(createMediaCard(i)));
+}
+searchInput.addEventListener('input', fillPreviews);
+genreFilter.addEventListener('change', fillPreviews);
+alphaSort.addEventListener('change', fillPreviews);
+clearSearchBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  genreFilter.value = '';
+  fillPreviews();
+});
+const modalOverlay = document.getElementById('modal-overlay');
+const modalCards = document.getElementById('modal-cards');
+const modalTitle = document.getElementById('modal-title');
+const modalClose = document.getElementById('modal-close');
+function openModal(sectionName, cardsArray) {
+  modalTitle.textContent = t(sectionName) || sectionName;
+  modalCards.innerHTML = '';
+  cardsArray.forEach(i => modalCards.appendChild(createMediaCard(i)));
+  modalOverlay.style.display = 'flex';
+  modalOverlay.focus();
+  if (document.getElementById("modal-search-input")) {
+    document.getElementById("modal-search-input").value = '';
+  }
+}
+modalClose.addEventListener('click', () => { modalOverlay.style.display = 'none'; });
+modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) { modalOverlay.style.display = 'none'; } });
+document.querySelector('.videos-section h2').addEventListener('click', () => { openModal('videos', videos); });
+document.querySelector('.archive-section h2').addEventListener('click', () => { openModal('archive', archive); });
+document.querySelector('.featured-section h2').addEventListener('click', () => {
+  if (featured) openModal('featured', [featured]);
+});
+const modalSearchInput = document.getElementById('modal-search-input');
+modalSearchInput?.addEventListener('input', () => {
+  const term = modalSearchInput.value.toLowerCase();
+  const cards = modalCards.querySelectorAll('.media-card');
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(term) ? 'flex' : 'none';
+  });
+});
+document.getElementById('btn-en').addEventListener('click', () => { currentLang = 'en'; translatePage(); });
+document.getElementById('btn-pl').addEventListener('click', () => { currentLang = 'pl'; translatePage(); });
+function translatePage() {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if(translations[currentLang] && translations[currentLang][key]){
+      el.textContent = translations[currentLang][key];
+    }
+  });
+  fillGenreDropdown();
+  fillPreviews();
+  if (window.renderAdminTrackList) window.renderAdminTrackList();
+  if (window.renderAdminGenreList) window.renderAdminGenreList();
+}
+translatePage();
+// === ADMIN PANEL ===
+const adminTrigger = document.getElementById("admin-settings-trigger");
+const adminOverlay = document.createElement("div");
+adminOverlay.id = "admin-modal-overlay";
+adminOverlay.style = "display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);z-index:100000;justify-content:center;align-items:center;";
+document.body.appendChild(adminOverlay);
+
+adminTrigger.addEventListener("click", () => {
+  adminOverlay.innerHTML = `
+    <div style="background:#111;border:2px solid #00ffff;padding:2rem;border-radius:10px;max-width:1100px;width:98vw;text-align:left;box-shadow:0 0 20px #00ffffaa;max-height:95vh;overflow-y:auto;">
+      <h2 style="color:#3ec1e0;margin-bottom:1rem;">Admin Panel – Music & Videos</h2>
+      <input type="password" id="admin-password" placeholder="Enter password" style="width:100%;padding:.5rem 0.8rem;margin-bottom:1rem;border:2px solid #3ec1e0;border-radius:6px;background:#000;color:#3ec1e0;">
+      <button id="admin-login-btn" style="padding:.5rem 1rem;background:#00ffff;color:#000;border:none;border-radius:6px;cursor:pointer;">Login</button>
+      <p id="admin-error" style="color:red;margin-top:1rem;display:none;">Incorrect password</p>
+    </div>
+  `;
+  adminOverlay.style.display = "flex";
+  adminOverlay.onclick = function(e) { if (e.target === adminOverlay) adminOverlay.style.display = "none"; };
+  document.getElementById("admin-login-btn").onclick = function() {
+    const entered = document.getElementById("admin-password").value;
+    if (entered === "wajbzz123") {
+      launchAdminPanel();
+    } else {
+      document.getElementById("admin-error").style.display = "block";
+    }
+  };
+});
+
+window.launchAdminPanel = function() {
+  adminOverlay.innerHTML = `
+    <div style="background:#111;border:2px solid #00ffff;padding:2rem;border-radius:10px;max-width:1100px;width:98vw;text-align:left;box-shadow:0 0 20px #00ffffaa;max-height:95vh;overflow-y:auto;">
+      <h2 style="color:#3ec1e0;margin-bottom:1rem;">Admin Panel – Music & Videos</h2>
+      <div style="display:flex;gap:1em;align-items:center;margin-bottom:1em;flex-wrap:wrap;">
+        <input type="text" id="admin-search" placeholder="Search tracks..." style="flex:1;padding:.5rem;border:2px solid #3ec1e0;border-radius:6px;background:#000;color:#3ec1e0;">
+        <select id="admin-section-filter" style="padding:.5rem .8rem;border-radius:6px;background:#000;color:#3ec1e0;border:2px solid #3ec1e0;">
+          <option value="">All Sections</option>
+          <option value="featured">Featured</option>
+          <option value="videos">Videos</option>
+          <option value="archive">Archive</option>
+        </select>
+        <select id="admin-genre-filter" style="padding:.5rem .8rem;border-radius:6px;background:#000;color:#3ec1e0;border:2px solid #3ec1e0;">
+          <option value="">${t('all_genres')}</option>
+          ${genres.map(g => `<option value="${g.id}">${g['name_' + currentLang] || g['name_en'] || g['name_pl'] || g.name_en || g.name_pl || ""}</option>`).join("")}
+        </select>
+      </div>
+      <div id="admin-track-list"></div>
+      <div style="margin-top:2rem;padding:1rem;border-top:1px solid #3ec1e0;">
+        <h3 style="color:#3ec1e0;">Add New Track / Video</h3>
+        <input type="text" id="new-title" placeholder="Title" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <input type="date" id="new-date" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <input type="text" id="new-video-url" placeholder="Video URL (YouTube, Vimeo or blank)" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <select id="new-section" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+          <option value="featured">Featured</option>
+          <option value="videos">Videos</option>
+          <option value="archive">Archive</option>
+        </select>
+        <select id="new-genre" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+          <option value="">${t('no_genre')}</option>
+          ${genres.map(g => `<option value="${g.id}">${g['name_' + currentLang] || g['name_en'] || g['name_pl'] || g.name_en || g.name_pl || ""}</option>`).join("")}
+        </select>
+        <input type="text" id="new-img" placeholder="Image URL (optional)" style="width:100%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <button id="add-track-btn" style="padding:.4rem 1rem;background:#00ffff;color:#000;border:none;border-radius:4px;cursor:pointer;">Add Track / Video</button>
+      </div>
+      <div style="margin-top:2rem;padding:1rem;border-top:1px solid #3ec1e0;">
+        <h3 style="color:#3ec1e0;">Genres</h3>
+        <div id="admin-genre-list"></div>
+        <input type="text" id="new-genre-name-en" placeholder="New Genre Name (EN)" style="width:45%;padding:.4rem;margin:.4rem 2% .4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <input type="text" id="new-genre-name-pl" placeholder="Nazwa gatunku (PL)" style="width:45%;padding:.4rem;margin:.4rem 0;background:#000;color:#3ec1e0;border:1px solid #3ec1e0;border-radius:4px;">
+        <button id="add-genre-btn" style="padding:.4rem 1rem;background:#00ffff;color:#000;border:none;border-radius:4px;cursor:pointer;">${t('add_genre')}</button>
+      </div>
+      <div style="text-align:right;margin-top:1rem;">
+        <button onclick="adminOverlay.style.display='none'" style="padding:.5rem 1rem;background:#3ec1e0;color:#000;border:none;border-radius:6px;cursor:pointer;">Close</button>
+      </div>
+    </div>
+  `;
+  renderAdminTrackList();
+  renderAdminGenreList();
+  document.getElementById("add-track-btn").onclick = addNewTrack;
+  document.getElementById("add-genre-btn").onclick = addNewGenre;
+  document.getElementById("admin-search").oninput = renderAdminTrackList;
+  document.getElementById("admin-section-filter").onchange = renderAdminTrackList;
+  document.getElementById("admin-genre-filter").onchange = renderAdminTrackList;
+};
+
+window.addNewTrack = async function() {
+  const title = document.getElementById("new-title").value.trim();
+  const date = document.getElementById("new-date").value;
+  const img = document.getElementById("new-img").value.trim();
+  const videoUrl = parseVideoUrl(document.getElementById("new-video-url").value.trim());
+  const section = document.getElementById("new-section").value;
+  const genre = document.getElementById("new-genre").value;
+  if (!title || !date) { alert("Please fill out at least title and date."); return; }
+  // Only one featured allowed
+  if (section === "featured" && tracks.some(t => t.section === "featured")) {
+    alert("Only one featured track/video allowed. Move the current featured to another section first.");
+    return;
+  }
+  try {
+    await addDoc(collection(db, "media_tracks"), {
+      title,
+      date,
+      img,
+      videoUrl,
+      section,
+      genre
     });
-    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-    document.getElementById('btn-pl').classList.toggle('active', lang === 'pl');
-    document.getElementById('search-bar').placeholder = translations[lang]["Search..."];
-    populateGenreFilter();
-    displayTracks();
-    displayVideos();
-  }
-  document.getElementById('btn-en').onclick = () => setLang('en');
-  document.getElementById('btn-pl').onclick = () => setLang('pl');
+    showToast("Track / Video added.");
+    document.getElementById("new-title").value = "";
+    document.getElementById("new-date").value = "";
+    document.getElementById("new-img").value = "";
+    document.getElementById("new-video-url").value = "";
+    document.getElementById("new-genre").value = "";
+    renderAdminTrackList();
+  } catch (e) { alert("Error: " + e.message); }
+};
 
-  // ==== Genre Filter ====
-  function populateGenreFilter() {
-    const select = document.getElementById('genre-filter');
-    select.innerHTML = '';
-    const allOpt = document.createElement('option');
-    allOpt.value = '';
-    allOpt.innerText = translations[currentLang]["All genres"];
-    select.appendChild(allOpt);
-    const genres = Array.from(new Set([...standardGenreKeysDefault, ...userGenres])).sort();
-    for (const g of genres) {
-      const opt = document.createElement('option');
-      opt.value = g;
-      opt.innerText = (genreTranslations[currentLang][g] || g);
-      select.appendChild(opt);
-    }
-  }
-  document.getElementById('genre-filter').onchange = () => {
-    tracksPage = 1;
-    videosPage = 1;
-    displayTracks();
-    displayVideos();
-  };
-
-  // ==== Alphabet Filter ====
-  function renderAlphabetFilter() {
-    const container = document.getElementById('alphabet-filter');
-    container.innerHTML = '';
-    for (const letter of alphabet) {
-      const btn = document.createElement('button');
-      btn.innerText = letter;
-      btn.onclick = () => {
-        document.querySelectorAll('#alphabet-filter button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('search-bar').value = '';
-        tracksPage = 1;
-        videosPage = 1;
-        displayTracks();
-        displayVideos();
-      };
-      container.appendChild(btn);
-    }
-  }
-  renderAlphabetFilter();
-
-  // ==== Featured Section ====
-  function renderFeaturedSection() {
-    const el = document.getElementById('featured-section');
-    el.innerHTML = '';
-    let content = '';
-    if (featured.type === "track") {
-      const t = tracksData.find(t=>t.id===featured.id);
-      if (!t) { el.innerHTML = ''; return; }
-      content = `
-        <img src="https://i.imgur.com/8p2NwIK.png" alt="Track" class="featured-thumb" tabindex="0">
-        <div class="featured-info">
-          <h2>${escapeHTML(t.title)}</h2>
-          <p>${escapeHTML(t.artist)}</p>
-          <p style="margin-top:.5em;"><span class="track-genre">${genreTranslations[currentLang][t.genre]||t.genre}</span></p>
-          <audio controls src="${escapeHTML(t.audioSrc)}" style="margin-top:.7em;width:100%;"></audio>
+window.renderAdminTrackList = function() {
+  const list = document.getElementById("admin-track-list");
+  if (!list) return;
+  const filterVal = document.getElementById("admin-search")?.value.trim().toLowerCase() || "";
+  const sectionVal = document.getElementById("admin-section-filter")?.value || "";
+  const genreVal = document.getElementById("admin-genre-filter")?.value || "";
+  let arr = tracks.filter(i =>
+    (!filterVal || (i.title && i.title.toLowerCase().includes(filterVal)))
+    && (!sectionVal || i.section === sectionVal)
+    && (!genreVal || i.genre === genreVal)
+  );
+  arr = arr.sort((a, b) => ((b.date||'').localeCompare(a.date||'')));
+  let html = "";
+  arr.forEach(track => {
+    html += `
+      <div class="card-admin" style="margin-bottom:1.1rem;padding:1rem;border:1px solid #3ec1e0;background:#1a1a1a;border-radius:6px;display:flex;gap:1rem;align-items:flex-start;">
+        <img src="${track.img || getDefaultThumbnail(track.videoUrl)}" alt="thumbnail" style="width:100px;height:70px;object-fit:cover;border-radius:4px;border:1px solid #3ec1e0">
+        <div style="flex:1">
+          <label style="color:#3ec1e0;">Title:<br/>
+            <input type="text" data-field="title" value="${track.title || ""}" style="width:100%;margin:.3rem 0;padding:.4rem;">
+          </label>
+          <label style="color:#3ec1e0;">Thumbnail Image URL:<br/>
+            <input type="text" data-field="img" value="${track.img || ''}" style="width:100%;margin:.3rem 0;padding:.4rem;" oninput="this.closest('.card-admin').querySelector('img').src = this.value || '${getDefaultThumbnail(track.videoUrl)}'">
+          </label>
+          <label style="color:#3ec1e0;">Date:<br/>
+            <input type="date" data-field="date" value="${track.date || ""}" style="width:100%;margin:.3rem 0;padding:.4rem;">
+          </label>
+          <label style="color:#3ec1e0;">Video URL (YouTube/Vimeo):<br/>
+            <input type="text" data-field="videoUrl" value="${track.videoUrl || ""}" style="width:100%;margin:.3rem 0;padding:.4rem;">
+          </label>
+          <label style="color:#3ec1e0;">Section:<br/>
+            <select data-field="section" style="width:100%;margin:.3rem 0;padding:.4rem;">
+              <option value="featured" ${track.section==="featured"?"selected":""}>Featured</option>
+              <option value="videos" ${track.section==="videos"?"selected":""}>Videos</option>
+              <option value="archive" ${track.section==="archive"?"selected":""}>Archive</option>
+            </select>
+          </label>
+          <label style="color:#3ec1e0;">Genre:<br/>
+            <select data-field="genre" style="width:100%;margin:.3rem 0;padding:.4rem;">
+              <option value="">${t('no_genre')}</option>
+              ${genres.map(g => `<option value="${g.id}" ${track.genre===g.id?"selected":""}>${g['name_' + currentLang] || g['name_en'] || g['name_pl'] || g.name_en || g.name_pl || ""}</option>`).join("")}
+            </select>
+          </label>
+          <div style="display:flex;justify-content:space-between;margin-top:.5rem;">
+            <button class="save-btn" data-id="${track.id}">${t('save')}</button>
+            <button class="delete-btn" data-id="${track.id}">${t('delete')}</button>
+            <span class="save-status" style="color:#28a745;display:none;margin-left:8px">✔</span>
+          </div>
         </div>
-      `;
-    } else if (featured.type === "video") {
-      const v = videosData.find(v=>v.id===featured.id);
-      if (!v) { el.innerHTML = ''; return; }
-      content = `
-        <img src="${escapeHTML(v.thumbnail)}" alt="Video" class="featured-thumb" tabindex="0" onclick="window.showVideoModal&&window.showVideoModal('${v.videoSrc}')">
-        <div class="featured-info">
-          <h2>${escapeHTML(v.title)}</h2>
-          <p><span class="track-genre">${genreTranslations[currentLang][v.genre]||v.genre}</span></p>
-        </div>
-      `;
-    }
-    el.innerHTML = content;
-  }
-
-  // ==== Search Bar ====
-  document.getElementById('search-bar').oninput = ()=>{
-    tracksPage = 1;
-    videosPage = 1;
-    displayTracks();
-    displayVideos();
-  };
-
-  // ==== Display Tracks ====
-  function displayTracks() {
-    const container = document.getElementById('tracks-container');
-    let tracks = tracksData.slice();
-    const genre = document.getElementById('genre-filter').value;
-    if (genre) tracks = tracks.filter(t=>t.genre===genre);
-    const q = document.getElementById('search-bar').value.trim().toLowerCase();
-    if (q) tracks = tracks.filter(t=>(t.title+t.artist+t.genre).toLowerCase().includes(q));
-    const activeAlpha = document.querySelector('#alphabet-filter .active');
-    if (activeAlpha) {
-      const letter = activeAlpha.innerText;
-      tracks = tracks.filter(t=>t.title.charAt(0).toUpperCase()===letter);
-    }
-    if (!tracks.length) {
-      container.innerHTML = `<div style="color:#fff;">${translations[currentLang]["No results found."]}</div>`;
-      return;
-    }
-    // Pagination
-    const start = (tracksPage-1)*TRACKS_PER_PAGE, end = start+TRACKS_PER_PAGE;
-    const pageTracks = tracks.slice(start,end);
-    container.innerHTML = pageTracks.map(t=>`
-      <div class="track-item">
-        <div class="track-info">
-          <div class="track-title">${escapeHTML(t.title)}</div>
-          <div class="track-artist">${escapeHTML(t.artist)}</div>
-          <span class="track-genre">${genreTranslations[currentLang][t.genre]||t.genre}</span>
-        </div>
-        <audio class="track-audio" controls src="${escapeHTML(t.audioSrc)}"></audio>
-      </div>
-    `).join('');
-  }
-  function updateTracksPagination() {
-    const genre = document.getElementById('genre-filter').value;
-    let tracks = tracksData.slice();
-    if (genre) tracks = tracks.filter(t=>t.genre===genre);
-    const q = document.getElementById('search-bar').value.trim().toLowerCase();
-    if (q) tracks = tracks.filter(t=>(t.title+t.artist+t.genre).toLowerCase().includes(q));
-    const activeAlpha = document.querySelector('#alphabet-filter .active');
-    if (activeAlpha) {
-      const letter = activeAlpha.innerText;
-      tracks = tracks.filter(t=>t.title.charAt(0).toUpperCase()===letter);
-    }
-    const pages = Math.ceil(tracks.length/TRACKS_PER_PAGE);
-    const pag = document.getElementById('tracks-pagination');
-    pag.innerHTML = '';
-    if (pages<=1) return;
-    for (let i=1;i<=pages;i++) {
-      const btn = document.createElement('button');
-      btn.innerText = i;
-      btn.className = (i===tracksPage ? 'active':'');
-      btn.onclick = ()=>{ tracksPage=i; displayTracks(); updateTracksPagination(); };
-      pag.appendChild(btn);
-    }
-  }
-
-  // ==== Display Videos ====
-  function displayVideos() {
-    const container = document.getElementById('videos-container');
-    let videos = videosData.slice();
-    const genre = document.getElementById('genre-filter').value;
-    if (genre) videos = videos.filter(v=>v.genre===genre);
-    const q = document.getElementById('search-bar').value.trim().toLowerCase();
-    if (q) videos = videos.filter(v=>(v.title+v.genre).toLowerCase().includes(q));
-    const activeAlpha = document.querySelector('#alphabet-filter .active');
-    if (activeAlpha) {
-      const letter = activeAlpha.innerText;
-      videos = videos.filter(v=>v.title.charAt(0).toUpperCase()===letter);
-    }
-    if (!videos.length) {
-      container.innerHTML = `<div style="color:#fff;">${translations[currentLang]["No results found."]}</div>`;
-      return;
-    }
-    // Pagination
-    const start = (videosPage-1)*VIDEOS_PER_PAGE, end = start+VIDEOS_PER_PAGE;
-    const pageVideos = videos.slice(start,end);
-    container.innerHTML = pageVideos.map(v=>`
-      <div>
-        <img src="${escapeHTML(v.thumbnail)}" alt="Video" class="video-thumb" tabindex="0" onclick="window.showVideoModal&&window.showVideoModal('${v.videoSrc}')">
-        <div style="margin-top:.5em;font-weight:bold;color:#00ffff;">${escapeHTML(v.title)}</div>
-        <span class="track-genre">${genreTranslations[currentLang][v.genre]||v.genre}</span>
-      </div>
-    `).join('');
-  }
-  function updateVideosPagination() {
-    const genre = document.getElementById('genre-filter').value;
-    let videos = videosData.slice();
-    if (genre) videos = videos.filter(v=>v.genre===genre);
-    const q = document.getElementById('search-bar').value.trim().toLowerCase();
-    if (q) videos = videos.filter(v=>(v.title+v.genre).toLowerCase().includes(q));
-    const activeAlpha = document.querySelector('#alphabet-filter .active');
-    if (activeAlpha) {
-      const letter = activeAlpha.innerText;
-      videos = videos.filter(v=>v.title.charAt(0).toUpperCase()===letter);
-    }
-    const pages = Math.ceil(videos.length/VIDEOS_PER_PAGE);
-    const pag = document.getElementById('videos-pagination');
-    pag.innerHTML = '';
-    if (pages<=1) return;
-    for (let i=1;i<=pages;i++) {
-      const btn = document.createElement('button');
-      btn.innerText = i;
-      btn.className = (i===videosPage ? 'active':'');
-      btn.onclick = ()=>{ videosPage=i; displayVideos(); updateVideosPagination(); };
-      pag.appendChild(btn);
-    }
-  }
-
-  // ==== Video Modal ====
-  window.showVideoModal = function(videoSrc) {
-    const modal = document.getElementById('video-modal');
-    modal.innerHTML = `
-      <button class="close-btn" onclick="window.closeVideoModal()" aria-label="Close">&times;</button>
-      <div style="max-width:98vw;max-height:70vh;">
-        <iframe src="${escapeHTML(videoSrc)}" frameborder="0" allowfullscreen style="width:85vw;max-width:740px;height:56vw;max-height:430px;border-radius:10px;background:#111;"></iframe>
       </div>
     `;
-    modal.classList.add('active');
-  };
-  window.closeVideoModal = function() {
-    const modal = document.getElementById('video-modal');
-    modal.classList.remove('active');
-    modal.innerHTML = '';
-  };
-  document.getElementById('video-modal').onclick = function(e) { if (e.target===this) window.closeVideoModal(); };
+  });
+  list.innerHTML = html;
+  document.querySelectorAll(".save-btn").forEach(btn => {
+    btn.onclick = async function() {
+      const id = btn.getAttribute("data-id");
+      const parent = btn.closest(".card-admin");
+      const title = parent.querySelector('[data-field="title"]').value;
+      const img = parent.querySelector('[data-field="img"]').value;
+      const date = parent.querySelector('[data-field="date"]').value;
+      const videoUrlRaw = parent.querySelector('[data-field="videoUrl"]').value;
+      const section = parent.querySelector('[data-field="section"]').value;
+      const genre = parent.querySelector('[data-field="genre"]').value;
+      if (section === "featured" && tracks.some(t => t.section === "featured" && t.id !== id)) {
+        alert("Only one featured track/video allowed. Move the current featured to another section first.");
+        return;
+      }
+      try {
+        await updateDoc(doc(db, "media_tracks", id), {
+          title,
+          img,
+          date,
+          videoUrl: parseVideoUrl(videoUrlRaw),
+          section,
+          genre
+        });
+        const status = parent.querySelector(".save-status");
+        if (status) {
+          status.style.display = "inline";
+          setTimeout(() => { status.style.display = "none"; }, 1300);
+        }
+        showToast("Saved.");
+      } catch (e) { alert("Error: " + e.message); }
+    };
+  });
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.onclick = async function() {
+      const id = btn.getAttribute("data-id");
+      if (confirm("Delete this track/video?")) {
+        try {
+          await deleteDoc(doc(db, "media_tracks", id));
+          showToast("Deleted.", "#c0392b");
+        } catch (e) { alert("Error: " + e.message); }
+      }
+    };
+  });
+};
 
-  // ==== Escape HTML ====
-  function escapeHTML(s) {
-    return String(s).replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-  }
+window.renderAdminGenreList = function() {
+  const list = document.getElementById("admin-genre-list");
+  if (!list) return;
+  let html = "";
+  genres.forEach(g => {
+    const name = g['name_' + currentLang] || g['name_en'] || g['name_pl'] || g.name_en || g.name_pl || "";
+    html += `<div style="display:inline-block;margin:0.3rem 0.75rem 0.3rem 0;">
+      <span style="background:#00ffff;color:#111;padding:.3rem .7rem;border-radius:5px;margin-right:.4rem;">${name}</span>
+      <button style="background:#c0392b;color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-weight:bold;" onclick="deleteGenre('${g.id}')">×</button>
+    </div>`;
+  });
+  list.innerHTML = html;
+};
 
-  // ==== Admin Panel ====
-  const ADMIN_PASSWORD = "wajbzz123";
-  function promptAdminPasswordAndOpen() {
-    if (sessionStorage.getItem("adminAuth") === "ok") {
-      renderAdmin();
-      return;
-    }
-    const entered = prompt("Enter admin password:");
-    if (entered === ADMIN_PASSWORD) {
-      sessionStorage.setItem("adminAuth", "ok");
-      renderAdmin();
-    } else if (entered !== null) {
-      alert("Incorrect password.");
-    }
+window.addNewGenre = async function() {
+  const name_en = document.getElementById("new-genre-name-en").value.trim();
+  const name_pl = document.getElementById("new-genre-name-pl").value.trim();
+  if (!name_en || !name_pl) { alert("Please enter genre names in both EN and PL."); return; }
+  if (genres.some(g => g.name_en && g.name_en.toLowerCase() === name_en.toLowerCase() || g.name_pl && g.name_pl.toLowerCase() === name_pl.toLowerCase())) {
+    alert("Genre already exists.");
+    return;
   }
-  document.getElementById("admin-settings-trigger").onclick = promptAdminPasswordAndOpen;
+  try {
+    await addDoc(collection(db, "media_genres"), { name_en, name_pl });
+    showToast("Genre added.");
+    document.getElementById("new-genre-name-en").value = "";
+    document.getElementById("new-genre-name-pl").value = "";
+    renderAdminGenreList();
+  } catch (e) { alert("Error: " + e.message); }
+};
 
-  function renderAdmin() {
-    const overlay = document.getElementById("admin-modal-overlay");
-    const inner = document.getElementById("admin-modal-inner");
-    overlay.style.display = "flex";
-    let html = `<button onclick="document.getElementById('admin-modal-overlay').style.display='none'" style="position:absolute;top:10px;right:15px;font-size:2rem;background:none;border:none;color:#00ffff;cursor:pointer;">&times;</button>
-      <h2 style="color:#00ffff;margin-bottom:0.6em;">Admin Panel</h2>
-      <div style="display:flex;gap:1em;">
-        <button id="admin-tab-tracks" class="active" style="flex:1;">Tracks</button>
-        <button id="admin-tab-videos" style="flex:1;">Videos</button>
-        <button id="admin-tab-genres" style="flex:1;">Genres</button>
-        <button id="admin-tab-featured" style="flex:1;">Featured</button>
-      </div>
-      <div id="admin-content" style="margin-top:2em;"></div>
-    `;
-    inner.innerHTML = html;
-    document.getElementById('admin-tab-tracks').onclick = ()=>showAdminTab('tracks');
-    document.getElementById('admin-tab-videos').onclick = ()=>showAdminTab('videos');
-    document.getElementById('admin-tab-genres').onclick = ()=>showAdminTab('genres');
-    document.getElementById('admin-tab-featured').onclick = ()=>showAdminTab('featured');
-    showAdminTab('tracks');
+window.deleteGenre = async function(id) {
+  if (confirm("Delete this genre?")) {
+    try {
+      await deleteDoc(doc(db, "media_genres", id));
+      showToast("Genre deleted.", "#c0392b");
+    } catch (e) { alert("Error: " + e.message); }
   }
-  function showAdminTab(tab) {
-    document.querySelectorAll("#admin-modal-inner button").forEach(btn=>btn.classList.remove('active'));
-    document.getElementById('admin-tab-'+tab).classList.add('active');
-    if (tab==='tracks') renderAdminTracks(tracksData);
-    else if (tab==='videos') renderAdminVideos(videosData);
-    else if (tab==='genres') renderAdminGenres();
-    else if (tab==='featured') renderAdminFeatured();
-  }
-  window.renderAdminTracks = function(tracks) {
-    const container = document.getElementById('admin-content');
-    let html = `<h3 style="color:#00ffff;">Tracks</h3>
-      <button onclick="showAddTrackForm()" style="margin-bottom:1em;">Add Track</button>
-      <table style="width:100%;color:#fff;"><tr><th>Title</th><th>Artist</th><th>Genre</th><th>Audio Src</th><th>Actions</th></tr>`;
-    for (const t of tracks) {
-      html += `<tr>
-        <td>${escapeHTML(t.title)}</td>
-        <td>${escapeHTML(t.artist)}</td>
-        <td>${escapeHTML(t.genre)}</td>
-        <td><a href="${escapeHTML(t.audioSrc)}" target="_blank" style="color:#00ffff;">Link</a></td>
-        <td>
-          <button onclick="showEditTrackForm('${t.id}')">Edit</button>
-          <button onclick="deleteTrack('${t.id}')">Delete</button>
-          <button onclick="setFeatured('track','${t.id}')">Set Featured</button>
-        </td>
-      </tr>`;
-    }
-    html += `</table>`;
-    container.innerHTML = html;
-  }
-  window.renderAdminVideos = function(videos) {
-    const container = document.getElementById('admin-content');
-    let html = `<h3 style="color:#00ffff;">Videos</h3>
-      <button onclick="showAddVideoForm()" style="margin-bottom:1em;">Add Video</button>
-      <table style="width:100%;color:#fff;"><tr><th>Title</th><th>Genre</th><th>Thumbnail</th><th>Video Src</th><th>Actions</th></tr>`;
-    for (const v of videos) {
-      html += `<tr>
-        <td>${escapeHTML(v.title)}</td>
-        <td>${escapeHTML(v.genre)}</td>
-        <td><a href="${escapeHTML(v.thumbnail)}" target="_blank" style="color:#00ffff;">Thumb</a></td>
-        <td><a href="${escapeHTML(v.videoSrc)}" target="_blank" style="color:#00ffff;">Link</a></td>
-        <td>
-          <button onclick="showEditVideoForm('${v.id}')">Edit</button>
-          <button onclick="deleteVideo('${v.id}')">Delete</button>
-          <button onclick="setFeatured('video','${v.id}')">Set Featured</button>
-        </td>
-      </tr>`;
-    }
-    html += `</table>`;
-    container.innerHTML = html;
-  }
-  window.renderAdminGenres = function() {
-    const container = document.getElementById('admin-content');
-    let html = `<h3 style="color:#00ffff;">Genres</h3>
-      <input id="new-genre-input" type="text" placeholder="New genre name..." style="margin-bottom:0.5em;">
-      <button onclick="addAdminGenre()">Add</button>
-      <ul>`;
-    for (const g of userGenres) {
-      html += `<li>${escapeHTML(g)} <button onclick="deleteGenre('${g}')">Delete</button></li>`;
-    }
-    html += `</ul>`;
-    container.innerHTML = html;
-  }
-  window.renderAdminFeatured = function() {
-    const container = document.getElementById('admin-content');
-    let html = `<h3 style="color:#00ffff;">Featured</h3>
-    <p>Current Featured: ${escapeHTML(featured.type)} - ${escapeHTML(featured.id)}</p>`;
-    container.innerHTML = html;
-  }
-  window.showAddTrackForm = function() {
-    const container = document.getElementById('admin-content');
-    container.innerHTML = `<h3>Add Track</h3>
-      <input id="track-title" placeholder="Title"><br>
-      <input id="track-artist" placeholder="Artist"><br>
-      <input id="track-genre" placeholder="Genre"><br>
-      <input id="track-audioSrc" placeholder="Audio Src"><br>
-      <button onclick="addTrackFromForm()">Add</button>
-      <button onclick="showAdminTab('tracks')">Cancel</button>
-    `;
-  }
-  window.addTrackFromForm = function() {
-    const title = document.getElementById('track-title').value;
-    const artist = document.getElementById('track-artist').value;
-    const genre = document.getElementById('track-genre').value;
-    const audioSrc = document.getElementById('track-audioSrc').value;
-    addTrack({title, artist, genre, audioSrc});
-    showAdminTab('tracks');
-  }
-  window.showEditTrackForm = function(id) {
-    const t = tracksData.find(t=>t.id===id);
-    const container = document.getElementById('admin-content');
-    container.innerHTML = `<h3>Edit Track</h3>
-      <input id="track-title" value="${escapeHTML(t.title)}"><br>
-      <input id="track-artist" value="${escapeHTML(t.artist)}"><br>
-      <input id="track-genre" value="${escapeHTML(t.genre)}"><br>
-      <input id="track-audioSrc" value="${escapeHTML(t.audioSrc)}"><br>
-      <button onclick="editTrackFromForm('${id}')">Save</button>
-      <button onclick="showAdminTab('tracks')">Cancel</button>
-    `;
-  }
-  window.editTrackFromForm = function(id) {
-    const title = document.getElementById('track-title').value;
-    const artist = document.getElementById('track-artist').value;
-    const genre = document.getElementById('track-genre').value;
-    const audioSrc = document.getElementById('track-audioSrc').value;
-    updateTrack(id, {title, artist, genre, audioSrc});
-    showAdminTab('tracks');
-  }
-  window.showAddVideoForm = function() {
-    const container = document.getElementById('admin-content');
-    container.innerHTML = `<h3>Add Video</h3>
-      <input id="video-title" placeholder="Title"><br>
-      <input id="video-genre" placeholder="Genre"><br>
-      <input id="video-thumbnail" placeholder="Thumbnail"><br>
-      <input id="video-src" placeholder="Video Src"><br>
-      <button onclick="addVideoFromForm()">Add</button>
-      <button onclick="showAdminTab('videos')">Cancel</button>
-    `;
-  }
-  window.addVideoFromForm = function() {
-    const title = document.getElementById('video-title').value;
-    const genre = document.getElementById('video-genre').value;
-    const thumbnail = document.getElementById('video-thumbnail').value;
-    const videoSrc = document.getElementById('video-src').value;
-    addVideo({title, genre, thumbnail, videoSrc});
-    showAdminTab('videos');
-  }
-  window.showEditVideoForm = function(id) {
-    const v = videosData.find(v=>v.id===id);
-    const container = document.getElementById('admin-content');
-    container.innerHTML = `<h3>Edit Video</h3>
-      <input id="video-title" value="${escapeHTML(v.title)}"><br>
-      <input id="video-genre" value="${escapeHTML(v.genre)}"><br>
-      <input id="video-thumbnail" value="${escapeHTML(v.thumbnail)}"><br>
-      <input id="video-src" value="${escapeHTML(v.videoSrc)}"><br>
-      <button onclick="editVideoFromForm('${id}')">Save</button>
-      <button onclick="showAdminTab('videos')">Cancel</button>
-    `;
-  }
-  window.editVideoFromForm = function(id) {
-    const title = document.getElementById('video-title').value;
-    const genre = document.getElementById('video-genre').value;
-    const thumbnail = document.getElementById('video-thumbnail').value;
-    const videoSrc = document.getElementById('video-src').value;
-    updateVideo(id, {title, genre, thumbnail, videoSrc});
-    showAdminTab('videos');
-  }
-  window.addAdminGenre = function() {
-    const val = document.getElementById('new-genre-input').value.trim();
-    if (val) addGenre(val);
-    showAdminTab('genres');
-  }
-  window.setFeatured = function(type, id) {
-    featured = {type, id};
-    saveFeaturedToFirestore();
-    renderFeaturedSection();
-    showAdminTab(type==='track'?'tracks':'videos');
-  }
+};
 
-  // ==== Initialize ====
-  populateGenreFilter();
-  renderFeaturedSection();
-  displayTracks();
-  displayVideos();
+window.openVideoModal = function(url, title) {
+  let playerModal = document.getElementById("video-player-modal");
+  if (!playerModal) {
+    playerModal = document.createElement('div');
+    playerModal.id = "video-player-modal";
+    playerModal.style = "display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);z-index:100001;justify-content:center;align-items:center;";
+    playerModal.innerHTML = `<div style="position:relative;width:90vw;max-width:900px;">
+      <iframe allowfullscreen="" frameborder="0" height="500" id="video-iframe" style="border:2px solid #00ffff;border-radius:10px;" width="100%"></iframe>
+      <button onclick="closeVideoModal()" style="position:absolute;top:-10px;right:-10px;background:#00ffff;border:none;border-radius:50%;width:32px;height:32px;font-weight:bold;cursor:pointer;">×</button>
+      </div>`;
+    document.body.appendChild(playerModal);
+  }
+  playerModal.style.display = "flex";
+  document.getElementById("video-iframe").src = parseVideoUrl(url);
+};
+window.closeVideoModal = function() {
+  document.getElementById("video-iframe").src = "";
+  document.getElementById("video-player-modal").style.display = "none";
+};
 </script>
 </body>
 </html>
