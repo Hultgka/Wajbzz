@@ -380,43 +380,46 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
   #admin-modal-inner { padding: 0.2em; font-size: 0.92rem;}
 }
 </style>
+<!-- Firebase App (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <nav>
-<a href="index.html" data-key="start"><i class="fas fa-home"></i><span>Start</span></a>
-<a href="reviews.html" data-key="reviews"><i class="fas fa-star"></i><span>Reviews</span></a>
-<a href="interviews.html" data-key="interviews"><i class="fas fa-microphone"></i><span>Interviews</span></a>
-<a href="music.html" data-key="music"><i class="fas fa-music"></i><span>Music</span></a>
-<a href="events.html" data-key="events"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
-<a href="team.html" data-key="team"><i class="fas fa-users"></i><span>Team</span></a>
-<a href="contact.html" data-key="contact"><i class="fas fa-envelope"></i><span>Contact</span></a>
+  <a href="index.html" data-key="start"><i class="fas fa-home"></i><span>Start</span></a>
+  <a href="reviews.html" data-key="reviews"><i class="fas fa-star"></i><span>Reviews</span></a>
+  <a href="interviews.html" data-key="interviews"><i class="fas fa-microphone"></i><span>Interviews</span></a>
+  <a href="music.html" data-key="music"><i class="fas fa-music"></i><span>Music</span></a>
+  <a href="events.html" data-key="events"><i class="fas fa-calendar-alt"></i><span>Events</span></a>
+  <a href="team.html" data-key="team"><i class="fas fa-users"></i><span>Team</span></a>
+  <a href="contact.html" data-key="contact"><i class="fas fa-envelope"></i><span>Contact</span></a>
 </nav>
 <main>
-<div class="featured-section" id="featured-section"></div>
-<div class="filters">
-  <input type="text" id="search-bar" placeholder="Search..." autocomplete="off" />
-  <label for="genre-filter" style="margin-right:0.2em;" data-key="filter-genre-label">Filter by genre:</label>
-  <select id="genre-filter"></select>
-  <div id="alphabet-filter"></div>
-</div>
-<h3 class="section-header" data-key="tracks">Tracks</h3>
-<div id="tracks-container"></div>
-<div id="tracks-pagination" class="pagination"></div>
-<h3 class="section-header" data-key="videos">Videos</h3>
-<div id="videos-container"></div>
-<div id="videos-pagination" class="pagination"></div>
+  <div class="featured-section" id="featured-section"></div>
+  <div class="filters">
+    <input type="text" id="search-bar" placeholder="Search..." autocomplete="off" />
+    <label for="genre-filter" style="margin-right:0.2em;" data-key="filter-genre-label">Filter by genre:</label>
+    <select id="genre-filter"></select>
+    <div id="alphabet-filter"></div>
+  </div>
+  <h3 class="section-header" data-key="tracks">Tracks</h3>
+  <div id="tracks-container"></div>
+  <div id="tracks-pagination" class="pagination"></div>
+  <h3 class="section-header" data-key="videos">Videos</h3>
+  <div id="videos-container"></div>
+  <div id="videos-pagination" class="pagination"></div>
 </main>
 <div class="social-buttons">
-<a href="https://www.facebook.com/wajbzz" target="_blank"><i class="fab fa-facebook-f"></i></a>
-<a href="https://www.instagram.com/wajbzz/" target="_blank"><i class="fab fa-instagram"></i></a>
-<a href="https://www.youtube.com/@wajbzz" target="_blank"><i class="fab fa-youtube"></i></a>
+  <a href="https://www.facebook.com/wajbzz" target="_blank"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.instagram.com/wajbzz/" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.youtube.com/@wajbzz" target="_blank"><i class="fab fa-youtube"></i></a>
 </div>
 <div class="lang-buttons">
-<button id="btn-en" class="active">EN</button>
-<button id="btn-pl">PL</button>
+  <button id="btn-en" class="active">EN</button>
+  <button id="btn-pl">PL</button>
 </div>
 <div id="admin-settings-trigger" tabindex="0" aria-label="Admin Panel">
-<i class="fas fa-cog" style="color:#3ec1e0;font-size:1.5rem;" title="Admin Panel"></i>
+  <i class="fas fa-cog" style="color:#3ec1e0;font-size:1.5rem;" title="Admin Panel"></i>
 </div>
 <div class="footer-bottom-right">
   © 2025 Wajbzz
@@ -425,34 +428,32 @@ h1 { font-size:2.8rem; text-align:center; margin-bottom:1.5rem; text-shadow:0 0 
 <div id="admin-modal-overlay">
   <div id="admin-modal-inner"></div>
 </div>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+<script>
+  // ==== Firebase Config ====
+  const firebaseConfig = {
+    apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
+    authDomain: "wajbzz-website.firebaseapp.com",
+    projectId: "wajbzz-website",
+    storageBucket: "wajbzz-website.appspot.com",
+    messagingSenderId: "387063007187",
+    appId: "1:387063007187:web:2929f1a25716ca1ea71126",
+    measurementId: "G-7F5F1YLRF2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-const firebaseConfig = {
-  apiKey: "AIzaSyB1fqIY7SHsCJ5sTpYURQycEBzaNRIbCFs",
-  authDomain: "wajbzz-website.firebaseapp.com",
-  projectId: "wajbzz-website",
-  storageBucket: "wajbzz-website.appspot.com",
-  messagingSenderId: "387063007187",
-  appId: "1:387063007187:web:2929f1a25716ca1ea71126",
-  measurementId: "G-7F5F1YLRF2"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  // ==== Data and Pagination ====
+  let tracksData = [];
+  let videosData = [];
+  let userGenres = [];
+  let featured = {type: "video", id: ""};
+  const TRACKS_PER_PAGE = 10;
+  const VIDEOS_PER_PAGE = 10;
+  let tracksPage = 1;
+  let videosPage = 1;
 
-let tracksData = [];
-let videosData = [];
-let userGenres = [];
-let featured = {type: "video", id: ""};
-const TRACKS_PER_PAGE = 10;
-const VIDEOS_PER_PAGE = 10;
-let tracksPage = 1;
-let videosPage = 1;
-
-// --- REALTIME LISTENERS ---
-function listenAllFirestore() {
-  onSnapshot(collection(db, "tracks"), (snapshot) => {
+  // ==== Real-time Firestore Listeners ====
+  db.collection("tracks").onSnapshot((snapshot) => {
     tracksData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     if (tracksPage > Math.ceil(tracksData.length / TRACKS_PER_PAGE)) tracksPage = 1;
     displayTracks();
@@ -464,7 +465,7 @@ function listenAllFirestore() {
     renderFeaturedSection();
     if (window.renderAdminTracks) renderAdminTracks(tracksData);
   });
-  onSnapshot(collection(db, "videos"), (snapshot) => {
+  db.collection("videos").onSnapshot((snapshot) => {
     videosData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     if (videosPage > Math.ceil(videosData.length / VIDEOS_PER_PAGE)) videosPage = 1;
     displayVideos();
@@ -476,520 +477,517 @@ function listenAllFirestore() {
     renderFeaturedSection();
     if (window.renderAdminVideos) renderAdminVideos(videosData);
   });
-  onSnapshot(collection(db, "genres"), (snapshot) => {
+  db.collection("genres").onSnapshot((snapshot) => {
     userGenres = snapshot.docs.map(doc => doc.data().name);
     populateGenreFilter();
     if (window.renderAdminGenres) renderAdminGenres();
   });
-  onSnapshot(doc(db, "site", "featured"), (d) => {
-    if (d.exists()) {
+  db.collection("site").doc("featured").onSnapshot((d) => {
+    if (d.exists) {
       featured = d.data();
       renderFeaturedSection();
       if (window.renderAdminTracks) renderAdminTracks(tracksData);
       if (window.renderAdminVideos) renderAdminVideos(videosData);
     }
   });
-}
-listenAllFirestore();
 
-// --- FIRESTORE HELPERS ---
-async function addTrack({title, artist, genre, audioSrc}) {
-  await addDoc(collection(db, "tracks"), { title, artist, genre, audioSrc });
-}
-async function updateTrack(id, data) {
-  await updateDoc(doc(db, "tracks", id), data);
-}
-async function deleteTrack(id) {
-  await deleteDoc(doc(db, "tracks", id));
-}
-async function addVideo({title, genre, thumbnail, videoSrc}) {
-  await addDoc(collection(db, "videos"), { title, genre, thumbnail, videoSrc });
-}
-async function updateVideo(id, data) {
-  await updateDoc(doc(db, "videos", id), data);
-}
-async function deleteVideo(id) {
-  await deleteDoc(doc(db, "videos", id));
-}
-async function addGenre(name) {
-  if (!userGenres.includes(name)) await addDoc(collection(db, "genres"), { name });
-}
-async function deleteGenre(name) {
-  const snap = await getDocs(collection(db, "genres"));
-  snap.forEach(docu => { if (docu.data().name === name) deleteDoc(doc(db, "genres", docu.id)); });
-}
-async function saveFeaturedToFirestore() {
-  await setDoc(doc(db, "site", "featured"), featured);
-}
-
-// --- TRANSLATIONS and GENRE DATA ---
-const translations = {
-  en: {
-    start: "Start", reviews: "Reviews", interviews: "Interviews", music: "Music", events: "Events", team: "Team", contact: "Contact",
-    "featured-artist": "Featured Artist", "featured-artist-desc": "Electronic synthwave music producer.",
-    "filter-genre-label": "Filter by genre:", tracks: "Tracks", videos: "Videos", "Music": "Music", "Tracks": "Tracks", "Videos": "Videos",
-    "Featured Artist": "Featured Artist", "Electronic synthwave music producer.": "Electronic synthwave music producer.",
-    "Filter by genre:": "Filter by genre:", "Search...": "Search...", "All genres": "All genres", "No results found.": "No results found.",
-    "Featured": "Featured", "add-genre": "Add Genre", "new-genre-placeholder": "New genre name...", "add-genre-btn": "Add"
-  },
-  pl: {
-    start: "Start", reviews: "Recenzje", interviews: "Wywiady", music: "Muzyka", events: "Wydarzenia", team: "Zespół", contact: "Kontakt",
-    "featured-artist": "Wyróżniony artysta", "featured-artist-desc": "Producent elektronicznej muzyki synthwave.",
-    "filter-genre-label": "Filtruj według gatunku:", tracks: "Utwory", videos: "Wideo", "Music": "Muzyka", "Tracks": "Utwory", "Videos": "Wideo",
-    "Featured Artist": "Wyróżniony artysta", "Electronic synthwave music producer.": "Producent elektronicznej muzyki synthwave.",
-    "Filter by genre:": "Filtruj według gatunku:", "Search...": "Szukaj...", "All genres": "Wszystkie gatunki", "No results found.": "Brak wyników.",
-    "Featured": "Wyróżniony", "add-genre": "Dodaj gatunek", "new-genre-placeholder": "Nazwa nowego gatunku...", "add-genre-btn": "Dodaj"
+  // ==== Firestore Helpers ====
+  function addTrack({title, artist, genre, audioSrc}) {
+    db.collection("tracks").add({ title, artist, genre, audioSrc });
   }
-};
-let currentLang = 'en';
-const standardGenreKeysDefault = [
-  "Synthwave", "Retrowave", "Chillwave", "Pop", "Rock", "Hip-Hop", "Jazz", "Classical",
-  "Ambient", "Electronic", "Indie", "Funk", "Soul", "Disco", "Trance", "EDM",
-  "House", "Dubstep", "Lo-fi", "Reggae", "Country", "Metal"
-];
-const genreTranslations = {
-  en: Object.fromEntries(standardGenreKeysDefault.map(g => [g, g])),
-  pl: {
-    "Synthwave": "Synthwave", "Retrowave": "Retrowave", "Chillwave": "Chillwave",
-    "Pop": "Pop","Rock": "Rock","Hip-Hop": "Hip-Hop","Jazz": "Jazz","Classical": "Klasyczna",
-    "Ambient": "Ambient","Electronic": "Elektroniczna","Indie": "Indie","Funk": "Funk",
-    "Soul": "Soul","Disco": "Disco","Trance": "Trance","EDM": "EDM","House": "House",
-    "Dubstep": "Dubstep","Lo-fi": "Lo-fi","Reggae": "Reggae","Country": "Country","Metal": "Metal"
+  function updateTrack(id, data) {
+    db.collection("tracks").doc(id).update(data);
   }
-};
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  function deleteTrack(id) {
+    db.collection("tracks").doc(id).delete();
+  }
+  function addVideo({title, genre, thumbnail, videoSrc}) {
+    db.collection("videos").add({ title, genre, thumbnail, videoSrc });
+  }
+  function updateVideo(id, data) {
+    db.collection("videos").doc(id).update(data);
+  }
+  function deleteVideo(id) {
+    db.collection("videos").doc(id).delete();
+  }
+  function addGenre(name) {
+    if (!userGenres.includes(name)) db.collection("genres").add({ name });
+  }
+  function deleteGenre(name) {
+    db.collection("genres").where("name", "==", name).get().then(snap => {
+      snap.forEach(docu => docu.ref.delete());
+    });
+  }
+  function saveFeaturedToFirestore() {
+    db.collection("site").doc("featured").set(featured);
+  }
 
-// --- LANGUAGE SWITCH ---
-function setLang(lang) {
-  currentLang = lang;
-  document.querySelectorAll('[data-key]').forEach(el => {
-    const key = el.getAttribute('data-key');
-    if (translations[lang][key]) el.innerText = translations[lang][key];
-  });
-  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-  document.getElementById('btn-pl').classList.toggle('active', lang === 'pl');
-  document.getElementById('search-bar').placeholder = translations[lang]["Search..."];
+  // ==== Translations and Genres ====
+  const translations = {
+    en: {
+      start: "Start", reviews: "Reviews", interviews: "Interviews", music: "Music", events: "Events", team: "Team", contact: "Contact",
+      "featured-artist": "Featured Artist", "featured-artist-desc": "Electronic synthwave music producer.",
+      "filter-genre-label": "Filter by genre:", tracks: "Tracks", videos: "Videos",
+      "All genres": "All genres", "No results found.": "No results found.", "Search...": "Search...",
+      "add-genre": "Add Genre", "new-genre-placeholder": "New genre name...", "add-genre-btn": "Add"
+    },
+    pl: {
+      start: "Start", reviews: "Recenzje", interviews: "Wywiady", music: "Muzyka", events: "Wydarzenia", team: "Zespół", contact: "Kontakt",
+      "featured-artist": "Wyróżniony artysta", "featured-artist-desc": "Producent elektronicznej muzyki synthwave.",
+      "filter-genre-label": "Filtruj według gatunku:", tracks: "Utwory", videos: "Wideo",
+      "All genres": "Wszystkie gatunki", "No results found.": "Brak wyników.", "Search...": "Szukaj...",
+      "add-genre": "Dodaj gatunek", "new-genre-placeholder": "Nazwa nowego gatunku...", "add-genre-btn": "Dodaj"
+    }
+  };
+  let currentLang = 'en';
+  const standardGenreKeysDefault = [
+    "Synthwave", "Retrowave", "Chillwave", "Pop", "Rock", "Hip-Hop", "Jazz", "Classical",
+    "Ambient", "Electronic", "Indie", "Funk", "Soul", "Disco", "Trance", "EDM",
+    "House", "Dubstep", "Lo-fi", "Reggae", "Country", "Metal"
+  ];
+  const genreTranslations = {
+    en: Object.fromEntries(standardGenreKeysDefault.map(g => [g, g])),
+    pl: {
+      "Synthwave": "Synthwave", "Retrowave": "Retrowave", "Chillwave": "Chillwave",
+      "Pop": "Pop","Rock": "Rock","Hip-Hop": "Hip-Hop","Jazz": "Jazz","Classical": "Klasyczna",
+      "Ambient": "Ambient","Electronic": "Elektroniczna","Indie": "Indie","Funk": "Funk",
+      "Soul": "Soul","Disco": "Disco","Trance": "Trance","EDM": "EDM","House": "House",
+      "Dubstep": "Dubstep","Lo-fi": "Lo-fi","Reggae": "Reggae","Country": "Country","Metal": "Metal"
+    }
+  };
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+  // ==== Language Switch ====
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      if (translations[lang][key]) el.innerText = translations[lang][key];
+    });
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-pl').classList.toggle('active', lang === 'pl');
+    document.getElementById('search-bar').placeholder = translations[lang]["Search..."];
+    populateGenreFilter();
+    displayTracks();
+    displayVideos();
+  }
+  document.getElementById('btn-en').onclick = () => setLang('en');
+  document.getElementById('btn-pl').onclick = () => setLang('pl');
+
+  // ==== Genre Filter ====
+  function populateGenreFilter() {
+    const select = document.getElementById('genre-filter');
+    select.innerHTML = '';
+    const allOpt = document.createElement('option');
+    allOpt.value = '';
+    allOpt.innerText = translations[currentLang]["All genres"];
+    select.appendChild(allOpt);
+    const genres = Array.from(new Set([...standardGenreKeysDefault, ...userGenres])).sort();
+    for (const g of genres) {
+      const opt = document.createElement('option');
+      opt.value = g;
+      opt.innerText = (genreTranslations[currentLang][g] || g);
+      select.appendChild(opt);
+    }
+  }
+  document.getElementById('genre-filter').onchange = () => {
+    tracksPage = 1;
+    videosPage = 1;
+    displayTracks();
+    displayVideos();
+  };
+
+  // ==== Alphabet Filter ====
+  function renderAlphabetFilter() {
+    const container = document.getElementById('alphabet-filter');
+    container.innerHTML = '';
+    for (const letter of alphabet) {
+      const btn = document.createElement('button');
+      btn.innerText = letter;
+      btn.onclick = () => {
+        document.querySelectorAll('#alphabet-filter button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('search-bar').value = '';
+        tracksPage = 1;
+        videosPage = 1;
+        displayTracks();
+        displayVideos();
+      };
+      container.appendChild(btn);
+    }
+  }
+  renderAlphabetFilter();
+
+  // ==== Featured Section ====
+  function renderFeaturedSection() {
+    const el = document.getElementById('featured-section');
+    el.innerHTML = '';
+    let content = '';
+    if (featured.type === "track") {
+      const t = tracksData.find(t=>t.id===featured.id);
+      if (!t) { el.innerHTML = ''; return; }
+      content = `
+        <img src="https://i.imgur.com/8p2NwIK.png" alt="Track" class="featured-thumb" tabindex="0">
+        <div class="featured-info">
+          <h2>${escapeHTML(t.title)}</h2>
+          <p>${escapeHTML(t.artist)}</p>
+          <p style="margin-top:.5em;"><span class="track-genre">${genreTranslations[currentLang][t.genre]||t.genre}</span></p>
+          <audio controls src="${escapeHTML(t.audioSrc)}" style="margin-top:.7em;width:100%;"></audio>
+        </div>
+      `;
+    } else if (featured.type === "video") {
+      const v = videosData.find(v=>v.id===featured.id);
+      if (!v) { el.innerHTML = ''; return; }
+      content = `
+        <img src="${escapeHTML(v.thumbnail)}" alt="Video" class="featured-thumb" tabindex="0" onclick="window.showVideoModal&&window.showVideoModal('${v.videoSrc}')">
+        <div class="featured-info">
+          <h2>${escapeHTML(v.title)}</h2>
+          <p><span class="track-genre">${genreTranslations[currentLang][v.genre]||v.genre}</span></p>
+        </div>
+      `;
+    }
+    el.innerHTML = content;
+  }
+
+  // ==== Search Bar ====
+  document.getElementById('search-bar').oninput = ()=>{
+    tracksPage = 1;
+    videosPage = 1;
+    displayTracks();
+    displayVideos();
+  };
+
+  // ==== Display Tracks ====
+  function displayTracks() {
+    const container = document.getElementById('tracks-container');
+    let tracks = tracksData.slice();
+    const genre = document.getElementById('genre-filter').value;
+    if (genre) tracks = tracks.filter(t=>t.genre===genre);
+    const q = document.getElementById('search-bar').value.trim().toLowerCase();
+    if (q) tracks = tracks.filter(t=>(t.title+t.artist+t.genre).toLowerCase().includes(q));
+    const activeAlpha = document.querySelector('#alphabet-filter .active');
+    if (activeAlpha) {
+      const letter = activeAlpha.innerText;
+      tracks = tracks.filter(t=>t.title.charAt(0).toUpperCase()===letter);
+    }
+    if (!tracks.length) {
+      container.innerHTML = `<div style="color:#fff;">${translations[currentLang]["No results found."]}</div>`;
+      return;
+    }
+    // Pagination
+    const start = (tracksPage-1)*TRACKS_PER_PAGE, end = start+TRACKS_PER_PAGE;
+    const pageTracks = tracks.slice(start,end);
+    container.innerHTML = pageTracks.map(t=>`
+      <div class="track-item">
+        <div class="track-info">
+          <div class="track-title">${escapeHTML(t.title)}</div>
+          <div class="track-artist">${escapeHTML(t.artist)}</div>
+          <span class="track-genre">${genreTranslations[currentLang][t.genre]||t.genre}</span>
+        </div>
+        <audio class="track-audio" controls src="${escapeHTML(t.audioSrc)}"></audio>
+      </div>
+    `).join('');
+  }
+  function updateTracksPagination() {
+    const genre = document.getElementById('genre-filter').value;
+    let tracks = tracksData.slice();
+    if (genre) tracks = tracks.filter(t=>t.genre===genre);
+    const q = document.getElementById('search-bar').value.trim().toLowerCase();
+    if (q) tracks = tracks.filter(t=>(t.title+t.artist+t.genre).toLowerCase().includes(q));
+    const activeAlpha = document.querySelector('#alphabet-filter .active');
+    if (activeAlpha) {
+      const letter = activeAlpha.innerText;
+      tracks = tracks.filter(t=>t.title.charAt(0).toUpperCase()===letter);
+    }
+    const pages = Math.ceil(tracks.length/TRACKS_PER_PAGE);
+    const pag = document.getElementById('tracks-pagination');
+    pag.innerHTML = '';
+    if (pages<=1) return;
+    for (let i=1;i<=pages;i++) {
+      const btn = document.createElement('button');
+      btn.innerText = i;
+      btn.className = (i===tracksPage ? 'active':'');
+      btn.onclick = ()=>{ tracksPage=i; displayTracks(); updateTracksPagination(); };
+      pag.appendChild(btn);
+    }
+  }
+
+  // ==== Display Videos ====
+  function displayVideos() {
+    const container = document.getElementById('videos-container');
+    let videos = videosData.slice();
+    const genre = document.getElementById('genre-filter').value;
+    if (genre) videos = videos.filter(v=>v.genre===genre);
+    const q = document.getElementById('search-bar').value.trim().toLowerCase();
+    if (q) videos = videos.filter(v=>(v.title+v.genre).toLowerCase().includes(q));
+    const activeAlpha = document.querySelector('#alphabet-filter .active');
+    if (activeAlpha) {
+      const letter = activeAlpha.innerText;
+      videos = videos.filter(v=>v.title.charAt(0).toUpperCase()===letter);
+    }
+    if (!videos.length) {
+      container.innerHTML = `<div style="color:#fff;">${translations[currentLang]["No results found."]}</div>`;
+      return;
+    }
+    // Pagination
+    const start = (videosPage-1)*VIDEOS_PER_PAGE, end = start+VIDEOS_PER_PAGE;
+    const pageVideos = videos.slice(start,end);
+    container.innerHTML = pageVideos.map(v=>`
+      <div>
+        <img src="${escapeHTML(v.thumbnail)}" alt="Video" class="video-thumb" tabindex="0" onclick="window.showVideoModal&&window.showVideoModal('${v.videoSrc}')">
+        <div style="margin-top:.5em;font-weight:bold;color:#00ffff;">${escapeHTML(v.title)}</div>
+        <span class="track-genre">${genreTranslations[currentLang][v.genre]||v.genre}</span>
+      </div>
+    `).join('');
+  }
+  function updateVideosPagination() {
+    const genre = document.getElementById('genre-filter').value;
+    let videos = videosData.slice();
+    if (genre) videos = videos.filter(v=>v.genre===genre);
+    const q = document.getElementById('search-bar').value.trim().toLowerCase();
+    if (q) videos = videos.filter(v=>(v.title+v.genre).toLowerCase().includes(q));
+    const activeAlpha = document.querySelector('#alphabet-filter .active');
+    if (activeAlpha) {
+      const letter = activeAlpha.innerText;
+      videos = videos.filter(v=>v.title.charAt(0).toUpperCase()===letter);
+    }
+    const pages = Math.ceil(videos.length/VIDEOS_PER_PAGE);
+    const pag = document.getElementById('videos-pagination');
+    pag.innerHTML = '';
+    if (pages<=1) return;
+    for (let i=1;i<=pages;i++) {
+      const btn = document.createElement('button');
+      btn.innerText = i;
+      btn.className = (i===videosPage ? 'active':'');
+      btn.onclick = ()=>{ videosPage=i; displayVideos(); updateVideosPagination(); };
+      pag.appendChild(btn);
+    }
+  }
+
+  // ==== Video Modal ====
+  window.showVideoModal = function(videoSrc) {
+    const modal = document.getElementById('video-modal');
+    modal.innerHTML = `
+      <button class="close-btn" onclick="window.closeVideoModal()" aria-label="Close">&times;</button>
+      <div style="max-width:98vw;max-height:70vh;">
+        <iframe src="${escapeHTML(videoSrc)}" frameborder="0" allowfullscreen style="width:85vw;max-width:740px;height:56vw;max-height:430px;border-radius:10px;background:#111;"></iframe>
+      </div>
+    `;
+    modal.classList.add('active');
+  };
+  window.closeVideoModal = function() {
+    const modal = document.getElementById('video-modal');
+    modal.classList.remove('active');
+    modal.innerHTML = '';
+  };
+  document.getElementById('video-modal').onclick = function(e) { if (e.target===this) window.closeVideoModal(); };
+
+  // ==== Escape HTML ====
+  function escapeHTML(s) {
+    return String(s).replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  }
+
+  // ==== Admin Panel ====
+  const ADMIN_PASSWORD = "wajbzz123";
+  function promptAdminPasswordAndOpen() {
+    if (sessionStorage.getItem("adminAuth") === "ok") {
+      renderAdmin();
+      return;
+    }
+    const entered = prompt("Enter admin password:");
+    if (entered === ADMIN_PASSWORD) {
+      sessionStorage.setItem("adminAuth", "ok");
+      renderAdmin();
+    } else if (entered !== null) {
+      alert("Incorrect password.");
+    }
+  }
+  document.getElementById("admin-settings-trigger").onclick = promptAdminPasswordAndOpen;
+
+  function renderAdmin() {
+    const overlay = document.getElementById("admin-modal-overlay");
+    const inner = document.getElementById("admin-modal-inner");
+    overlay.style.display = "flex";
+    let html = `<button onclick="document.getElementById('admin-modal-overlay').style.display='none'" style="position:absolute;top:10px;right:15px;font-size:2rem;background:none;border:none;color:#00ffff;cursor:pointer;">&times;</button>
+      <h2 style="color:#00ffff;margin-bottom:0.6em;">Admin Panel</h2>
+      <div style="display:flex;gap:1em;">
+        <button id="admin-tab-tracks" class="active" style="flex:1;">Tracks</button>
+        <button id="admin-tab-videos" style="flex:1;">Videos</button>
+        <button id="admin-tab-genres" style="flex:1;">Genres</button>
+        <button id="admin-tab-featured" style="flex:1;">Featured</button>
+      </div>
+      <div id="admin-content" style="margin-top:2em;"></div>
+    `;
+    inner.innerHTML = html;
+    document.getElementById('admin-tab-tracks').onclick = ()=>showAdminTab('tracks');
+    document.getElementById('admin-tab-videos').onclick = ()=>showAdminTab('videos');
+    document.getElementById('admin-tab-genres').onclick = ()=>showAdminTab('genres');
+    document.getElementById('admin-tab-featured').onclick = ()=>showAdminTab('featured');
+    showAdminTab('tracks');
+  }
+  function showAdminTab(tab) {
+    document.querySelectorAll("#admin-modal-inner button").forEach(btn=>btn.classList.remove('active'));
+    document.getElementById('admin-tab-'+tab).classList.add('active');
+    if (tab==='tracks') renderAdminTracks(tracksData);
+    else if (tab==='videos') renderAdminVideos(videosData);
+    else if (tab==='genres') renderAdminGenres();
+    else if (tab==='featured') renderAdminFeatured();
+  }
+  window.renderAdminTracks = function(tracks) {
+    const container = document.getElementById('admin-content');
+    let html = `<h3 style="color:#00ffff;">Tracks</h3>
+      <button onclick="showAddTrackForm()" style="margin-bottom:1em;">Add Track</button>
+      <table style="width:100%;color:#fff;"><tr><th>Title</th><th>Artist</th><th>Genre</th><th>Audio Src</th><th>Actions</th></tr>`;
+    for (const t of tracks) {
+      html += `<tr>
+        <td>${escapeHTML(t.title)}</td>
+        <td>${escapeHTML(t.artist)}</td>
+        <td>${escapeHTML(t.genre)}</td>
+        <td><a href="${escapeHTML(t.audioSrc)}" target="_blank" style="color:#00ffff;">Link</a></td>
+        <td>
+          <button onclick="showEditTrackForm('${t.id}')">Edit</button>
+          <button onclick="deleteTrack('${t.id}')">Delete</button>
+          <button onclick="setFeatured('track','${t.id}')">Set Featured</button>
+        </td>
+      </tr>`;
+    }
+    html += `</table>`;
+    container.innerHTML = html;
+  }
+  window.renderAdminVideos = function(videos) {
+    const container = document.getElementById('admin-content');
+    let html = `<h3 style="color:#00ffff;">Videos</h3>
+      <button onclick="showAddVideoForm()" style="margin-bottom:1em;">Add Video</button>
+      <table style="width:100%;color:#fff;"><tr><th>Title</th><th>Genre</th><th>Thumbnail</th><th>Video Src</th><th>Actions</th></tr>`;
+    for (const v of videos) {
+      html += `<tr>
+        <td>${escapeHTML(v.title)}</td>
+        <td>${escapeHTML(v.genre)}</td>
+        <td><a href="${escapeHTML(v.thumbnail)}" target="_blank" style="color:#00ffff;">Thumb</a></td>
+        <td><a href="${escapeHTML(v.videoSrc)}" target="_blank" style="color:#00ffff;">Link</a></td>
+        <td>
+          <button onclick="showEditVideoForm('${v.id}')">Edit</button>
+          <button onclick="deleteVideo('${v.id}')">Delete</button>
+          <button onclick="setFeatured('video','${v.id}')">Set Featured</button>
+        </td>
+      </tr>`;
+    }
+    html += `</table>`;
+    container.innerHTML = html;
+  }
+  window.renderAdminGenres = function() {
+    const container = document.getElementById('admin-content');
+    let html = `<h3 style="color:#00ffff;">Genres</h3>
+      <input id="new-genre-input" type="text" placeholder="New genre name..." style="margin-bottom:0.5em;">
+      <button onclick="addAdminGenre()">Add</button>
+      <ul>`;
+    for (const g of userGenres) {
+      html += `<li>${escapeHTML(g)} <button onclick="deleteGenre('${g}')">Delete</button></li>`;
+    }
+    html += `</ul>`;
+    container.innerHTML = html;
+  }
+  window.renderAdminFeatured = function() {
+    const container = document.getElementById('admin-content');
+    let html = `<h3 style="color:#00ffff;">Featured</h3>
+    <p>Current Featured: ${escapeHTML(featured.type)} - ${escapeHTML(featured.id)}</p>`;
+    container.innerHTML = html;
+  }
+  window.showAddTrackForm = function() {
+    const container = document.getElementById('admin-content');
+    container.innerHTML = `<h3>Add Track</h3>
+      <input id="track-title" placeholder="Title"><br>
+      <input id="track-artist" placeholder="Artist"><br>
+      <input id="track-genre" placeholder="Genre"><br>
+      <input id="track-audioSrc" placeholder="Audio Src"><br>
+      <button onclick="addTrackFromForm()">Add</button>
+      <button onclick="showAdminTab('tracks')">Cancel</button>
+    `;
+  }
+  window.addTrackFromForm = function() {
+    const title = document.getElementById('track-title').value;
+    const artist = document.getElementById('track-artist').value;
+    const genre = document.getElementById('track-genre').value;
+    const audioSrc = document.getElementById('track-audioSrc').value;
+    addTrack({title, artist, genre, audioSrc});
+    showAdminTab('tracks');
+  }
+  window.showEditTrackForm = function(id) {
+    const t = tracksData.find(t=>t.id===id);
+    const container = document.getElementById('admin-content');
+    container.innerHTML = `<h3>Edit Track</h3>
+      <input id="track-title" value="${escapeHTML(t.title)}"><br>
+      <input id="track-artist" value="${escapeHTML(t.artist)}"><br>
+      <input id="track-genre" value="${escapeHTML(t.genre)}"><br>
+      <input id="track-audioSrc" value="${escapeHTML(t.audioSrc)}"><br>
+      <button onclick="editTrackFromForm('${id}')">Save</button>
+      <button onclick="showAdminTab('tracks')">Cancel</button>
+    `;
+  }
+  window.editTrackFromForm = function(id) {
+    const title = document.getElementById('track-title').value;
+    const artist = document.getElementById('track-artist').value;
+    const genre = document.getElementById('track-genre').value;
+    const audioSrc = document.getElementById('track-audioSrc').value;
+    updateTrack(id, {title, artist, genre, audioSrc});
+    showAdminTab('tracks');
+  }
+  window.showAddVideoForm = function() {
+    const container = document.getElementById('admin-content');
+    container.innerHTML = `<h3>Add Video</h3>
+      <input id="video-title" placeholder="Title"><br>
+      <input id="video-genre" placeholder="Genre"><br>
+      <input id="video-thumbnail" placeholder="Thumbnail"><br>
+      <input id="video-src" placeholder="Video Src"><br>
+      <button onclick="addVideoFromForm()">Add</button>
+      <button onclick="showAdminTab('videos')">Cancel</button>
+    `;
+  }
+  window.addVideoFromForm = function() {
+    const title = document.getElementById('video-title').value;
+    const genre = document.getElementById('video-genre').value;
+    const thumbnail = document.getElementById('video-thumbnail').value;
+    const videoSrc = document.getElementById('video-src').value;
+    addVideo({title, genre, thumbnail, videoSrc});
+    showAdminTab('videos');
+  }
+  window.showEditVideoForm = function(id) {
+    const v = videosData.find(v=>v.id===id);
+    const container = document.getElementById('admin-content');
+    container.innerHTML = `<h3>Edit Video</h3>
+      <input id="video-title" value="${escapeHTML(v.title)}"><br>
+      <input id="video-genre" value="${escapeHTML(v.genre)}"><br>
+      <input id="video-thumbnail" value="${escapeHTML(v.thumbnail)}"><br>
+      <input id="video-src" value="${escapeHTML(v.videoSrc)}"><br>
+      <button onclick="editVideoFromForm('${id}')">Save</button>
+      <button onclick="showAdminTab('videos')">Cancel</button>
+    `;
+  }
+  window.editVideoFromForm = function(id) {
+    const title = document.getElementById('video-title').value;
+    const genre = document.getElementById('video-genre').value;
+    const thumbnail = document.getElementById('video-thumbnail').value;
+    const videoSrc = document.getElementById('video-src').value;
+    updateVideo(id, {title, genre, thumbnail, videoSrc});
+    showAdminTab('videos');
+  }
+  window.addAdminGenre = function() {
+    const val = document.getElementById('new-genre-input').value.trim();
+    if (val) addGenre(val);
+    showAdminTab('genres');
+  }
+  window.setFeatured = function(type, id) {
+    featured = {type, id};
+    saveFeaturedToFirestore();
+    renderFeaturedSection();
+    showAdminTab(type==='track'?'tracks':'videos');
+  }
+
+  // ==== Initialize ====
   populateGenreFilter();
-  displayTracks();
-  displayVideos();
-}
-document.getElementById('btn-en').onclick = () => setLang('en');
-document.getElementById('btn-pl').onclick = () => setLang('pl');
-
-// --- GENRE FILTER ---
-function populateGenreFilter() {
-  const select = document.getElementById('genre-filter');
-  select.innerHTML = '';
-  const allOpt = document.createElement('option');
-  allOpt.value = '';
-  allOpt.innerText = translations[currentLang]["All genres"];
-  select.appendChild(allOpt);
-  const genres = Array.from(new Set([...standardGenreKeysDefault, ...userGenres])).sort();
-  for (const g of genres) {
-    const opt = document.createElement('option');
-    opt.value = g;
-    opt.innerText = (genreTranslations[currentLang][g] || g);
-    select.appendChild(opt);
-  }
-}
-document.getElementById('genre-filter').onchange = () => {
-  tracksPage = 1;
-  videosPage = 1;
-  displayTracks();
-  displayVideos();
-};
-
-// --- ALPHABET FILTER ---
-function renderAlphabetFilter() {
-  const container = document.getElementById('alphabet-filter');
-  container.innerHTML = '';
-  for (const letter of alphabet) {
-    const btn = document.createElement('button');
-    btn.innerText = letter;
-    btn.onclick = () => {
-      document.querySelectorAll('#alphabet-filter button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('search-bar').value = '';
-      tracksPage = 1;
-      videosPage = 1;
-      displayTracks();
-      displayVideos();
-    };
-    container.appendChild(btn);
-  }
-}
-renderAlphabetFilter();
-
-// --- FEATURED SECTION ---
-function renderFeaturedSection() {
-  const el = document.getElementById('featured-section');
-  el.innerHTML = '';
-  let content = '';
-  if (featured.type === "track") {
-    const t = tracksData.find(t=>t.id===featured.id);
-    if (!t) { el.innerHTML = ''; return; }
-    content = `
-      <img src="https://i.imgur.com/8p2NwIK.png" alt="Track" class="featured-thumb" tabindex="0">
-      <div class="featured-info">
-        <h2>${escapeHTML(t.title)}</h2>
-        <p>${escapeHTML(t.artist)}</p>
-        <p style="margin-top:.5em;"><span class="track-genre">${genreTranslations[currentLang][t.genre]||t.genre}</span></p>
-        <audio controls src="${escapeHTML(t.audioSrc)}" style="margin-top:.7em;width:100%;"></audio>
-      </div>
-    `;
-  } else if (featured.type === "video") {
-    const v = videosData.find(v=>v.id===featured.id);
-    if (!v) { el.innerHTML = ''; return; }
-    content = `
-      <img src="${escapeHTML(v.thumbnail)}" alt="Video" class="featured-thumb" tabindex="0" onclick="window.showVideoModal&&window.showVideoModal('${v.videoSrc}')">
-      <div class="featured-info">
-        <h2>${escapeHTML(v.title)}</h2>
-        <p><span class="track-genre">${genreTranslations[currentLang][v.genre]||v.genre}</span></p>
-      </div>
-    `;
-  }
-  el.innerHTML = content;
-}
-
-// --- SEARCH BAR ---
-document.getElementById('search-bar').oninput = ()=>{
-  tracksPage = 1;
-  videosPage = 1;
-  displayTracks();
-  displayVideos();
-};
-
-// --- DISPLAY TRACKS ---
-function displayTracks() {
-  const container = document.getElementById('tracks-container');
-  let tracks = tracksData.slice();
-  const genre = document.getElementById('genre-filter').value;
-  if (genre) tracks = tracks.filter(t=>t.genre===genre);
-  const q = document.getElementById('search-bar').value.trim().toLowerCase();
-  if (q) tracks = tracks.filter(t=>(t.title+t.artist+t.genre).toLowerCase().includes(q));
-  const activeAlpha = document.querySelector('#alphabet-filter .active');
-  if (activeAlpha) {
-    const letter = activeAlpha.innerText;
-    tracks = tracks.filter(t=>t.title.charAt(0).toUpperCase()===letter);
-  }
-  if (!tracks.length) {
-    container.innerHTML = `<div style="color:#fff;">${translations[currentLang]["No results found."]}</div>`;
-    return;
-  }
-  // Pagination
-  const start = (tracksPage-1)*TRACKS_PER_PAGE, end = start+TRACKS_PER_PAGE;
-  const pageTracks = tracks.slice(start,end);
-  container.innerHTML = pageTracks.map(t=>`
-    <div class="track-item">
-      <div class="track-info">
-        <div class="track-title">${escapeHTML(t.title)}</div>
-        <div class="track-artist">${escapeHTML(t.artist)}</div>
-        <span class="track-genre">${genreTranslations[currentLang][t.genre]||t.genre}</span>
-      </div>
-      <audio class="track-audio" controls src="${escapeHTML(t.audioSrc)}"></audio>
-    </div>
-  `).join('');
-}
-function updateTracksPagination() {
-  const genre = document.getElementById('genre-filter').value;
-  let tracks = tracksData.slice();
-  if (genre) tracks = tracks.filter(t=>t.genre===genre);
-  const q = document.getElementById('search-bar').value.trim().toLowerCase();
-  if (q) tracks = tracks.filter(t=>(t.title+t.artist+t.genre).toLowerCase().includes(q));
-  const activeAlpha = document.querySelector('#alphabet-filter .active');
-  if (activeAlpha) {
-    const letter = activeAlpha.innerText;
-    tracks = tracks.filter(t=>t.title.charAt(0).toUpperCase()===letter);
-  }
-  const pages = Math.ceil(tracks.length/TRACKS_PER_PAGE);
-  const pag = document.getElementById('tracks-pagination');
-  pag.innerHTML = '';
-  if (pages<=1) return;
-  for (let i=1;i<=pages;i++) {
-    const btn = document.createElement('button');
-    btn.innerText = i;
-    btn.className = (i===tracksPage ? 'active':'');
-    btn.onclick = ()=>{ tracksPage=i; displayTracks(); updateTracksPagination(); };
-    pag.appendChild(btn);
-  }
-}
-
-// --- DISPLAY VIDEOS ---
-function displayVideos() {
-  const container = document.getElementById('videos-container');
-  let videos = videosData.slice();
-  const genre = document.getElementById('genre-filter').value;
-  if (genre) videos = videos.filter(v=>v.genre===genre);
-  const q = document.getElementById('search-bar').value.trim().toLowerCase();
-  if (q) videos = videos.filter(v=>(v.title+v.genre).toLowerCase().includes(q));
-  const activeAlpha = document.querySelector('#alphabet-filter .active');
-  if (activeAlpha) {
-    const letter = activeAlpha.innerText;
-    videos = videos.filter(v=>v.title.charAt(0).toUpperCase()===letter);
-  }
-  if (!videos.length) {
-    container.innerHTML = `<div style="color:#fff;">${translations[currentLang]["No results found."]}</div>`;
-    return;
-  }
-  // Pagination
-  const start = (videosPage-1)*VIDEOS_PER_PAGE, end = start+VIDEOS_PER_PAGE;
-  const pageVideos = videos.slice(start,end);
-  container.innerHTML = pageVideos.map(v=>`
-    <div>
-      <img src="${escapeHTML(v.thumbnail)}" alt="Video" class="video-thumb" tabindex="0" onclick="window.showVideoModal&&window.showVideoModal('${v.videoSrc}')">
-      <div style="margin-top:.5em;font-weight:bold;color:#00ffff;">${escapeHTML(v.title)}</div>
-      <span class="track-genre">${genreTranslations[currentLang][v.genre]||v.genre}</span>
-    </div>
-  `).join('');
-}
-function updateVideosPagination() {
-  const genre = document.getElementById('genre-filter').value;
-  let videos = videosData.slice();
-  if (genre) videos = videos.filter(v=>v.genre===genre);
-  const q = document.getElementById('search-bar').value.trim().toLowerCase();
-  if (q) videos = videos.filter(v=>(v.title+v.genre).toLowerCase().includes(q));
-  const activeAlpha = document.querySelector('#alphabet-filter .active');
-  if (activeAlpha) {
-    const letter = activeAlpha.innerText;
-    videos = videos.filter(v=>v.title.charAt(0).toUpperCase()===letter);
-  }
-  const pages = Math.ceil(videos.length/VIDEOS_PER_PAGE);
-  const pag = document.getElementById('videos-pagination');
-  pag.innerHTML = '';
-  if (pages<=1) return;
-  for (let i=1;i<=pages;i++) {
-    const btn = document.createElement('button');
-    btn.innerText = i;
-    btn.className = (i===videosPage ? 'active':'');
-    btn.onclick = ()=>{ videosPage=i; displayVideos(); updateVideosPagination(); };
-    pag.appendChild(btn);
-  }
-}
-
-// --- VIDEO MODAL ---
-window.showVideoModal = function(videoSrc) {
-  const modal = document.getElementById('video-modal');
-  modal.innerHTML = `
-    <button class="close-btn" onclick="window.closeVideoModal()" aria-label="Close">&times;</button>
-    <div style="max-width:98vw;max-height:70vh;">
-      <iframe src="${escapeHTML(videoSrc)}" frameborder="0" allowfullscreen style="width:85vw;max-width:740px;height:56vw;max-height:430px;border-radius:10px;background:#111;"></iframe>
-    </div>
-  `;
-  modal.classList.add('active');
-};
-window.closeVideoModal = function() {
-  const modal = document.getElementById('video-modal');
-  modal.classList.remove('active');
-  modal.innerHTML = '';
-};
-document.getElementById('video-modal').onclick = function(e) { if (e.target===this) window.closeVideoModal(); };
-
-// --- ESCAPE HTML ---
-function escapeHTML(s) {
-  return String(s).replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-}
-
-// --- ADMIN PANEL ---
-const ADMIN_PASSWORD = "wajbzz123";
-function promptAdminPasswordAndOpen() {
-  if (sessionStorage.getItem("adminAuth") === "ok") {
-    renderAdmin();
-    return;
-  }
-  const entered = prompt("Enter admin password:");
-  if (entered === ADMIN_PASSWORD) {
-    sessionStorage.setItem("adminAuth", "ok");
-    renderAdmin();
-  } else if (entered !== null) {
-    alert("Incorrect password.");
-  }
-}
-document.getElementById("admin-settings-trigger").onclick = promptAdminPasswordAndOpen;
-
-function renderAdmin() {
-  const overlay = document.getElementById("admin-modal-overlay");
-  const inner = document.getElementById("admin-modal-inner");
-  overlay.style.display = "flex";
-  let html = `<button onclick="document.getElementById('admin-modal-overlay').style.display='none'" style="position:absolute;top:10px;right:15px;font-size:2rem;background:none;border:none;color:#00ffff;cursor:pointer;">&times;</button>
-    <h2 style="color:#00ffff;margin-bottom:0.6em;">Admin Panel</h2>
-    <div style="display:flex;gap:1em;">
-      <button id="admin-tab-tracks" class="active" style="flex:1;">Tracks</button>
-      <button id="admin-tab-videos" style="flex:1;">Videos</button>
-      <button id="admin-tab-genres" style="flex:1;">Genres</button>
-      <button id="admin-tab-featured" style="flex:1;">Featured</button>
-    </div>
-    <div id="admin-content" style="margin-top:2em;"></div>
-  `;
-  inner.innerHTML = html;
-  document.getElementById('admin-tab-tracks').onclick = ()=>showAdminTab('tracks');
-  document.getElementById('admin-tab-videos').onclick = ()=>showAdminTab('videos');
-  document.getElementById('admin-tab-genres').onclick = ()=>showAdminTab('genres');
-  document.getElementById('admin-tab-featured').onclick = ()=>showAdminTab('featured');
-  showAdminTab('tracks');
-}
-function showAdminTab(tab) {
-  document.querySelectorAll("#admin-modal-inner button").forEach(btn=>btn.classList.remove('active'));
-  document.getElementById('admin-tab-'+tab).classList.add('active');
-  if (tab==='tracks') renderAdminTracks(tracksData);
-  else if (tab==='videos') renderAdminVideos(videosData);
-  else if (tab==='genres') renderAdminGenres();
-  else if (tab==='featured') renderAdminFeatured();
-}
-window.renderAdminTracks = function(tracks) {
-  const container = document.getElementById('admin-content');
-  let html = `<h3 style="color:#00ffff;">Tracks</h3>
-    <button onclick="showAddTrackForm()" style="margin-bottom:1em;">Add Track</button>
-    <table style="width:100%;color:#fff;"><tr><th>Title</th><th>Artist</th><th>Genre</th><th>Audio Src</th><th>Actions</th></tr>`;
-  for (const t of tracks) {
-    html += `<tr>
-      <td>${escapeHTML(t.title)}</td>
-      <td>${escapeHTML(t.artist)}</td>
-      <td>${escapeHTML(t.genre)}</td>
-      <td><a href="${escapeHTML(t.audioSrc)}" target="_blank" style="color:#00ffff;">Link</a></td>
-      <td>
-        <button onclick="showEditTrackForm('${t.id}')">Edit</button>
-        <button onclick="deleteTrack('${t.id}')">Delete</button>
-        <button onclick="setFeatured('track','${t.id}')">Set Featured</button>
-      </td>
-    </tr>`;
-  }
-  html += `</table>`;
-  container.innerHTML = html;
-}
-window.renderAdminVideos = function(videos) {
-  const container = document.getElementById('admin-content');
-  let html = `<h3 style="color:#00ffff;">Videos</h3>
-    <button onclick="showAddVideoForm()" style="margin-bottom:1em;">Add Video</button>
-    <table style="width:100%;color:#fff;"><tr><th>Title</th><th>Genre</th><th>Thumbnail</th><th>Video Src</th><th>Actions</th></tr>`;
-  for (const v of videos) {
-    html += `<tr>
-      <td>${escapeHTML(v.title)}</td>
-      <td>${escapeHTML(v.genre)}</td>
-      <td><a href="${escapeHTML(v.thumbnail)}" target="_blank" style="color:#00ffff;">Thumb</a></td>
-      <td><a href="${escapeHTML(v.videoSrc)}" target="_blank" style="color:#00ffff;">Link</a></td>
-      <td>
-        <button onclick="showEditVideoForm('${v.id}')">Edit</button>
-        <button onclick="deleteVideo('${v.id}')">Delete</button>
-        <button onclick="setFeatured('video','${v.id}')">Set Featured</button>
-      </td>
-    </tr>`;
-  }
-  html += `</table>`;
-  container.innerHTML = html;
-}
-window.renderAdminGenres = function() {
-  const container = document.getElementById('admin-content');
-  let html = `<h3 style="color:#00ffff;">Genres</h3>
-    <input id="new-genre-input" type="text" placeholder="New genre name..." style="margin-bottom:0.5em;">
-    <button onclick="addAdminGenre()">Add</button>
-    <ul>`;
-  for (const g of userGenres) {
-    html += `<li>${escapeHTML(g)} <button onclick="deleteGenre('${g}')">Delete</button></li>`;
-  }
-  html += `</ul>`;
-  container.innerHTML = html;
-}
-window.renderAdminFeatured = function() {
-  const container = document.getElementById('admin-content');
-  let html = `<h3 style="color:#00ffff;">Featured</h3>
-  <p>Current Featured: ${escapeHTML(featured.type)} - ${escapeHTML(featured.id)}</p>`;
-  container.innerHTML = html;
-}
-window.showAddTrackForm = function() {
-  const container = document.getElementById('admin-content');
-  container.innerHTML = `<h3>Add Track</h3>
-    <input id="track-title" placeholder="Title"><br>
-    <input id="track-artist" placeholder="Artist"><br>
-    <input id="track-genre" placeholder="Genre"><br>
-    <input id="track-audioSrc" placeholder="Audio Src"><br>
-    <button onclick="addTrackFromForm()">Add</button>
-    <button onclick="showAdminTab('tracks')">Cancel</button>
-  `;
-}
-window.addTrackFromForm = function() {
-  const title = document.getElementById('track-title').value;
-  const artist = document.getElementById('track-artist').value;
-  const genre = document.getElementById('track-genre').value;
-  const audioSrc = document.getElementById('track-audioSrc').value;
-  addTrack({title, artist, genre, audioSrc});
-  showAdminTab('tracks');
-}
-window.showEditTrackForm = function(id) {
-  const t = tracksData.find(t=>t.id===id);
-  const container = document.getElementById('admin-content');
-  container.innerHTML = `<h3>Edit Track</h3>
-    <input id="track-title" value="${escapeHTML(t.title)}"><br>
-    <input id="track-artist" value="${escapeHTML(t.artist)}"><br>
-    <input id="track-genre" value="${escapeHTML(t.genre)}"><br>
-    <input id="track-audioSrc" value="${escapeHTML(t.audioSrc)}"><br>
-    <button onclick="editTrackFromForm('${id}')">Save</button>
-    <button onclick="showAdminTab('tracks')">Cancel</button>
-  `;
-}
-window.editTrackFromForm = function(id) {
-  const title = document.getElementById('track-title').value;
-  const artist = document.getElementById('track-artist').value;
-  const genre = document.getElementById('track-genre').value;
-  const audioSrc = document.getElementById('track-audioSrc').value;
-  updateTrack(id, {title, artist, genre, audioSrc});
-  showAdminTab('tracks');
-}
-window.showAddVideoForm = function() {
-  const container = document.getElementById('admin-content');
-  container.innerHTML = `<h3>Add Video</h3>
-    <input id="video-title" placeholder="Title"><br>
-    <input id="video-genre" placeholder="Genre"><br>
-    <input id="video-thumbnail" placeholder="Thumbnail"><br>
-    <input id="video-src" placeholder="Video Src"><br>
-    <button onclick="addVideoFromForm()">Add</button>
-    <button onclick="showAdminTab('videos')">Cancel</button>
-  `;
-}
-window.addVideoFromForm = function() {
-  const title = document.getElementById('video-title').value;
-  const genre = document.getElementById('video-genre').value;
-  const thumbnail = document.getElementById('video-thumbnail').value;
-  const videoSrc = document.getElementById('video-src').value;
-  addVideo({title, genre, thumbnail, videoSrc});
-  showAdminTab('videos');
-}
-window.showEditVideoForm = function(id) {
-  const v = videosData.find(v=>v.id===id);
-  const container = document.getElementById('admin-content');
-  container.innerHTML = `<h3>Edit Video</h3>
-    <input id="video-title" value="${escapeHTML(v.title)}"><br>
-    <input id="video-genre" value="${escapeHTML(v.genre)}"><br>
-    <input id="video-thumbnail" value="${escapeHTML(v.thumbnail)}"><br>
-    <input id="video-src" value="${escapeHTML(v.videoSrc)}"><br>
-    <button onclick="editVideoFromForm('${id}')">Save</button>
-    <button onclick="showAdminTab('videos')">Cancel</button>
-  `;
-}
-window.editVideoFromForm = function(id) {
-  const title = document.getElementById('video-title').value;
-  const genre = document.getElementById('video-genre').value;
-  const thumbnail = document.getElementById('video-thumbnail').value;
-  const videoSrc = document.getElementById('video-src').value;
-  updateVideo(id, {title, genre, thumbnail, videoSrc});
-  showAdminTab('videos');
-}
-window.addAdminGenre = function() {
-  const val = document.getElementById('new-genre-input').value.trim();
-  if (val) addGenre(val);
-  showAdminTab('genres');
-}
-window.setFeatured = function(type, id) {
-  featured = {type, id};
-  saveFeaturedToFirestore();
   renderFeaturedSection();
-  showAdminTab(type==='track'?'tracks':'videos');
-}
-
-// --- INITIALIZE ---
-populateGenreFilter();
-renderFeaturedSection();
-displayTracks();
-displayVideos();
+  displayTracks();
+  displayVideos();
 </script>
 </body>
 </html>
