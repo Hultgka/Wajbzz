@@ -480,7 +480,7 @@ function renderLatest(latest) {
   latestSection.innerHTML = `
     <div class="latest-label">${langData[currentLang].latest}</div>
     <div class="latest-review-card" tabindex="0" role="button" aria-label="${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}" id="latestReviewCard">
-      <img class="latest-review-img" src="${escapeHTML(latest.image)}" alt="${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}">
+      <img class="latest-review-img" src="${escapeHTML(latest.image||'img/default-thumbnail.jpg')}" alt="${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}">
       <div class="latest-review-title">${escapeHTML(latest["title_"+currentLang]||latest.title_en||latest.title_pl)}</div>
       <div class="latest-review-stars">${renderStars(latest.stars||0)}</div>
     </div>
@@ -531,7 +531,7 @@ function renderReviewsSection() {
     card.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") openReviewModal(r, false); };
     let img = document.createElement("img");
     img.className = "review-img";
-    img.src = r.image;
+    img.src = r.image || "img/default-thumbnail.jpg";
     img.alt = r["title_"+currentLang]||r.title_en||r.title_pl || "Review image";
     card.appendChild(img);
 
@@ -556,7 +556,7 @@ function openReviewModal(r, isLatest) {
   if (!r) return;
   reviewModal.innerHTML = `
     <button class="close-btn" onclick="closeReviewModal()" aria-label="Close">&times;</button>
-    <img src="${escapeHTML(r.image)}" alt="${escapeHTML(r["title_"+currentLang]||r.title_en||r.title_pl)}" class="modal-img"/>
+    <img src="${escapeHTML(r.image||'img/default-thumbnail.jpg')}" alt="${escapeHTML(r["title_"+currentLang]||r.title_en||r.title_pl)}" class="modal-img"/>
     <div class="modal-title">${escapeHTML(r["title_"+currentLang]||r.title_en||r.title_pl)}</div>
     <div class="modal-stars">${renderStars(r.stars||0)}</div>
     <div class="modal-meta">${r.reviewer ? escapeHTML(r.reviewer) : ""}</div>
@@ -701,6 +701,7 @@ window.renderAdminPanel = function(editId = null) {
     let imgFile = this["adm-image-file"].files[0];
     let id = this["adm-edit-id"].value;
     let msg = document.getElementById("admin-form-msg");
+    let orig = reviews.find(r => r.id === id);
 
     if (!title_en || !text_en || !title_pl || !text_pl || !date || !stars) {
       msg.textContent = langData[currentLang].requiredField;
@@ -723,6 +724,8 @@ window.renderAdminPanel = function(editId = null) {
       reader.readAsDataURL(imgFile);
     } else if (imgUrl) {
       finishAndSave(imgUrl, true);
+    } else if (orig && orig.image) {
+      finishAndSave(orig.image, orig.imageIsUrl!==false);
     } else {
       msg.textContent = langData[currentLang].requiredField;
       msg.style.display = "";
